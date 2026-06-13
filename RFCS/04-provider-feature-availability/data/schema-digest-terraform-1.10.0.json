@@ -1,0 +1,129 @@
+{
+ "product": "terraform",
+ "version": "1.10.0",
+ "format_version": "1.0",
+ "provider_selections": {
+  "hashicorp/local": "2.8.0",
+  "hashicorp/random": "3.9.0",
+  "hashicorp/time": "0.13.0",
+  "hashicorp/tls": "4.2.0",
+  "hashicorp/vault": "5.9.0"
+ },
+ "providers": {
+  "hashicorp/local": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "functions",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 2,
+   "data_source_count": 3,
+   "functions": [
+    "direxists"
+   ],
+   "ephemeral_resources": [
+    "local_command"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/random": {
+   "top_level_keys": [
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 10,
+   "data_source_count": 0,
+   "functions": [],
+   "ephemeral_resources": [
+    "random_bytes",
+    "random_password"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/time": {
+   "top_level_keys": [
+    "functions",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 4,
+   "data_source_count": 0,
+   "functions": [
+    "duration_parse",
+    "rfc3339_parse",
+    "unix_timestamp_parse"
+   ],
+   "ephemeral_resources": [],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/tls": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 4,
+   "data_source_count": 2,
+   "functions": [],
+   "ephemeral_resources": [
+    "tls_private_key",
+    "tls_public_key"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/vault": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 188,
+   "data_source_count": 48,
+   "functions": [],
+   "ephemeral_resources": [
+    "vault_alicloud_access_credentials",
+    "vault_approle_auth_backend_role_secret_id",
+    "vault_aws_access_credentials",
+    "vault_aws_static_access_credentials",
+    "vault_azure_access_credentials",
+    "vault_azure_static_credentials",
+    "vault_cf_auth_login",
+    "vault_database_secret",
+    "vault_gcp_oauth2_access_token",
+    "vault_gcp_service_account_key",
+    "vault_generic_endpoint",
+    "vault_generic_secret",
+    "vault_kubernetes_service_account_token",
+    "vault_kv_secret_v2",
+    "vault_spiffe_secret_backend_mintjwt",
+    "vault_terraform_token"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  }
+ }
+}

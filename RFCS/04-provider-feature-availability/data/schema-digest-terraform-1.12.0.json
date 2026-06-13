@@ -1,0 +1,263 @@
+{
+ "product": "terraform",
+ "version": "1.12.0",
+ "format_version": "1.0",
+ "provider_selections": {
+  "hashicorp/local": "2.8.0",
+  "hashicorp/random": "3.9.0",
+  "hashicorp/time": "0.13.0",
+  "hashicorp/tls": "4.2.0",
+  "hashicorp/vault": "5.9.0"
+ },
+ "providers": {
+  "hashicorp/local": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "functions",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 2,
+   "data_source_count": 3,
+   "functions": [
+    "direxists"
+   ],
+   "ephemeral_resources": [
+    "local_command"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/random": {
+   "top_level_keys": [
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 10,
+   "data_source_count": 0,
+   "functions": [],
+   "ephemeral_resources": [
+    "random_bytes",
+    "random_password"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/time": {
+   "top_level_keys": [
+    "functions",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 4,
+   "data_source_count": 0,
+   "functions": [
+    "duration_parse",
+    "rfc3339_parse",
+    "unix_timestamp_parse"
+   ],
+   "ephemeral_resources": [],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/tls": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 4,
+   "data_source_count": 2,
+   "functions": [],
+   "ephemeral_resources": [
+    "tls_private_key",
+    "tls_public_key"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {}
+  },
+  "hashicorp/vault": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "provider",
+    "resource_schemas"
+   ],
+   "resource_count": 188,
+   "data_source_count": 48,
+   "functions": [],
+   "ephemeral_resources": [
+    "vault_alicloud_access_credentials",
+    "vault_approle_auth_backend_role_secret_id",
+    "vault_aws_access_credentials",
+    "vault_aws_static_access_credentials",
+    "vault_azure_access_credentials",
+    "vault_azure_static_credentials",
+    "vault_cf_auth_login",
+    "vault_database_secret",
+    "vault_gcp_oauth2_access_token",
+    "vault_gcp_service_account_key",
+    "vault_generic_endpoint",
+    "vault_generic_secret",
+    "vault_kubernetes_service_account_token",
+    "vault_kv_secret_v2",
+    "vault_spiffe_secret_backend_mintjwt",
+    "vault_terraform_token"
+   ],
+   "resource_identity": [],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {
+    "vault_alicloud_secret_backend": [
+     "secret_key_wo"
+    ],
+    "vault_approle_auth_backend_login": [
+     "secret_id_wo"
+    ],
+    "vault_aws_auth_backend_client": [
+     "secret_key_wo"
+    ],
+    "vault_aws_secret_backend": [
+     "secret_key_wo"
+    ],
+    "vault_azure_auth_backend_config": [
+     "client_secret_wo"
+    ],
+    "vault_azure_secret_backend": [
+     "client_secret_wo"
+    ],
+    "vault_azure_secret_backend_static_role": [
+     "client_secret"
+    ],
+    "vault_cf_auth_backend_config": [
+     "cf_password_wo"
+    ],
+    "vault_consul_secret_backend": [
+     "client_key_wo",
+     "token_wo"
+    ],
+    "vault_database_secret_backend_connection": [
+     "hana.password_wo",
+     "mongodb.password_wo",
+     "mssql.password_wo",
+     "mysql.password_wo",
+     "mysql_aurora.password_wo",
+     "mysql_legacy.password_wo",
+     "mysql_rds.password_wo",
+     "oracle.password_wo",
+     "postgresql.password_wo",
+     "redshift.password_wo",
+     "snowflake.password_wo",
+     "snowflake.private_key_wo"
+    ],
+    "vault_database_secret_backend_static_role": [
+     "password_wo"
+    ],
+    "vault_database_secrets_mount": [
+     "hana.password_wo",
+     "mongodb.password_wo",
+     "mssql.password_wo",
+     "mysql.password_wo",
+     "mysql_aurora.password_wo",
+     "mysql_legacy.password_wo",
+     "mysql_rds.password_wo",
+     "oracle.password_wo",
+     "postgresql.password_wo",
+     "redshift.password_wo",
+     "snowflake.password_wo",
+     "snowflake.private_key_wo"
+    ],
+    "vault_gcp_auth_backend": [
+     "credentials_wo"
+    ],
+    "vault_gcp_secret_backend": [
+     "credentials_wo"
+    ],
+    "vault_jwt_auth_backend": [
+     "oidc_client_secret_wo"
+    ],
+    "vault_keymgmt_aws_kms": [
+     "credentials_wo"
+    ],
+    "vault_keymgmt_azure_kms": [
+     "credentials_wo"
+    ],
+    "vault_keymgmt_gcp_kms": [
+     "credentials_wo"
+    ],
+    "vault_kubernetes_auth_backend_config": [
+     "token_reviewer_jwt_wo"
+    ],
+    "vault_kubernetes_secret_backend": [
+     "service_account_jwt_wo"
+    ],
+    "vault_kv_secret_v2": [
+     "data_json_wo"
+    ],
+    "vault_ldap_auth_backend": [
+     "bindpass_wo"
+    ],
+    "vault_ldap_secret_backend": [
+     "bindpass_wo"
+    ],
+    "vault_ldap_secret_backend_static_role": [
+     "password_wo"
+    ],
+    "vault_mongodbatlas_secret_backend": [
+     "private_key_wo"
+    ],
+    "vault_nomad_secret_backend": [
+     "client_key_wo",
+     "token_wo"
+    ],
+    "vault_okta_auth_backend": [
+     "api_token_wo"
+    ],
+    "vault_os_secret_backend_account": [
+     "password_wo"
+    ],
+    "vault_pki_external_ca_secret_backend_acme_account": [
+     "eab_key",
+     "eab_kid"
+    ],
+    "vault_rabbitmq_secret_backend": [
+     "password_wo"
+    ],
+    "vault_secrets_sync_aws_destination": [
+     "identity_token_audience_wo",
+     "identity_token_key_wo"
+    ],
+    "vault_secrets_sync_azure_destination": [
+     "identity_token_audience_wo",
+     "identity_token_key_wo"
+    ],
+    "vault_secrets_sync_gcp_destination": [
+     "identity_token_audience_wo",
+     "identity_token_key_wo"
+    ],
+    "vault_spiffe_auth_backend_config": [
+     "defer_bundle_fetch"
+    ],
+    "vault_terraform_cloud_secret_backend": [
+     "token_wo"
+    ]
+   }
+  }
+ }
+}

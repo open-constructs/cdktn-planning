@@ -1,0 +1,3 @@
+# full `providers schema -json` dumps are large and rebuildable via scripts/sweep.sh;
+# the committed data/schema-digest-*.json files are the durable dataset
+data

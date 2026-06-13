@@ -1,0 +1,125 @@
+{
+ "product": "opentofu",
+ "version": "1.12.0",
+ "format_version": "1.0",
+ "provider_selections": {
+  "hashicorp/aws": "6.14.1"
+ },
+ "providers": {
+  "hashicorp/aws": {
+   "top_level_keys": [
+    "data_source_schemas",
+    "ephemeral_resource_schemas",
+    "functions",
+    "provider",
+    "resource_identity_schemas",
+    "resource_schemas"
+   ],
+   "resource_count": 1543,
+   "data_source_count": 615,
+   "functions": [
+    "arn_build",
+    "arn_parse",
+    "trim_iam_role_path"
+   ],
+   "ephemeral_resources": [
+    "aws_cognito_identity_openid_token_for_developer_identity",
+    "aws_eks_cluster_auth",
+    "aws_kms_secrets",
+    "aws_lambda_invocation",
+    "aws_secretsmanager_random_password",
+    "aws_secretsmanager_secret_version",
+    "aws_ssm_parameter"
+   ],
+   "resource_identity": [
+    "aws_acm_certificate",
+    "aws_acmpca_certificate",
+    "aws_acmpca_certificate_authority",
+    "aws_acmpca_certificate_authority_certificate",
+    "aws_acmpca_policy",
+    "aws_alb",
+    "aws_alb_listener",
+    "aws_alb_listener_rule",
+    "aws_alb_target_group",
+    "aws_api_gateway_account",
+    "aws_api_gateway_domain_name_access_association",
+    "aws_api_gateway_rest_api_put",
+    "aws_appconfig_environment",
+    "aws_appfabric_app_authorization",
+    "aws_appfabric_app_authorization_connection",
+    "aws_appfabric_app_bundle",
+    "aws_appfabric_ingestion",
+    "aws_appfabric_ingestion_destination",
+    "aws_appflow_connector_profile",
+    "aws_appflow_flow",
+    "aws_apprunner_auto_scaling_configuration_version",
+    "aws_apprunner_default_auto_scaling_configuration_version",
+    "aws_apprunner_deployment",
+    "aws_apprunner_observability_configuration",
+    "aws_apprunner_service",
+    "aws_apprunner_vpc_connector",
+    "aws_apprunner_vpc_ingress_connection",
+    "aws_appsync_api",
+    "aws_appsync_channel_namespace",
+    "aws_appsync_source_api_association",
+    "aws_athena_capacity_reservation",
+    "aws_auditmanager_account_registration",
+    "aws_auditmanager_assessment",
+    "aws_auditmanager_assessment_delegation",
+    "aws_auditmanager_assessment_report",
+    "aws_auditmanager_control",
+    "aws_auditmanager_framework",
+    "aws_auditmanager_framework_share",
+    "aws_auditmanager_organization_admin_account_registration",
+    "aws_backup_logically_air_gapped_vault",
+    "aws_backup_region_settings",
+    "aws_backup_restore_testing_plan",
+    "aws_backup_restore_testing_selection",
+    "aws_batch_job_definition",
+    "aws_batch_job_queue",
+    "aws_bcmdataexports_export",
+    "aws_bedrock_custom_model",
+    "aws_bedrock_guardrail",
+    "aws_bedrock_guardrail_version",
+    "aws_bedrock_inference_profile",
+    "... (+425 more)"
+   ],
+   "list_resources": [],
+   "actions": [],
+   "state_stores": [],
+   "write_only_attributes": {
+    "aws_db_instance": [
+     "password_wo"
+    ],
+    "aws_docdb_cluster": [
+     "master_password_wo"
+    ],
+    "aws_rds_cluster": [
+     "master_password_wo"
+    ],
+    "aws_redshift_cluster": [
+     "master_password_wo"
+    ],
+    "aws_redshiftserverless_namespace": [
+     "admin_user_password_wo"
+    ],
+    "aws_secretsmanager_secret_version": [
+     "secret_string_wo"
+    ],
+    "aws_ssm_parameter": [
+     "value_wo"
+    ]
+   },
+   "counts": {
+    "functions": 3,
+    "ephemeral_resources": 7,
+    "resource_identity": 475,
+    "list_resources": 0,
+    "actions": 0,
+    "state_stores": 0,
+    "write_only_resources": 7,
+    "write_only_attributes": 7
+   }
+  }
+ }
+}

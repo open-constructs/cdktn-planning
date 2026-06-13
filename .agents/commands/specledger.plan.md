@@ -1,0 +1,117 @@
+---
+name: specledger.plan
+description: Execute the implementation planning workflow using the plan template to generate design artifacts.
+handoffs: 
+  - label: Create Tasks
+    agent: specledger.tasks
+    prompt: Break the plan into tasks
+    send: true
+  - label: Create Checklist
+    agent: specledger.checklist
+    prompt: Create a checklist for the following domain...
+---
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
+
+**Execution Tracking**: Before starting work, create a task list (using the TaskCreate tool) covering all execution steps in this workflow. If `$ARGUMENTS` contains user-specified actions beyond the standard workflow, place those tasks where they logically fit: before setup steps if arguments change what gets set up, or after all standard steps if arguments extend the workflow. Update task status as you complete each step.
+
+**User Interaction**: Whenever you need input, clarification, or a decision from the user, use the **AskUserQuestion** tool directly. Do not output questions as plain text and stop — always use the interactive tool for proper UX.
+
+## Purpose
+
+Generate an implementation plan from the feature specification. This includes tech stack decisions, architecture, file structure, and phase breakdown.
+
+**When to use**: After `/specledger.specify` (or `/specledger.clarify`) completes successfully.
+
+## Outline
+
+1. **Setup**: Run `sl spec setup-plan --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH.
+
+2. **Load context**: Read FEATURE_SPEC and `.specledger/memory/constitution.md`. READ the IMPL_PLAN file at the path from the JSON output — it was scaffolded by `sl spec setup-plan` and you MUST read it before writing to it.
+
+3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
+   - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
+   - Fill Constitution Check section from constitution
+   - Evaluate gates (ERROR if violations unjustified)
+   - Review issue tracker references in Previous work section
+   - Check External Dependencies: If spec references external specs/APIs, note deps should be added via `sl deps add`
+   - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
+   - Phase 1: Generate data-model.md, contracts/, quickstart.md
+   - Phase 1: Update agent context by running the agent script
+   - Re-evaluate Constitution Check post-design
+
+4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
+
+## Phases
+
+### Phase 0: Outline & Research
+
+1. **Extract Previous Work** with "Explore" Agent:
+   - Identify Task overlap using `sl issue list --all`
+   - Summarize related features/tasks in Previous work section
+
+2. **Extract unknowns from Technical Context** above:
+   - For each NEEDS CLARIFICATION → research task
+   - For each dependency → best practices task
+   - For each integration → patterns task
+
+3. **Generate and Spawn Plan Agents** Prioritize tools first, then web search for up to date information:
+   ```
+   For each unknown in Technical Context:
+     Task: "Research {unknown} for {feature context}"
+   For each technology choice:
+     Task: "Find best practices for {tech} in {domain}"
+   ```
+
+4. **Consolidate findings** in `research.md` using format:
+   - Prior Work: [summary of related features/tasks]
+   - Decision: [what was chosen]
+   - Rationale: [why chosen]
+   - Alternatives considered: [what else evaluated]
+
+**Output**: research.md with all NEEDS CLARIFICATION resolved
+
+### Phase 1: Design & Contracts
+
+**Prerequisites:** `research.md` complete
+
+1. **Extract entities from feature spec** → `data-model.md`:
+   - Entity name, fields, relationships
+   - Validation rules from requirements
+   - State transitions if applicable
+
+2. **Generate API contracts** from functional requirements:
+   - For each user action → endpoint
+   - Use standard ConnectRPC/ProtoBuf/REST patterns
+   - Output Proto/OpenAPI schema to `/contracts/`
+
+3. **Agent context update**:
+   - Run `sl context update claude`
+   - This command detects which AI agent is in use
+   - Updates the appropriate agent-specific context file
+   - Adds only new technology from current plan
+   - Preserves manual additions between markers
+
+4. **Skill suggestions** (optional, non-blocking):
+   - Extract technology keywords from the Technical Context fields just filled
+     (Language, PrimaryDeps, Storage, Testing — skip generic terms like "files" or "N/A").
+   - For the 1-2 most specific technologies, run: `sl skill search "<technology>" --limit 5`
+   - Cross-reference results with `sl skill list --json` to exclude already-installed skills.
+   - If new skills are found, present them briefly and use AskUserQuestion with multi select.
+   - If user accepts, run `sl skill add <source> -y` for each.
+   - If user declines or no new skills found, continue immediately.
+   - **Error handling**: If `sl skill search` or `sl skill add` fails, notify the user and suggest they can try manually later with `sl skill search "<technology>"`. Do not retry.
+   - Do NOT block Phase 1 completion on this step.
+
+**Output**: data-model.md, /contracts/*, quickstart.md, agent-specific file, (optional) installed skills
+
+## Key rules
+
+- Use absolute paths
+- ERROR on gate failures or unresolved clarifications
