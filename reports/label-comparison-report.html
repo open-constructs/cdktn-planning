@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label comparison — cdk-terrain vs terraform-cdk</title>
+<style>
+  :root { --border:#d0d7de; --bg:#f6f8fa; --arch:#fff8f0; --curr:#f0f7ff; }
+  * { box-sizing:border-box; }
+  body { font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+         color:#1f2328; margin:0; padding:2rem; max-width:1100px; margin-inline:auto; }
+  h1 { font-size:1.6rem; margin:0 0 .25rem; }
+  .sub { color:#656d76; margin-bottom:1.5rem; }
+  .cards { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .card { flex:1; min-width:160px; border:1px solid var(--border); border-radius:8px; padding:1rem; background:var(--bg); }
+  .card .n { font-size:2rem; font-weight:700; }
+  .card .l { color:#656d76; font-size:.85rem; }
+  .controls { margin-bottom:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
+  input[type=search] { padding:.45rem .6rem; border:1px solid var(--border); border-radius:6px; min-width:240px; }
+  button { padding:.4rem .8rem; border:1px solid var(--border); border-radius:6px; background:#fff; cursor:pointer; }
+  button.active { background:#0969da; color:#fff; border-color:#0969da; }
+  table { border-collapse:collapse; width:100%; }
+  th,td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { position:sticky; top:0; background:#fff; border-bottom:2px solid var(--border); cursor:pointer; }
+  td.center,th.center { text-align:center; }
+  td.cat { color:#656d76; white-space:nowrap; }
+  tr.arch { background:var(--arch); }
+  tr.curr { background:var(--curr); }
+  .chip { display:inline-block; padding:.15rem .55rem; border-radius:2em; font-size:.8rem;
+           font-weight:600; color:#000; mix-blend-mode:multiply; }
+  .muted { color:#999; }
+  .arch-d { color:#8a6d3b; font-size:.8rem; }
+  .cur-d { }
+  footer { margin-top:2rem; color:#656d76; font-size:.8rem; }
+  code { background:var(--bg); padding:.1rem .35rem; border-radius:4px; }
+</style>
+</head>
+<body>
+<h1>GitHub Label Comparison</h1>
+<div class="sub">
+  <strong>open-constructs/cdk-terrain</strong> (current) vs
+  <strong>hashicorp/terraform-cdk</strong> (archived upstream) — generated 2026-05-27 10:59.
+  🔧 marks labels referenced by this repo's workflows.
+</div>
+
+<div class="cards">
+  <div class="card"><div class="n">40</div><div class="l">labels on cdk-terrain</div></div>
+  <div class="card"><div class="n">128</div><div class="l">labels on terraform-cdk</div></div>
+  <div class="card"><div class="n">37</div><div class="l">on both repos</div></div>
+  <div class="card"><div class="n" style="color:#bc4c00">91</div><div class="l">only on terraform-cdk (missing here)</div></div>
+  <div class="card"><div class="n" style="color:#0969da">3</div><div class="l">only on cdk-terrain</div></div>
+</div>
+
+<div class="controls">
+  <input type="search" id="q" placeholder="Filter labels…">
+  <button data-f="all" class="active">All</button>
+  <button data-f="both">On both</button>
+  <button data-f="archived_only">Missing here</button>
+  <button data-f="current_only">cdk-terrain only</button>
+</div>
+
+<table id="t">
+  <thead><tr>
+    <th>Label</th><th>Category</th><th>Purpose / description</th>
+    <th class="center">cdk-terrain</th><th class="center">terraform-cdk</th>
+  </tr></thead>
+  <tbody>
+  <tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/provider-integration</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#ededed'>ci/run-all</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#FAD72E'>ci/run-examples</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#618939'>ci/run-integration</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#5DA360'>ci/run-unit</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/api-core</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/cli-core</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/commons</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/hcl2cdk</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/hcl2json</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/@cdktf/provider-generator</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/cdktf</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>ci/run-unit/cdktf-cli</span></td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#8B33CD'>ci/skip-examples</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><div class='cur-d'><span class=muted>(no description)</span></div><div class='arch-d'>archived: Skip Examples Testing in PR</div></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#799818'>ci/skip-integration</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><div class='cur-d'><span class=muted>(no description)</span></div><div class='arch-d'>archived: Skips Integration Testing on PR</div></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#94D129'>ci/skip-provider-integration</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><div class='cur-d'><span class=muted>(no description)</span></div><div class='arch-d'>archived: Skips Provider Integration Tests on PR</div></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='curr' data-state='current_only'>
+      <td><span class='chip' style='background:#5F7A59'>ci/skip-unit</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>—</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#59E343'>ci/unit-only</span> 🔧</td>
+      <td class='cat'>CI control</td>
+      <td><div class='cur-d'><span class=muted>(no description)</span></div><div class='arch-d'>archived: Skips all integration testing on PR</div></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#bfdadc'>ci/update-snapshots</span></td>
+      <td class='cat'>CI control</td>
+      <td>When set on a PR a GH Action will update and push all snapshot tests</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ED99D4'>ci/updating-snapshots</span></td>
+      <td class='cat'>CI control</td>
+      <td>CI is currently updating this PR with new snapshot tests</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#C5D4B9'>feature/aws-adapter</span></td>
+      <td class='cat'>Feature area</td>
+      <td>[experimental] Deploy AWS CDK constructs using CDKTF</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#C31CA3'>feature/cdktf-as-module-source</span></td>
+      <td class='cat'>Feature area</td>
+      <td>When CDKTF is used to build Terraform Modules used in plain Terraform</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#d93f0b'>feature/convert</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#8D7D9C'>feature/dynamic-terraform</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#C1E24A'>feature/init</span></td>
+      <td class='cat'>Feature area</td>
+      <td>cdktf init related features</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4F6FA8'>feature/integration-test</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#19C2E2'>feature/interoperability</span></td>
+      <td class='cat'>Feature area</td>
+      <td>Cross-CDK interoperability issues</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#2911A8'>feature/iterators</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#6589C9'>feature/multi-stack</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#54AAC9'>feature/programmatic-api</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#46ADAF'>feature/refactoring</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#006b75'>feature/snapshot-test</span></td>
+      <td class='cat'>Feature area</td>
+      <td>Snapshot testing + assertion related issues</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#2A3D32'>feature/telemetry</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#A1C1CD'>feature/terraform-functions</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#58CF13'>feature/tokens</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#3068EA'>feature/watch</span></td>
+      <td class='cat'>Feature area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#d73a4a'>bug</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Something isn&#x27;t working</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#9e202d'>bug/has-workaround</span></td>
+      <td class='cat'>Issue type</td>
+      <td>A bug with a workaround (may not be elegant)</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#1A80B6'>core-parity</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Better experience in Terraform Core than CDKTF</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#0075ca'>documentation</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Improvements or additions to documentation</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#cfd3d7'>duplicate</span></td>
+      <td class='cat'>Issue type</td>
+      <td>This issue or pull request already exists</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#a2eeef'>enhancement</span></td>
+      <td class='cat'>Issue type</td>
+      <td>New feature or request</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4A1023'>enhancement/new-workflow</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Proposed new workflow</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#7057ff'>good first issue</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Good for newcomers</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#008672'>help wanted</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Community contributions welcome as the core team is unlikely to work on this soon</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#e4e669'>invalid</span></td>
+      <td class='cat'>Issue type</td>
+      <td>This doesn&#x27;t seem right</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#890D75'>performance</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Gotta go fast</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#d876e3'>question</span></td>
+      <td class='cat'>Issue type</td>
+      <td>Further information is requested</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#67C41E'>security</span></td>
+      <td class='cat'>Issue type</td>
+      <td><div class='cur-d'><span class=muted>(no description)</span></div><div class='arch-d'>archived: Auto-pinning</div></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#191658'>tech-debt</span></td>
+      <td class='cat'>Issue type</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#ffffff'>wontfix</span></td>
+      <td class='cat'>Issue type</td>
+      <td>This will not be worked on</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#168700'>javascript</span></td>
+      <td class='cat'>Language</td>
+      <td>Pull requests that update javascript code</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#c5def5'>language/c#</span></td>
+      <td class='cat'>Language</td>
+      <td>C# language issues</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#22ED90'>language/golang</span></td>
+      <td class='cat'>Language</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#E38858'>language/java</span></td>
+      <td class='cat'>Language</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#5c2596'>language/python</span></td>
+      <td class='cat'>Language</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#a5ccff'>language/typescript</span></td>
+      <td class='cat'>Language</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#279ebc'>abstractions (level 2 / level 3)</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#f7bbc8'>build</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#fccac4'>cdktf</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#82e5de'>cdktf-cli</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4CBCB0'>cli/provider-subcommands</span></td>
+      <td class='cat'>Other</td>
+      <td>cdktf provider &lt;verb&gt; commands</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#F6A4ED'>dev-process</span></td>
+      <td class='cat'>Other</td>
+      <td>Improvements to how CDK for Terraform is developed and built</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#29D75B'>documentation/learn-tutorials</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#40BB81'>enterprise</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4AB3A0'>examples</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#2ffc8f'>modules</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#5A8772'>schema</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#9999FF'>SEC-090</span></td>
+      <td class='cat'>Other</td>
+      <td>Relating to RFC SEC-090.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#99FF99'>SEC-090/Pinning/Trusted</span></td>
+      <td class='cat'>Other</td>
+      <td>Automated TSCCR pinning PR to trusted SHAs.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#4ed354'>terraform cloud</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#6713B5'>terraform enterprise</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#456cc6'>testing</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#5E568C'>theme/construct-ecosystem</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#ffadb5'>ui</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#839ad1'>windows</span></td>
+      <td class='cat'>Other</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#E06AA9'>pre-built providers</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issues around pre-built providers managed at https://github.com/hashicorp/cdktf-repository-manager</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#CC3938'>provider get / generation</span></td>
+      <td class='cat'>Provider</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#396F8B'>provider/aws</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using AWS provider</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#bfd4f2'>provider/azure</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using Azure provider</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#60dba4'>provider/consul</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using consul provider</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#8A61B0'>provider/datadog</span></td>
+      <td class='cat'>Provider</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4285f4'>provider/google</span></td>
+      <td class='cat'>Provider</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#99C551'>provider/kubernetes</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using Kubernetes provider</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#A47AB3'>provider/kubernetes-alpha</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using kubernetes-alpha provider</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#f2b854'>provider/nomad</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using nomad provider</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#f4c8b2'>provider/openstack</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using openstack provider</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#76f7dd'>provider/vault</span></td>
+      <td class='cat'>Provider</td>
+      <td>Issue shows up using Vault provider</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#2bd8cd'>providers</span></td>
+      <td class='cat'>Provider</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#9559B0'>size/l</span></td>
+      <td class='cat'>Size estimate</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#9559B0'>size/large</span></td>
+      <td class='cat'>Size estimate</td>
+      <td>estimated &lt; 1 month</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#291E63'>size/m</span></td>
+      <td class='cat'>Size estimate</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#291E63'>size/medium</span></td>
+      <td class='cat'>Size estimate</td>
+      <td>estimated &lt; 1 week</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4671C0'>size/s</span></td>
+      <td class='cat'>Size estimate</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4671C0'>size/small</span></td>
+      <td class='cat'>Size estimate</td>
+      <td>estimated &lt; 1 day</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#F8C5E8'>size/x-large</span></td>
+      <td class='cat'>Size estimate</td>
+      <td>estimated &gt; 1 month</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#F8C5E8'>size/xl</span></td>
+      <td class='cat'>Size estimate</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>size/xs</span></td>
+      <td class='cat'>Size estimate</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#217A90'>needs-priority</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Issue has not yet been prioritized; this will prompt team review</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#2C7FA7'>planning</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Issues that primarily exist to track planning needs</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#1D435A'>planning/placeholder</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>capacity-planning placeholder issue</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#CBD1C1'>priority/awaiting-more-evidence</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Lowest priority. Unlikely to be worked on unless/until it gets a lot more upvotes.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#30649B'>priority/backlog</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Low priority (though possibly still important). Unlikely to be worked on within the next 6 months.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#06FD85'>priority/critical-urgent</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Highest priority. Must be actively worked on as someone&#x27;s top priority right now.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#5CC9C1'>priority/important-longterm</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>Medium priority, to be worked on within the following 1-2 business quarters.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#CC56C1'>priority/important-soon</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>High priority, to be worked on as part of our current release or the following one.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#D9EC18'>stretch-goal</span></td>
+      <td class='cat'>Triage / priority</td>
+      <td>A stretch goal for the current release</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#40FE53'>ux/cli</span></td>
+      <td class='cat'>UX area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#58FCA0'>ux/configuration</span></td>
+      <td class='cat'>UX area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#2703FD'>ux/debugging</span></td>
+      <td class='cat'>UX area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#D670CB'>ux/integration</span></td>
+      <td class='cat'>UX area</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#f9a2cf'>upstream/jsii</span></td>
+      <td class='cat'>Upstream dependency</td>
+      <td>Pending upstream work on JSII</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#755CD9'>upstream/registry</span></td>
+      <td class='cat'>Upstream dependency</td>
+      <td>Pending upstream work on the Terraform Registry</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#844fba'>upstream/terraform</span></td>
+      <td class='cat'>Upstream dependency</td>
+      <td>Pending upstream work on Terraform</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#422DD8'>upstream/terraform-provider</span></td>
+      <td class='cat'>Upstream dependency</td>
+      <td>depending upstream work on a Terraform provider</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#8BF8BD'>auto-approve</span> 🔧</td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#ededed'>automated</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='curr' data-state='current_only'>
+      <td><span class='chip' style='background:#5DC8DB'>automerge</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>—</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#D93F0B'>blocked</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#D93F0B'>blocked/do-not-merge</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#4B830E'>confirmed</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>independently reproduced by an engineer on the team</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#FF9999'>dependencies</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>Auto-pinning</td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#F09F90'>legal</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>An issue or PR related to compliance with company policies</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#B29CB7'>needs-reproduction</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#709F22'>needs-research</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#3A7F17'>new</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>Un-triaged issue</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='curr' data-state='current_only'>
+      <td><span class='chip' style='background:#EE2222'>no-auto-close</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>—</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#E1A241'>notice</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>Internal use only. An issue being used by the maintainers to flag something for the community.</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='arch' data-state='archived_only'>
+      <td><span class='chip' style='background:#586657'>stale</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td>An issue or pull request that has not been updated in a very long time</td>
+      <td class='center'>❌</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#cc62ef'>waiting-for-3rd-party-fix</span></td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr><tr class='both' data-state='both'>
+      <td><span class='chip' style='background:#8fd1fc'>waiting-on-answer</span> 🔧</td>
+      <td class='cat'>Workflow / status</td>
+      <td><span class='muted'>(no description)</span></td>
+      <td class='center'>✅</td>
+      <td class='center'>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+<footer>
+  Source: <code>gh api --paginate repos/&lt;owner&gt;/&lt;repo&gt;/labels</code>.
+  Rows highlighted orange exist only on the archived repo (candidates to recreate);
+  blue rows exist only on cdk-terrain.
+</footer>
+
+<script>
+  const q = document.getElementById('q');
+  const rows = [...document.querySelectorAll('#t tbody tr')];
+  let filter = 'all';
+  function apply() {
+    const term = q.value.toLowerCase();
+    rows.forEach(r => {
+      const matchText = r.textContent.toLowerCase().includes(term);
+      const matchFilter = filter === 'all' || r.dataset.state === filter;
+      r.style.display = (matchText && matchFilter) ? '' : 'none';
+    });
+  }
+  q.addEventListener('input', apply);
+  document.querySelectorAll('button[data-f]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('button[data-f]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); filter = b.dataset.f; apply();
+  }));
+</script>
+</body>
+</html>

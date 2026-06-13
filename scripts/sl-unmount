@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# sl-unmount — remove the cdktn-planning symlinks that sl-mount placed into a
+# cdk-terrain checkout. Removes only symlinks pointing back into THIS planning
+# repo, plus the generated mise.local.toml. Real files are never touched.
+# The .git/info/exclude entries are left in place (harmless, and keep a future
+# re-mount clean).
+#
+# Usage:  ./scripts/sl-unmount [PATH_TO_CDK_TERRAIN]   (prompts if omitted)
+#
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_sl-common.sh"
+
+case "${1:-}" in -h|--help) sed -n '2,11p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;; esac
+
+resolve_target "${1:-}"
+
+echo "Unmounting cdktn-planning from: $TARGET"
+echo
+echo "commands:";  for_each_command _unlink_dest
+echo "skills:";    for_each_skill   _unlink_dest
+echo "workspace:"
+unlink_one "$TARGET/specledger"
+unlink_one "$TARGET/.specledger"
+
+ML="$TARGET/mise.local.toml"
+if [[ -f "$ML" ]] && grep -q "$MARKER" "$ML" 2>/dev/null; then
+  rm "$ML"; note "removed mise.local.toml"
+fi
+
+echo
+echo "Done. (.git/info/exclude entries left in place — re-run sl-mount any time.)"
