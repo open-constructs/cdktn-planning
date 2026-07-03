@@ -8,12 +8,18 @@ library) plus the published `cdktn@0.23.4` JSII assembly. No `data/` or
 
 ## Problem
 
-The bump to `constructs@^10.6.0` — pulled in transitively by `cdktn@0.23.4`'s
-peer dependency — **silently added a `with(...mixins)` method to every CDKTN
-construct**. We only noticed it while refreshing the generated API reference:
-the v0.23.4 refresh (cdk-terrain-docs#22) shows `with()` appearing on all 5
-languages × every construct page, sourced entirely from constructs, not from
-any CDKTN code.
+The bump of the `constructs` peer dependency to `^10.6.0` — landed in the
+**v0.23.0** release ([cdk-terrain#164][pr164]) via the JSII dependency upgrade
+in [cdk-terrain#20][pr20] — **silently added a `with(...mixins)` method to every
+CDKTN construct**. It has therefore been shipping, undocumented, since 0.23.0.
+We only *noticed* it two releases later while refreshing the generated API
+reference: the refresh (cdk-terrain-docs#22) shows `with()` on all 5 languages ×
+every construct page — but only because the API reference had been stale since
+0.23.2; the method was **not** new in 0.23.4. It is sourced entirely from
+constructs, not from any CDKTN code.
+
+[pr164]: https://github.com/open-constructs/cdk-terrain/pull/164
+[pr20]: https://github.com/open-constructs/cdk-terrain/pull/20
 
 Two things follow:
 
@@ -56,9 +62,10 @@ primitive is exactly two things:
 That is the **entire** primitive. There is no base class, no aggregator, no
 selector, no prebuilt mixin in the constructs library.
 
-### F2 — What CDKTN 0.23.4 inherited
+### F2 — What CDKTN inherited (since 0.23.0)
 
-The published `cdktn@0.23.4` `.jsii` contains **zero** references to `mixin` or
+The published `cdktn@0.23.4` `.jsii` (the current latest; the peer bump landed
+in 0.23.0, see [Problem](#problem)) contains **zero** references to `mixin` or
 `IMixin` (verified by string search of the full assembly). Every `with()`
 method on the API-reference pages is inherited from `constructs.Construct`.
 CDKTN defines **no** mixins of its own. The feature is real and callable but
@@ -308,8 +315,8 @@ Each requirement links to the source(s) it is grounded in.
 
 1. **R1 — Ship `IMixin` + `.with()` as documented public API.** Grounded in the
    inherited primitive: `constructs@10.6.0` `mixin.ts:7/11/16` (F1) and the fact
-   that `cdktn@0.23.4` re-exposes it with zero code of its own (F2), first
-   observed in cdk-terrain-docs#22.
+   that CDKTN has re-exposed it with zero code of its own since 0.23.0 (F2,
+   [cdk-terrain#164][pr164]); surfaced in the docs by cdk-terrain-docs#22.
 2. **R2 — Provide a first-party `PreventDestroy` core mixin + test.** Uses only
    F1/F2 hooks (`TerraformResource.isTerraformResource`, `lifecycle` setter).
 3. **R3 — Author a Mixins concept doc** positioned beside the existing Aspects
@@ -330,9 +337,9 @@ Each requirement links to the source(s) it is grounded in.
 ## Why intentional adoption, not "just leave it inherited"
 
 Leaving `with()` inherited-but-undocumented means we ship public surface with no
-contract, no test, and no guidance — and users will find it via the API
-reference (cdk-terrain-docs#22) and file bugs against behaviour we never
-specified. Documenting the primitive, shipping one reference mixin, and stating
+contract, no test, and no guidance — and we have been doing so since 0.23.0.
+Users will find it via the API reference (cdk-terrain-docs#22) and file bugs
+against behaviour we never specified. Documenting the primitive, shipping one reference mixin, and stating
 the mixin-vs-aspect rule is the minimum needed to own the surface we already
 expose. It also pre-empts the common mistake the [blog][blog]'s wording invites
 (rewriting mutating aspects like `Tags` as mixins).
@@ -356,7 +363,9 @@ Fits the "< 30 min review" PR budget as: (1) core `PreventDestroy` + test,
 
 Code (read directly, file:line above):
 - `constructs@10.6.0` `.jsii` — `IMixin` (`src/mixin.ts:7/11/16`), `Construct.with`
-- `cdktn@0.23.4` `.jsii` — no mixin refs; `TerraformResource.isTerraformResource`,
+- Shipped in CDKTN 0.23.0 ([cdk-terrain#164][pr164]) via the constructs `^10.6.0`
+  upgrade ([cdk-terrain#20][pr20])
+- `cdktn@0.23.4` `.jsii` (current latest) — no mixin refs; `TerraformResource.isTerraformResource`,
   `TerraformElement.addOverride`, `TerraformResource` setters
 - CDKTN core Aspects — `packages/cdktn/src/aspect.ts:12-62`,
   `synthesize/synthesizer.ts:30,46,125-166`, `upgrade-id-aspect.ts:170-192`

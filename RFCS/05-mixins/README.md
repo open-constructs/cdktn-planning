@@ -2,8 +2,10 @@
 
 Audit and adoption proposal for the `constructs` 10.6 **Mixins** primitive
 (`IMixin` + `Construct.with(...mixins)`) that CDKTN inherited transitively via
-`cdktn@0.23.4`'s `constructs@^10.6.0` peer dependency — first observed while
-refreshing the generated API reference
+the `constructs@^10.6.0` peer bump — shipping since the **v0.23.0** release
+([cdk-terrain#164](https://github.com/open-constructs/cdk-terrain/pull/164), via
+the JSII dependency upgrade [cdk-terrain#20](https://github.com/open-constructs/cdk-terrain/pull/20)),
+though only surfaced in the docs later while refreshing the API reference
 ([cdk-terrain-docs#22](https://github.com/open-constructs/cdk-terrain-docs/pull/22)).
 
 Unlike RFCs 03/04, this is a **code/architecture audit**, not a binary sweep —
