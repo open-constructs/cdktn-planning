@@ -106,6 +106,21 @@ Key facts the data establishes:
 
 ## Design
 
+**Foundation (landed, PR #269).** The `targetVersions` config field,
+`resolveTargetVersions()`, the `ValidateFeatureTargetSupport` validation, and
+the `TerraformFeatureVersionConstraints` type already exist in
+`packages/cdktn/src/validations/`. They are **internal by design** — consumed
+by cdktn's own base classes via relative import, and by `@cdktn/commons` via
+the `cdktn/lib/validations` subpath, *not* re-exported from the package root.
+Generated bindings reach this machinery by **extending cdktn base classes**
+(e.g. `TerraformEphemeralResource`, below), never by calling the validator
+directly, so the validation never crosses the jsii contract and no public/jsii
+validation surface is required. (Public export was considered and deliberately
+deferred — revisit only if a third-party, non-cdktn construct author needs to
+validate a novel feature the matrix below does not cover.) `cdktn` remains the
+single canonical owner of the `providerFeatureConstraints` matrix and the
+validators; the generator carries no version knowledge of its own.
+
 Guiding decision: **generate the full surface the schema offers; narrow per
 project at synth time via targetVersions.** Generation-time filtering would
 fork the generated API by project configuration — impossible for prebuilt
@@ -251,7 +266,8 @@ Thread `targetVersions` through `Get` props → cli-core `get()` →
 
 1. `chore:` this directory — dataset, report, proposal (no behavior change).
 2. `feat(lib):` `providerFeatureConstraints` map + `TerraformEphemeralResource`
-   + validation wiring + tests.
+   wiring the **existing** `ValidateFeatureTargetSupport` (landed in #269) into
+   the base-class constructor + tests. The validation primitive itself is done.
 3. `feat(provider-generator):` Phase 0 schema types/sanitizer/cache-key +
    fetch-time warning.
 4. `feat(provider-generator):` ephemeral resource codegen + snapshots.

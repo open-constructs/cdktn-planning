@@ -24,3 +24,11 @@ The Provider Feature availability matrix was built from data sweeps on all binar
 
 - [x] Report made available at [cdktn.io/provider-feature-matrix](https://cdktn.io/provider-feature-matrix.html).
 - [ ] Proposal implemention pending
+
+## Mixins
+
+Adoption audit for the `constructs` 10.6 Mixins primitive (`IMixin` +
+`Construct.with(...mixins)`) inherited via `cdktn@0.23.4`, and the correct
+mixin-vs-aspect model. Code/architecture audit (no binary sweep).
+
+- [ ] Proposal ([`05-mixins/PROPOSAL.md`](05-mixins/PROPOSAL.md)) — proposed; ship `PreventDestroy` core mixin + Mixins concept doc pending
