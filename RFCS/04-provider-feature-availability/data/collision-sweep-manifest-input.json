@@ -1,0 +1,126 @@
+{
+  "acme": {
+    "source": "vancluever/acme",
+    "constraint": "~> 2.10"
+  },
+  "archive": {
+    "source": "hashicorp/archive",
+    "constraint": "~> 2.2"
+  },
+  "aws": {
+    "source": "hashicorp/aws",
+    "constraint": "~> 6.0"
+  },
+  "azuread": {
+    "source": "hashicorp/azuread",
+    "constraint": "~> 3.0"
+  },
+  "azurerm": {
+    "source": "azurerm",
+    "constraint": "~> 4.0"
+  },
+  "cloudflare": {
+    "source": "cloudflare/cloudflare",
+    "constraint": "~> 5.0"
+  },
+  "cloudinit": {
+    "source": "hashicorp/cloudinit",
+    "constraint": "~> 2.2"
+  },
+  "databricks": {
+    "source": "databricks/databricks",
+    "constraint": "~> 1.0"
+  },
+  "datadog": {
+    "source": "DataDog/datadog",
+    "constraint": "~> 4.0"
+  },
+  "dns": {
+    "source": "hashicorp/dns",
+    "constraint": "~> 3.2"
+  },
+  "docker": {
+    "source": "kreuzwerker/docker",
+    "constraint": "~> 4.0"
+  },
+  "external": {
+    "source": "hashicorp/external",
+    "constraint": "~> 2.1"
+  },
+  "github": {
+    "source": "integrations/github",
+    "constraint": "~> 6.0"
+  },
+  "google": {
+    "source": "hashicorp/google",
+    "constraint": "~> 7.0"
+  },
+  "googlebeta": {
+    "source": "hashicorp/google-beta",
+    "constraint": "~> 7.0"
+  },
+  "hcp": {
+    "source": "hcp",
+    "constraint": "~> 0.45"
+  },
+  "helm": {
+    "source": "helm",
+    "constraint": "~> 3.0"
+  },
+  "http": {
+    "source": "hashicorp/http",
+    "constraint": "~> 3.1"
+  },
+  "kubernetes": {
+    "source": "hashicorp/kubernetes",
+    "constraint": "~> 3.0"
+  },
+  "local": {
+    "source": "hashicorp/local",
+    "constraint": "~> 2.1"
+  },
+  "newrelic": {
+    "source": "newrelic/newrelic",
+    "constraint": "~> 3.7"
+  },
+  "null": {
+    "source": "hashicorp/null",
+    "constraint": "~> 3.0"
+  },
+  "pagerduty": {
+    "source": "PagerDuty/pagerduty",
+    "constraint": "~> 3.0"
+  },
+  "postgresql": {
+    "source": "cyrilgdn/postgresql",
+    "constraint": "~> 1.14"
+  },
+  "random": {
+    "source": "hashicorp/random",
+    "constraint": "~> 3.1"
+  },
+  "snowflake": {
+    "source": "snowflakedb/snowflake",
+    "constraint": "~> 2.0"
+  },
+  "time": {
+    "source": "hashicorp/time",
+    "constraint": "~> 0.7"
+  },
+  "tls": {
+    "source": "hashicorp/tls",
+    "constraint": "~> 4.0"
+  },
+  "vault": {
+    "source": "hashicorp/vault",
+    "constraint": "~> 5.0"
+  },
+  "grafana": {
+    "source": "grafana/grafana",
+    "constraint": null
+  },
+  "mongodbatlas": {
+    "source": "mongodb/mongodbatlas",
+    "constraint": null
+  }
+}
