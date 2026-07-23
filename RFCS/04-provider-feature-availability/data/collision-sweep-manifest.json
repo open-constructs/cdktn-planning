@@ -1,0 +1,250 @@
+{
+  "acme": {
+    "source": "vancluever/acme",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/vancluever/acme",
+    "constraint": "~> 2.10",
+    "version": "2.48.3",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "archive": {
+    "source": "hashicorp/archive",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/archive",
+    "constraint": "~> 2.2",
+    "version": "2.8.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "aws": {
+    "source": "hashicorp/aws",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/aws",
+    "constraint": "~> 6.0",
+    "version": "6.55.0",
+    "versionSource": "reused from cdktn-provider-features-demo/.gen/versions.json to avoid a multi-minute aws provider fetch"
+  },
+  "azuread": {
+    "source": "hashicorp/azuread",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/azuread",
+    "constraint": "~> 3.0",
+    "version": "3.9.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "azurerm": {
+    "source": "azurerm",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/azurerm",
+    "constraint": "~> 4.0",
+    "version": "4.81.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "cloudflare": {
+    "source": "cloudflare/cloudflare",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/cloudflare/cloudflare",
+    "constraint": "~> 5.0",
+    "version": "5.22.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "cloudinit": {
+    "source": "hashicorp/cloudinit",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/cloudinit",
+    "constraint": "~> 2.2",
+    "version": "2.4.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "databricks": {
+    "source": "databricks/databricks",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/databricks/databricks",
+    "constraint": "~> 1.0",
+    "version": "1.121.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "datadog": {
+    "source": "DataDog/datadog",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/datadog/datadog",
+    "constraint": "~> 4.0",
+    "version": "4.15.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "dns": {
+    "source": "hashicorp/dns",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/dns",
+    "constraint": "~> 3.2",
+    "version": "3.6.1",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "docker": {
+    "source": "kreuzwerker/docker",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/kreuzwerker/docker",
+    "constraint": "~> 4.0",
+    "version": "4.5.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "external": {
+    "source": "hashicorp/external",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/external",
+    "constraint": "~> 2.1",
+    "version": "2.4.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "github": {
+    "source": "integrations/github",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/integrations/github",
+    "constraint": "~> 6.0",
+    "version": "6.13.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "google": {
+    "source": "hashicorp/google",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/google",
+    "constraint": "~> 7.0",
+    "version": "7.40.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "googlebeta": {
+    "source": "hashicorp/google-beta",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/google-beta",
+    "constraint": "~> 7.0",
+    "version": "7.40.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "grafana": {
+    "source": "grafana/grafana",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/grafana/grafana",
+    "constraint": null,
+    "version": "4.41.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "hcp": {
+    "source": "hcp",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/hcp",
+    "constraint": "~> 0.45",
+    "version": "0.112.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "helm": {
+    "source": "helm",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/helm",
+    "constraint": "~> 3.0",
+    "version": "3.2.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "http": {
+    "source": "hashicorp/http",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/http",
+    "constraint": "~> 3.1",
+    "version": "3.6.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "kubernetes": {
+    "source": "hashicorp/kubernetes",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/kubernetes",
+    "constraint": "~> 3.0",
+    "version": "3.2.1",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "local": {
+    "source": "hashicorp/local",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/local",
+    "constraint": "~> 2.1",
+    "version": "2.9.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "mongodbatlas": {
+    "source": "mongodb/mongodbatlas",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/mongodb/mongodbatlas",
+    "constraint": null,
+    "version": "2.14.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "newrelic": {
+    "source": "newrelic/newrelic",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/newrelic/newrelic",
+    "constraint": "~> 3.7",
+    "version": "3.95.2",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "null": {
+    "source": "hashicorp/null",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/null",
+    "constraint": "~> 3.0",
+    "version": "3.3.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "pagerduty": {
+    "source": "PagerDuty/pagerduty",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/pagerduty/pagerduty",
+    "constraint": "~> 3.0",
+    "version": "3.34.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "postgresql": {
+    "source": "cyrilgdn/postgresql",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/cyrilgdn/postgresql",
+    "constraint": "~> 1.14",
+    "version": "1.27.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "random": {
+    "source": "hashicorp/random",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/random",
+    "constraint": "~> 3.1",
+    "version": "3.9.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "snowflake": {
+    "source": "snowflakedb/snowflake",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/snowflakedb/snowflake",
+    "constraint": "~> 2.0",
+    "version": "2.18.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "time": {
+    "source": "hashicorp/time",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/time",
+    "constraint": "~> 0.7",
+    "version": "0.14.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "tls": {
+    "source": "hashicorp/tls",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/tls",
+    "constraint": "~> 4.0",
+    "version": "4.3.0",
+    "versionSource": "terraform.lock.hcl"
+  },
+  "vault": {
+    "source": "hashicorp/vault",
+    "registry": "registry.terraform.io",
+    "fqpn": "registry.terraform.io/hashicorp/vault",
+    "constraint": "~> 5.0",
+    "version": "5.10.1",
+    "versionSource": "terraform.lock.hcl"
+  }
+}
