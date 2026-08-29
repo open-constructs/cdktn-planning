@@ -32,3 +32,11 @@ Adoption audit for the `constructs` 10.6 Mixins primitive (`IMixin` +
 mixin-vs-aspect model. Code/architecture audit (no binary sweep).
 
 - [ ] Proposal ([`05-mixins/PROPOSAL.md`](05-mixins/PROPOSAL.md)) — proposed; ship `PreventDestroy` core mixin + Mixins concept doc pending
+
+## Stack Notifications
+
+CloudFormation `NotificationARNs` parity from the CDKTN CLI execution engine
+(per-resource deployment events → AWS SNS / GCP Pub/Sub / Azure Event Grid).
+Code/architecture proposal (no binary sweep).
+
+- [ ] Proposal ([`06-stack-notifications/PROPOSAL.md`](06-stack-notifications/PROPOSAL.md)) — draft, under review
