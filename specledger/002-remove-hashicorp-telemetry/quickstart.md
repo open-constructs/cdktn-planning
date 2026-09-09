@@ -1,6 +1,6 @@
 # Quickstart: Verifying the Sentry Analytics Migration
 
-**Feature**: `002-remove-hashicorp-telemetry` | **Date**: 2026-06-08
+**Feature**: `002-remove-hashicorp-telemetry` | **Date**: 2026-06-08 | **Synced**: 2026-09-09 (review round 2)
 
 Per constitution VIII, every step below MUST be translatable into an integration/unit test scenario. Each maps to acceptance scenarios in spec.md.
 
@@ -11,7 +11,7 @@ Per constitution VIII, every step below MUST be translatable into an integration
 cdktn synth
 ```
 **Expected**: command succeeds; zero HTTP requests to `checkpoint-api.hashicorp.com` (or any HashiCorp host).
-**Test (two layers)**: (a) unit, `cli-core/src/test/no-hashicorp-runtime-egress.test.ts` — `nock.disableNetConnect()` + a HashiCorp canary interceptor; exercises sendTelemetry/Errors factories/init+flush with the real `@sentry/node` and asserts the canary is never hit; (b) static, `cdktn-cli/src/test/no-hashicorp-egress.test.ts` — scans every workspace source file and the built bundle for the endpoint. [maps US1 scenarios 1-3]
+**Test (2026-09-09)**: the delivery oracle (real client + capturing transport) shows where the data *does* go, and the CI bundle E2E (Journey 6) asserts against a local sink that the bundle talks to the configured DSN and nothing else, plus a free `grep` of the built bundle for the endpoint. The two dedicated egress tests that used to stand here — the nock canary (`cli-core/src/test/no-hashicorp-runtime-egress.test.ts`) and the static source scan (`cdktn-cli/src/test/no-hashicorp-egress.test.ts`) — were **removed**: neither asserted anything the build and the sink assertions do not. [maps US1 scenarios 1-3]
 
 ## Journey 2: Usage metrics emitted via Sentry when opted in (US2 → SC-002)
 
@@ -22,8 +22,8 @@ cdktn synth
 ```bash
 SENTRY_DSN=<dsn> cdktn synth   # CHECKPOINT_DISABLE unset
 ```
-**Expected**: a `cli.command.invoked` metric (attributes: command=synth, language, ci) and a `cli.synth.duration` metric are emitted to Sentry, then **flushed before exit**.
-**Test (unit, real client + capturing transport)**: init a real v10 client with a `createTransport` capturing transport; assert a `trace_metric` envelope item carries `cli.command.invoked` + attributes `{command:"synth", …}`, and assert `await Sentry.flush(2000) === true` (delivered before exit). [maps US2 scenarios 1,4; Decision 3-4; research/2026-06-08-v10-e2e-validation.md]
+**Expected**: a `cli.command.invoked` metric and a `cli.synth.duration` metric, each carrying the full base attribute set (`command`, `ci`, `os`, `arch`, `binary`, `binary_version`, `target_terraform`, `target_opentofu`, `targets_declared`, `validate_installed_binary`, `language`), plus one `cli.stack` per synthesized stack with `cli.stack.override` / `cli.stack.provider` items — all **flushed before exit**.
+**Test (unit, real client + capturing transport)**: init a real v10 client with a `createTransport` capturing transport; assert the **exact sorted attribute key set** of `cli.command.invoked` in one place (so adding an attribute fails deliberately), assert the per-stack items and their attributes, assert `sentry.release` is stamped, and assert `await Sentry.flush(2000) === true`. [maps US2 scenarios 1,4; FR-014/FR-019/FR-020; Decision 3-4]
 **Test (E2E, optional)**: build bundle with `SENTRY_DSN=http://key@localhost:PORT/1`, spawn via `TestDriver` with `CHECKPOINT_DISABLE` unset, run `cdktn synth`, assert a local envelope-recording server received a `trace_metric` item.
 
 ## Journey 3: Usage metrics suppressed (US2 → SC-003)
@@ -56,24 +56,32 @@ cdktn synth
 **Expected**: no Sentry init, `sendTelemetry` calls are silent no-ops, no errors, command succeeds.
 **Test**: unit — with Sentry uninitialized, `sendTelemetry` does not throw and emits nothing. [maps FR-002 assumptions]
 
-## Journey 6: Local bundle E2E — delivery + flush against the real bundle (full recipe: [research/2026-06-10-bundle-e2e-validation-recipe.md](research/2026-06-10-bundle-e2e-validation-recipe.md))
+## Journey 6: Bundle E2E — delivery, per-stack metrics and the failure path against the real bundle
 
 ```bash
-# 1. start a local Sentry sink (records envelope item types: event/transaction/trace_metric)
-node tools/sentry-sink.mjs 9999
-# 2. build the bundle with a local-sink DSN baked in (esbuild define)
-SENTRY_DSN="http://localkey@localhost:9999/1" pnpm nx run cdktn-cli:build
-# 3. telemetry-enabled workdir, CHECKPOINT_DISABLE cleared
-WORK=$(mktemp -d); cd "$WORK"; unset CHECKPOINT_DISABLE
-printf '{ "language":"typescript", "sendCrashReports":true, "sendUsageTelemetry":true }' > cdktf.json
-CDKTN=.../packages/cdktn-cli/bundle/bin/cdktn
-# 4a. SUCCESS trigger — isolates the NEW bounded success-path flush (dependency-free)
-echo 'resource "null_resource" "x" {}' | "$CDKTN" convert --language typescript
-# 4b. ERROR trigger — proves DSN bake + sink + flush plumbing (works on current bundle too)
-"$CDKTN" synth --app "node -e 'process.exit(1)'" || true
+tools/validate-sentry-e2e.sh      # local; the same script CI runs on every build
 ```
-**Expected**: sink records a `trace_metric` item `cli.command.invoked` (command=convert) from 4a — **empty sink ⇒ the success-path flush is missing/broken**; and an `event` (+ `cli.command.error` metric) from 4b. Then `grep -c checkpoint-api.hashicorp.com packages/cdktn-cli/bundle/bin/cdktn` is 0.
-**Test**: standalone local script today; gated CI jest test that builds with a local DSN, spawns `bundle/bin/cdktn convert`, asserts a `trace_metric` envelope + exit 0. [maps US2 delivery, SC-002/005/007; Decision 7 sourcemap check folded into the release sanity below]
+The script starts `tools/sentry-sink.mjs` on a free port, builds a **scratch**
+bundle (`packages/cdktn-cli/bundle-e2e/`) with a local-sink DSN baked in by
+esbuild — the shipped bundle is never touched — and then exercises four
+triggers in throwaway projects with `CHECKPOINT_DISABLE` unset and
+`SENTRY_ENVIRONMENT` / `SENTRY_TRACE` / `SENTRY_BAGGAGE` exported as `LEAK-*`
+markers:
+
+| Trigger | Proves |
+|---|---|
+| `cdktn convert` from stdin | the success-path flush (an empty sink means it is missing or broken) |
+| `cdktn synth --app "node -e 'process.exit(1)'"` | the error path: `cli.command.error` with `error_type` |
+| `cdktn synth` over a hand-written stack (secret stack name, imported id, private-registry provider, local provider path) | `cli.stack`, `cli.stack.override`, `cli.stack.provider` with `binding` / `library_version` / counts, and the reductions |
+| `cdktn output --skip-synth` over a corrupt `cdk.tf.json` | the entrypoint failure path: a crash event, an `unexpected` `cli.command.error`, the debug-information block, and no orphaned rejection |
+
+**Expected**: the sink records the metric items above and a crash `event`;
+`sentry.environment` is the constant `production`; none of the `LEAK-*` markers,
+the stack name, the resource id, the private-registry host/org or the local
+provider path appears in the raw envelope bytes; and the bundle contains zero
+references to `checkpoint-api.hashicorp.com` (free, not the point).
+**Test**: the script itself, as a step in the `build-and-package` job — it runs
+on **every build**, not behind a gate. [maps US2 delivery, SC-002/005/007/009/010]
 
 ## Journey 7: Consent prompt & upgrade defaults (US5 → SC-008, FR-008/FR-016/FR-017)
 
@@ -91,6 +99,25 @@ SENTRY_DSN=<dsn> cdktn synth < /dev/null    # no TTY → no prompt; metric emitt
 - `CHECKPOINT_DISABLE` set or `sendUsageTelemetry:false` → no prompt, no emission. [US5 scenario 3; FR-017]
 - `cdktn init` (interactive, both unset) → both flags prompted (presentation MAY be consolidated) and persisted. [US5 scenario 4]
 
+## Journey 8: One failure path, one flush (FR-022, absorbed #378 — fixes #360/#361)
+
+```bash
+# unexpected internal error: corrupt synthesized stack read with --skip-synth
+cdktn output --skip-synth
+# usage error: an unknown option / invalid choice reaching yargs' .fail
+cdktn synth --nope
+```
+**Expected**: the message (and, for an unexpected error, the stack and the
+"Debug Information:" block) is printed **once**; exactly one
+`cli.command.error` is emitted, with `error_type` matching the class of the
+thrown value; the metric is emitted **before** the bounded flush; the process
+exits 1 exactly once; and no `ERR_UNHANDLED_REJECTION` or
+`PromiseRejectionHandledWarning` is printed.
+**Test**: unit tests over `runCli`/`reportFailure` with injected deps (print /
+capture / metric / flush order, one exit, synchronous `.fail`, a synchronous
+handler throw that bypasses `.fail`), plus the E2E crash trigger in Journey 6.
+[maps FR-022; regression guards for #360/#361]
+
 > Release sourcemap sanity (Decision 7): `SENTRY_DSN=<dsn> pnpm build && pnpm package`; a deliberately-triggered error in a release build must show un-minified frames in Sentry — if not, switch release.yml to `sentry-cli sourcemaps inject`+`upload` (keep sentry-cli 2.58.4). One-time manual dashboard check.
 
 ---
@@ -99,10 +126,11 @@ SENTRY_DSN=<dsn> cdktn synth < /dev/null    # no TTY → no prompt; metric emitt
 
 | Journey | User Story | Success Criteria | Test layer |
 |---------|-----------|------------------|-----------|
-| 1 | US1 | SC-001 | integration |
+| 1 | US1 | SC-001 | unit (delivery oracle) + bundle E2E |
 | 2 | US2 | SC-002, SC-005 | unit (emission + flush) |
 | 3 | US2 | SC-003 | unit (gating) |
 | 4 | US3 | SC-004 | unit |
 | 5 | — (edge) | — | unit |
-| 6 | US2/US3/build | SC-002/005/006/007 | local script + gated CI jest (bundle E2E) |
+| 6 | US2/US3/build | SC-002/005/006/007/009/010 | bundle E2E script, run on every CI build |
 | 7 | US5 | SC-008 | unit (prompt + non-interactive default gating) |
+| 8 | US3 (FR-022) | SC-005 | unit (runCli/reportFailure) + Journey 6 crash trigger |
