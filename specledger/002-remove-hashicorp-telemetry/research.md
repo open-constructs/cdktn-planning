@@ -70,3 +70,26 @@ This consolidates the spike research that informs the plan. Detailed spikes live
 ## External dependencies note
 - `@sentry/node` `^10.56` (major upgrade, 3 packages). Consider `sl deps add` tracking.
 - Sentry SaaS (`cdktn/cdktn`, EU region): enable Logs & Metrics product (org-side, maintainer action).
+
+## Review round 2 (2026-09-09)
+
+The second review round on PR #62 restored the per-stack usage signal, absorbed
+PR #378's top-level failure handler, routed every flush through one bounded
+helper, and dropped the typed `CdktfConfig.sendUsageTelemetry` getter in favour
+of the single forgiving reader in commons. Its decisions, the privacy findings
+from the refutation rounds and the test-review verdicts are recorded in
+[2026-09-09-review-round-2.md](research/2026-09-09-review-round-2.md); the
+requirements they change are FR-005, FR-012, FR-014 and the new FR-019 – FR-022.
+
+**Asset pipeline (#380 / #371 / #339)**: whether this telemetry should be
+extended to inform the asset-pipeline scope decision was evaluated in
+[2026-09-09-asset-pipeline-telemetry-evaluation.md](research/2026-09-09-asset-pipeline-telemetry-evaluation.md).
+It contributes little: every load-bearing argument in that thread is structural
+(jsii constraints, Terraform's execution model, artifact drift) or is a single
+well-argued user report, the reporting population is biased against exactly the
+CI-heavy asset users the decision cares about, and no number could arrive before
+the API surface is frozen. The only candidate worth having is an allow-listed
+`cli.stack.resource` count — CLI-side, no library change — and it is deferred as
+a follow-up rather than added here. Nothing is added to the `cdktn` library: the
+`"//".metadata` block is user-visible synthesized output, and instrumenting the
+core package to feed a metric is the tail wagging the dog.
