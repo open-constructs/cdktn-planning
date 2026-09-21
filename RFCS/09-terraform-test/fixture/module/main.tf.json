@@ -1,0 +1,54 @@
+{
+  "terraform": {
+    "required_providers": {
+      "random": {
+        "source": "hashicorp/random",
+        "version": "3.6.3"
+      }
+    }
+  },
+  "variable": {
+    "len": {
+      "type": "number",
+      "default": 8,
+      "validation": [
+        {
+          "condition": "${var.len > 0}",
+          "error_message": "The len value must be positive."
+        }
+      ]
+    }
+  },
+  "resource": {
+    "random_string": {
+      "s": {
+        "length": "${var.len}",
+        "special": false
+      }
+    }
+  },
+  "output": {
+    "val": {
+      "value": "${random_string.s.result}",
+      "precondition": [
+        {
+          "condition": "${var.len != 13}",
+          "error_message": "The len value must not be 13."
+        }
+      ]
+    },
+    "len": {
+      "value": "${var.len}"
+    }
+  },
+  "check": {
+    "len_small": {
+      "assert": [
+        {
+          "condition": "${var.len < 100}",
+          "error_message": "The len value should stay below 100."
+        }
+      ]
+    }
+  }
+}

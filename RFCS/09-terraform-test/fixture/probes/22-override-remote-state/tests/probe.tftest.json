@@ -1,0 +1,23 @@
+{
+  "override_data": [
+    {
+      "target": "data.terraform_remote_state.upstream",
+      "values": {
+        "outputs": {
+          "name": "from-test"
+        }
+      }
+    }
+  ],
+  "run": {
+    "isolated_consumer": {
+      "command": "apply",
+      "assert": [
+        {
+          "condition": "${output.upstream_name == \"from-test\"}",
+          "error_message": "remote state should be overridden"
+        }
+      ]
+    }
+  }
+}

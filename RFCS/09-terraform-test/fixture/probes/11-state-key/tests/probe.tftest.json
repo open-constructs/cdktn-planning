@@ -1,0 +1,24 @@
+{
+  "run": {
+    "a": {
+      "command": "apply",
+      "state_key": "a",
+      "assert": [
+        {
+          "condition": "${output.len == 8}",
+          "error_message": "len should keep its default"
+        }
+      ]
+    },
+    "b": {
+      "command": "apply",
+      "state_key": "b",
+      "assert": [
+        {
+          "condition": "${output.len == 8}",
+          "error_message": "len should keep its default"
+        }
+      ]
+    }
+  }
+}

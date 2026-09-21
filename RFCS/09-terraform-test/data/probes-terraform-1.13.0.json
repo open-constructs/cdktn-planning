@@ -1,0 +1,478 @@
+{
+  "probes": {
+    "01-basic-json": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "02-basic-hcl": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "03-expect-failures-variable": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "04-expect-failures-output": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "05-expect-failures-check": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "06-mock-provider-apply": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "07-override-resource": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "08-mock-known-at-plan": {
+      "error": "Unknown condition value: Condition expression could not be evaluated at this time. This means you have executed a `run` block with `command = plan` and one of the values your condition depended on is not known until after the plan has been applied. Either remove this value from your condition, or execute an `apply` command from this `run` block. Alternatively, if there is an override for this valu",
+      "exit": 1,
+      "json_events": [
+        "diagnostic",
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 1,
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0,
+        "status": "error"
+      },
+      "supported": false
+    },
+    "09-override-during-plan-mock": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "10-override-during-plan-override": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "11-state-key": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "12-parallel-runs": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "13-test-file-variable-block": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "14-file-variables-ref-run-output": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "15-run-variables-ref-run-output": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "16-mock-source-file": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "17-mock-functions": {
+      "error": "Test assertion failed: function in mock default",
+      "exit": 1,
+      "json_events": [
+        "diagnostic",
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 1,
+        "passed": 0,
+        "skipped": 0,
+        "status": "fail"
+      },
+      "supported": false
+    },
+    "18-skip-cleanup": {
+      "error": "Error: Terraform encountered problems during initialisation, including problems\nwith the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that\nTerraform can determine which modules and providers need to be installed.\n\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 5, in run.kept:\n   5:       \"skip_cleanup\": true,\n\nNo ar",
+      "exit": 1,
+      "phase": "init",
+      "supported": false
+    },
+    "19-junit-xml": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "20-tofutest-extension": {
+      "error": "{\"@level\":\"info\",\"@message\":\"Terraform 1.13.0\",\"@module\":\"terraform.ui\",\"@timestamp\":\"2026-09-21T14:02:02.955034+07:00\",\"terraform\":\"1.13.0\",\"type\":\"version\",\"ui\":\"1.2\"}\n{\"@level\":\"info\",\"@message\":\"Found 0 files and 0 run blocks\",\"@module\":\"terraform.ui\",\"@timestamp\":\"2026-09-21T14:02:02.961479+07:00\",\"test_abstract\":{},\"type\":\"test_abstract\"}\n{\"@level\":\"info\",\"@message\":\"Executed 0 tests.\",\"@mod",
+      "exit": 1,
+      "json_events": [
+        "test_abstract",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0,
+        "status": "pending"
+      },
+      "supported": false
+    },
+    "21-helper-module": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "22-override-remote-state": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "23-assert-ref-run-output": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "24-run-variables-ref-file-variables": {
+      "exit": 0,
+      "json_events": [
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 0,
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0,
+        "status": "pass"
+      },
+      "supported": true
+    },
+    "25-tofutest-shadowing": {
+      "error": "Error: Terraform encountered problems during initialisation, including problems\nwith the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that\nTerraform can determine which modules and providers need to be installed.\n\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 14, in run.plan_known:\n  14:       \"not_a_real_argument\"",
+      "exit": 1,
+      "phase": "init",
+      "supported": false
+    },
+    "26-failing-check-fails-run": {
+      "exit": 1,
+      "json_events": [
+        "diagnostic",
+        "test_abstract",
+        "test_file",
+        "test_run",
+        "test_summary",
+        "version"
+      ],
+      "phase": "test",
+      "summary": {
+        "errored": 1,
+        "failed": 0,
+        "passed": 0,
+        "skipped": 0,
+        "status": "error"
+      },
+      "supported": true
+    }
+  },
+  "product": "terraform",
+  "version": "1.13.0"
+}

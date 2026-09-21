@@ -1,0 +1,22 @@
+{
+  "run": {
+    "first": {
+      "command": "apply",
+      "variables": {
+        "len": 3
+      }
+    },
+    "second": {
+      "command": "apply",
+      "variables": {
+        "len": 3
+      },
+      "assert": [
+        {
+          "condition": "${run.first.len == output.len}",
+          "error_message": "assert should be able to read run.first"
+        }
+      ]
+    }
+  }
+}

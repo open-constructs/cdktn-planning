@@ -1,0 +1,29 @@
+{
+  "test": {
+    "parallel": true
+  },
+  "run": {
+    "a": {
+      "command": "apply",
+      "state_key": "a",
+      "parallel": true,
+      "assert": [
+        {
+          "condition": "${output.len == 8}",
+          "error_message": "len should keep its default"
+        }
+      ]
+    },
+    "b": {
+      "command": "apply",
+      "state_key": "b",
+      "parallel": true,
+      "assert": [
+        {
+          "condition": "${output.len == 8}",
+          "error_message": "len should keep its default"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "run": {
+    "setup": {
+      "command": "apply",
+      "module": {
+        "source": "./setup"
+      }
+    },
+    "main": {
+      "command": "apply",
+      "variables": {
+        "len": "${run.setup.len}"
+      },
+      "assert": [
+        {
+          "condition": "${output.len == 6}",
+          "error_message": "len should come from the setup module"
+        }
+      ]
+    }
+  }
+}

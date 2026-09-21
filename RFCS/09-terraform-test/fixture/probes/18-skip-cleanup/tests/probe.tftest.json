@@ -1,0 +1,14 @@
+{
+  "run": {
+    "kept": {
+      "command": "apply",
+      "skip_cleanup": true,
+      "assert": [
+        {
+          "condition": "${output.len == 8}",
+          "error_message": "len should keep its default"
+        }
+      ]
+    }
+  }
+}

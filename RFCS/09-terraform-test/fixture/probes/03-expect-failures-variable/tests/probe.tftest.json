@@ -1,0 +1,13 @@
+{
+  "run": {
+    "bad_len": {
+      "command": "plan",
+      "variables": {
+        "len": 0
+      },
+      "expect_failures": [
+        "var.len"
+      ]
+    }
+  }
+}

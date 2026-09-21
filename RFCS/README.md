@@ -32,3 +32,12 @@ Adoption audit for the `constructs` 10.6 Mixins primitive (`IMixin` +
 mixin-vs-aspect model. Code/architecture audit (no binary sweep).
 
 - [ ] Proposal ([`05-mixins/PROPOSAL.md`](05-mixins/PROPOSAL.md)) — proposed; ship `PreventDestroy` core mixin + Mixins concept doc pending
+
+## Terraform Test ("synth and test")
+
+TypeScript-authored `terraform test` / `tofu test` suites next to the Jest/Vitest
+matchers, a `cdktn test` command, and the custom-condition fixes they depend on.
+The test-framework feature matrix was built from probe sweeps on all binary
+releases of both products.
+
+- [ ] Proposal ([`09-terraform-test/PROPOSAL.md`](09-terraform-test/PROPOSAL.md)) — proposed; matrix in [`09-terraform-test/MATRIX.md`](09-terraform-test/MATRIX.md)

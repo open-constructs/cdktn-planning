@@ -1,0 +1,13 @@
+{
+  "run": {
+    "too_long": {
+      "command": "plan",
+      "variables": {
+        "len": 500
+      },
+      "expect_failures": [
+        "check.len_small"
+      ]
+    }
+  }
+}

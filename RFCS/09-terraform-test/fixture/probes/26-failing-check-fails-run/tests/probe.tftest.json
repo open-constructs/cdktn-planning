@@ -1,0 +1,10 @@
+{
+  "run": {
+    "too_long": {
+      "command": "plan",
+      "variables": {
+        "len": 500
+      }
+    }
+  }
+}

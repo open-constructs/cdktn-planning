@@ -1,0 +1,24 @@
+{
+  "mock_provider": {
+    "random": {
+      "mock_resource": {
+        "random_string": {
+          "defaults": {
+            "result": "${upper(\"abc\")}"
+          }
+        }
+      }
+    }
+  },
+  "run": {
+    "mocked": {
+      "command": "apply",
+      "assert": [
+        {
+          "condition": "${output.val == \"ABC\"}",
+          "error_message": "function in mock default"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,850 @@
+{
+  "products": {
+    "terraform": [
+      "1.6.6",
+      "1.7.0",
+      "1.8.0",
+      "1.9.0",
+      "1.10.0",
+      "1.11.0",
+      "1.12.0",
+      "1.13.0",
+      "1.14.0",
+      "1.15.0",
+      "1.16.0",
+      "1.16.3"
+    ],
+    "opentofu": [
+      "1.6.0",
+      "1.7.0",
+      "1.8.0",
+      "1.9.0",
+      "1.10.0",
+      "1.11.0",
+      "1.12.0",
+      "1.12.6"
+    ]
+  },
+  "features": {
+    "01-basic-json": {
+      "label": "`.tftest.json` test file",
+      "note": "JSON syntax, plan run, assert on a known value",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "02-basic-hcl": {
+      "label": "`.tftest.hcl` test file",
+      "note": "control",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "03-expect-failures-variable": {
+      "label": "`expect_failures` \u2192 variable `validation`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "04-expect-failures-output": {
+      "label": "`expect_failures` \u2192 output `precondition`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "05-expect-failures-check": {
+      "label": "`expect_failures` \u2192 `check` block",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "06-mock-provider-apply": {
+      "label": "`mock_provider` + `mock_resource.defaults` (apply)",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "07-override-resource": {
+      "label": "`override_resource` (JSON syntax)",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "08-mock-known-at-plan": {
+      "label": "mock values known at plan *without* `override_during`",
+      "note": "informational: pass = mocks materialise during plan by default",
+      "products": {
+        "terraform": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Unknown condition value: Condition expression could not be evaluated at this time. This means you have executed a `run` block with `command = plan` and one of the values your condition depended on is not known until after the plan has been applied. Either remove this value from your condition, or execute an `apply` command from this `run` block. Alternatively, if there is an override for this valu"
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "09-override-during-plan-mock": {
+      "label": "`override_during = plan` on `mock_provider`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.11.0",
+          "supported": [
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 4, in mock_provider.random:\n   4:       \"override_during\": \"plan\",\n"
+        }
+      }
+    },
+    "10-override-during-plan-override": {
+      "label": "`override_during = plan` on `override_resource`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.11.0",
+          "supported": [
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 5, in override_resource[0]:\n   5:       \"override_during\": \"plan\",\n"
+        }
+      }
+    },
+    "11-state-key": {
+      "label": "`run.state_key`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.11.0",
+          "supported": [
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 5, in run.a:\n   5:       \"state_key\": \"a\",\n\nNo argument or block ty"
+        }
+      }
+    },
+    "12-parallel-runs": {
+      "label": "`test { parallel }` + `run.parallel`",
+      "note": "also needs `state_key`",
+      "products": {
+        "terraform": {
+          "since": "1.12.0",
+          "supported": [
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 2:\n   2:   \"test\": {\n\nNo argument or block type is named \"test\".\n\n\n"
+        }
+      }
+    },
+    "13-test-file-variable-block": {
+      "label": "`variable` block inside test file",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.13.0",
+          "supported": [
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 2:\n   2:   \"variable\": {\n\nNo argument or block type is named \"varia"
+        }
+      }
+    },
+    "14-file-variables-ref-run-output": {
+      "label": "file-level `variables` referencing `run.<name>`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.13.0",
+          "supported": [
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "15-run-variables-ref-run-output": {
+      "label": "run-level `variables` referencing `run.<name>`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "16-mock-source-file": {
+      "label": "`mock_provider.source` + `.tfmock.json`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 4, in mock_provider.random:\n   4:       \"source\": \"./mocks\"\n\nNo arg"
+        }
+      }
+    },
+    "17-mock-functions": {
+      "label": "functions inside mock `defaults`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.15.0",
+          "supported": [
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Test assertion failed: function in mock default"
+        }
+      }
+    },
+    "18-skip-cleanup": {
+      "label": "`run.skip_cleanup`",
+      "note": "experimental builds only on Terraform",
+      "products": {
+        "terraform": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Error: Terraform encountered problems during initialisation, including problems\nwith the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that\nTerraform can determine which modules and providers need to be installed.\n\n\nError: Invalid attribute\n\n  on tests/probe.tftest.json line 5, in run.kept:\n   5:       \"skip_cleanup\": true,\n\nThe skip_cleanup at"
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "OpenTofu encountered problems during initialization, including problems\nwith the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that\nOpenTofu can determine which modules and providers need to be installed.\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 5, in run.kept:\n   5:       \"skip_cleanup\": true,\n\nNo argument or b"
+        }
+      }
+    },
+    "19-junit-xml": {
+      "label": "`-junit-xml` flag",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.11.0",
+          "supported": [
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "\u001b[31m\u2577\u001b[0m\u001b[0m\n\u001b[31m\u2502\u001b[0m \u001b[0m\u001b[1m\u001b[31mError: \u001b[0m\u001b[0m\u001b[1mFailed to parse command-line flags\u001b[0m\n\u001b[31m\u2502\u001b[0m \u001b[0m\n\u001b[31m\u2502\u001b[0m \u001b[0m\u001b[0mflag provided but not defined: -junit-xml\n\u001b[31m\u2575\u001b[0m\u001b[0m\n\nFor more help on using this command, run:\n  tofu test -help"
+        }
+      }
+    },
+    "20-tofutest-extension": {
+      "label": "`.tofutest.json` extension",
+      "note": "OpenTofu-only by design",
+      "products": {
+        "terraform": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "{\"@level\":\"info\",\"@message\":\"Terraform 1.16.3\",\"@module\":\"terraform.ui\",\"@timestamp\":\"2026-09-21T14:02:26.796003+07:00\",\"terraform\":\"1.16.3\",\"type\":\"version\",\"ui\":\"1.3\"}\n{\"@level\":\"info\",\"@message\":\"Found 0 files and 0 run blocks\",\"@module\":\"terraform.ui\",\"@timestamp\":\"2026-09-21T14:02:26.802828+07:00\",\"test_abstract\":{},\"type\":\"test_abstract\"}\n{\"@level\":\"info\",\"@message\":\"Success! 0 passed, 0 fai"
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "21-helper-module": {
+      "label": "`run.module { source }` helper module + `run.<name>` output",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "22-override-remote-state": {
+      "label": "`override_data` on `terraform_remote_state` (CDKTN cross-stack shape, with backend block)",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.7.0",
+          "supported": [
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "23-assert-ref-run-output": {
+      "label": "`assert.condition` referencing `run.<name>.<output>`",
+      "note": "",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Reference to undeclared resource: There is no managed resource \"run\" \"first\" definition in the root module."
+        }
+      }
+    },
+    "24-run-variables-ref-file-variables": {
+      "label": "run `variables` referencing a file-level `variables` entry",
+      "note": "opentofu/opentofu#4567",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Unsupported attribute: This object does not have an attribute named \"helper\"."
+        }
+      }
+    },
+    "25-tofutest-shadowing": {
+      "label": "`.tofutest.json` shadows same-basename `.tftest.json` unparsed",
+      "note": "the dual-engine escape hatch; OpenTofu-only by design",
+      "products": {
+        "terraform": {
+          "since": null,
+          "supported": [],
+          "gaps": [],
+          "latest_error": "Error: Terraform encountered problems during initialisation, including problems\nwith the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that\nTerraform can determine which modules and providers need to be installed.\n\n\nError: Extraneous JSON object property\n\n  on tests/probe.tftest.json line 14, in run.plan_known:\n  14:       \"not_a_real_argument\""
+        },
+        "opentofu": {
+          "since": "1.8.0",
+          "supported": [
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    },
+    "26-failing-check-fails-run": {
+      "label": "failing `check` block (a plan/apply *warning*) fails the test run",
+      "note": "behavioural: pass = run status is `fail` or `error`",
+      "products": {
+        "terraform": {
+          "since": "1.6.6",
+          "supported": [
+            "1.6.6",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.13.0",
+            "1.14.0",
+            "1.15.0",
+            "1.16.0",
+            "1.16.3"
+          ],
+          "gaps": [],
+          "latest_error": null
+        },
+        "opentofu": {
+          "since": "1.6.0",
+          "supported": [
+            "1.6.0",
+            "1.7.0",
+            "1.8.0",
+            "1.9.0",
+            "1.10.0",
+            "1.11.0",
+            "1.12.0",
+            "1.12.6"
+          ],
+          "gaps": [],
+          "latest_error": null
+        }
+      }
+    }
+  }
+}

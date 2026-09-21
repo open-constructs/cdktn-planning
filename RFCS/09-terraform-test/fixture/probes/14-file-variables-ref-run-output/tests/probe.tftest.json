@@ -1,0 +1,22 @@
+{
+  "variables": {
+    "len": "${run.first.len + 1}"
+  },
+  "run": {
+    "first": {
+      "command": "apply",
+      "variables": {
+        "len": 3
+      }
+    },
+    "second": {
+      "command": "apply",
+      "assert": [
+        {
+          "condition": "${output.len == 4}",
+          "error_message": "file-level variable should derive from run.first"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "override_resource": [
+    {
+      "target": "random_string.s",
+      "override_during": "plan",
+      "values": {
+        "result": "OVERRIDDEN"
+      }
+    }
+  ],
+  "run": {
+    "overridden_plan": {
+      "command": "plan",
+      "assert": [
+        {
+          "condition": "${output.val == \"OVERRIDDEN\"}",
+          "error_message": "override should be known at plan"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mock_resource": {
+    "random_string": {
+      "defaults": {
+        "result": "FROMFILE"
+      }
+    }
+  }
+}

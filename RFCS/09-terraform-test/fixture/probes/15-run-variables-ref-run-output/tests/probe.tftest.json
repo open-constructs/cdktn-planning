@@ -1,0 +1,22 @@
+{
+  "run": {
+    "first": {
+      "command": "apply",
+      "variables": {
+        "len": 3
+      }
+    },
+    "second": {
+      "command": "apply",
+      "variables": {
+        "len": "${run.first.len + 1}"
+      },
+      "assert": [
+        {
+          "condition": "${output.len == 4}",
+          "error_message": "run variable should derive from run.first"
+        }
+      ]
+    }
+  }
+}
