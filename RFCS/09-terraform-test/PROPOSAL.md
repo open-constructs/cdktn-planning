@@ -318,7 +318,9 @@ const app = Testing.app({ context: { targetVersions: { terraform: ">=1.7.0", ope
 const stack = new BucketStack(app, "bucket");
 
 const suite = new TerraformTest(stack, "defaults", {
-  mockProviders: [new MockProvider(stack.aws, {   // provider instance, AwsProvider, or "aws" — see below
+  // import { AwsProvider } from "@cdktn/provider-aws/lib/provider";
+  // import { S3Bucket } from "@cdktn/provider-aws/lib/s3-bucket";
+  mockProviders: [new MockProvider(AwsProvider, {   // the class, like `type: S3Bucket` below
     resources: [{ type: S3Bucket, defaults: { arn: "arn:aws:s3:::mocked", id: "mocked" } }],
   })],
   // alternative: well-known presets from a separate package, e.g. @cdktn/mock-provider-aws
@@ -392,11 +394,13 @@ expect(Testing.fullSynth(stack)).toPassTerraformTests();   // Phase 2
       element *instances* (`ITerraformAddressable`), not types.
     - the provider argument is `string | TerraformProvider |
       TerraformConstructor`, in the union style core already uses
-      (`TerraformModule.providers`). A provider **instance** is preferred: the
-      constructor reads `terraformResourceType` **and `alias`** from it, so
-      the mock always matches how the stack under test named and aliased its
-      provider. `AwsProvider` (the class, via `tfResourceType`) and `"aws"`
-      name the default, un-aliased provider.
+      (`TerraformModule.providers`). The **class** (`AwsProvider`, read
+      through its static `tfResourceType`) is the everyday form and mirrors
+      `type: S3Bucket`; `"aws"` is its string equivalent. Both name the
+      default, un-aliased provider. Pass the provider **instance**
+      (`stack.awsWest`) when the stack aliases its provider: the constructor
+      then reads `terraformResourceType` **and `alias`** from it, so the mock
+      cannot drift from how the stack under test named its provider.
     - the string forms are what keep a preset package free of **any
       dependency on the provider bindings** — it mocks `aws_iam_role` by name
       and works with prebuilt, locally generated and `cdktn-aws`-style
