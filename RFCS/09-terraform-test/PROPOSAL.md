@@ -318,7 +318,7 @@ const app = Testing.app({ context: { targetVersions: { terraform: ">=1.7.0", ope
 const stack = new BucketStack(app, "bucket");
 
 const suite = new TerraformTest(stack, "defaults", {
-  mockProviders: [new MockProvider(AwsProvider.tfResourceType, {   // "aws" — a string, see below
+  mockProviders: [new MockProvider(stack.aws, {   // string | TerraformProvider, see below
     resources: { [S3Bucket.tfResourceType]: { arn: "arn:aws:s3:::mocked", id: "mocked" } },
   })],
   // alternative: well-known presets from a separate package, e.g. @cdktn/mock-provider-aws
@@ -378,14 +378,19 @@ expect(Testing.fullSynth(stack)).toPassTerraformTests();   // Phase 2
   pinned (well-formed ARNs, `account_id`, region, partition, AZ names,
   `sg-…`-shaped ids). There is no separate `IMockPreset` interface to learn
   or implement. What this shape implies for the core class:
-  - *Identified by strings.* `MockProvider` takes the provider's local name
-    (`"aws"`, i.e. `AwsProvider.tfResourceType`) and resource-type strings,
-    never a class — jsii cannot pass classes as values (the jsii-facing
-    `Testing.toHaveResource` statics take strings for the same reason). The
-    upside: a preset package needs **no dependency on the provider bindings**
-    — it mocks `aws_iam_role` by name and works with prebuilt, locally
-    generated and `cdktn-aws`-style bindings alike, versioned against
-    provider majors.
+  - *`string | TerraformProvider`.* The first argument follows the existing
+    union style of the core API (`TerraformModule.providers` takes
+    `TerraformProvider | TerraformModuleProvider`): given a provider
+    **instance**, the constructor reads `terraformResourceType` and `alias`
+    from it, so the mock always matches how the stack under test named and
+    aliased its provider; given a string it is the provider's local name
+    (`"aws"`). It is never the provider *class* — jsii cannot pass classes as
+    values (the jsii-facing `Testing.toHaveResource` statics take type strings
+    for the same reason). Resource and data types are keyed by their type
+    string (`S3Bucket.tfResourceType`). The upside of the string form: a
+    preset package needs **no dependency on the provider bindings** — it
+    mocks `aws_iam_role` by name and works with prebuilt, locally generated
+    and `cdktn-aws`-style bindings alike, versioned against provider majors.
   - *Layering replaces composition.* Terraform allows one `mock_provider`
     block per provider + alias, so two presets for one provider cannot be
     listed side by side. Instead presets accept the same props as the base
@@ -400,8 +405,9 @@ expect(Testing.fullSynth(stack)).toPassTerraformTests();   // Phase 2
     `aws_iam_policy_document` it can render the document in the host language
     and emit an `override_data` (falling back to `"{}"` when it holds
     unresolved tokens) — something a static HCL mock file cannot do.
-  - *Aliased / renamed providers* are a constructor option (`alias`,
-    `localName`), since a preset cannot know how the stack named its provider.
+  - *Aliased / renamed providers*: presets take the same optional
+    `string | TerraformProvider` argument (`new AwsMockPresets(stack.awsWest)`)
+    and default to the provider's well-known local name.
 
   **Core ships only `MockProvider`** — cdk-terrain has never shipped
   provider-specific code. Well-known presets are published separately (the
