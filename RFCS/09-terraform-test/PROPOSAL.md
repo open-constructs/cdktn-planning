@@ -318,8 +318,8 @@ const app = Testing.app({ context: { targetVersions: { terraform: ">=1.7.0", ope
 const stack = new BucketStack(app, "bucket");
 
 const suite = new TerraformTest(stack, "defaults", {
-  mockProviders: [new MockProvider(stack.aws, {   // string | TerraformProvider, see below
-    resources: { [S3Bucket.tfResourceType]: { arn: "arn:aws:s3:::mocked", id: "mocked" } },
+  mockProviders: [new MockProvider(stack.aws, {   // provider instance, AwsProvider, or "aws" — see below
+    resources: [{ type: S3Bucket, defaults: { arn: "arn:aws:s3:::mocked", id: "mocked" } }],
   })],
   // alternative: well-known presets from a separate package, e.g. @cdktn/mock-provider-aws
   // mockProviders: [new AwsMockPresets()],
@@ -378,25 +378,36 @@ expect(Testing.fullSynth(stack)).toPassTerraformTests();   // Phase 2
   pinned (well-formed ARNs, `account_id`, region, partition, AZ names,
   `sg-…`-shaped ids). There is no separate `IMockPreset` interface to learn
   or implement. What this shape implies for the core class:
-  - *`string | TerraformProvider`.* The first argument follows the existing
-    union style of the core API (`TerraformModule.providers` takes
-    `TerraformProvider | TerraformModuleProvider`): given a provider
-    **instance**, the constructor reads `terraformResourceType` and `alias`
-    from it, so the mock always matches how the stack under test named and
-    aliased its provider; given a string it is the provider's local name
-    (`"aws"`). It is never the provider *class* — jsii cannot pass classes as
-    values (the jsii-facing `Testing.toHaveResource` statics take type strings
-    for the same reason). Resource and data types are keyed by their type
-    string (`S3Bucket.tfResourceType`). The upside of the string form: a
-    preset package needs **no dependency on the provider bindings** — it
-    mocks `aws_iam_role` by name and works with prebuilt, locally generated
-    and `cdktn-aws`-style bindings alike, versioned against provider majors.
+  - *Providers and resource types are named the way the matchers already
+    name them.* The Jest/Vitest matchers take a `TerraformConstructor` —
+    `{ readonly tfResourceType: string }` (`testing/matchers.ts:13-16`) — which
+    a generated class satisfies structurally through its static
+    `tfResourceType`, so `toHaveResource(S3Bucket)` reads the property and
+    never instantiates anything; jsii languages pass the type string (as the
+    `Testing.toHaveResource` statics do). Mocks follow suit:
+    - `resources` / `dataSources` are **lists** of
+      `{ type: string | TerraformConstructor, defaults }` — a list, because a
+      jsii map can only be keyed by string, and `[S3Bucket.tfResourceType]:`
+      is exactly the boilerplate the matchers avoid. Override targets are
+      element *instances* (`ITerraformAddressable`), not types.
+    - the provider argument is `string | TerraformProvider |
+      TerraformConstructor`, in the union style core already uses
+      (`TerraformModule.providers`). A provider **instance** is preferred: the
+      constructor reads `terraformResourceType` **and `alias`** from it, so
+      the mock always matches how the stack under test named and aliased its
+      provider. `AwsProvider` (the class, via `tfResourceType`) and `"aws"`
+      name the default, un-aliased provider.
+    - the string forms are what keep a preset package free of **any
+      dependency on the provider bindings** — it mocks `aws_iam_role` by name
+      and works with prebuilt, locally generated and `cdktn-aws`-style
+      bindings alike, versioned against provider majors.
   - *Layering replaces composition.* Terraform allows one `mock_provider`
     block per provider + alias, so two presets for one provider cannot be
     listed side by side. Instead presets accept the same props as the base
     class and expose mutators —
     `new AwsMockPresets({ alias, resources: { … } })`,
-    `.addResourceDefaults(type, values)`, `.addDataDefaults(type, values)` —
+    `.addResourceDefaults(type, values)`, `.addDataDefaults(type, values)`
+    (same `string | TerraformConstructor` type argument) —
     with the precedence *user values > preset values > engine-generated*.
     Duplicate provider + alias in `mockProviders` is a synth error.
   - *A synth-time hook for computed presets.* A protected
