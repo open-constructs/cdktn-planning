@@ -1,0 +1,24 @@
+{
+  "mock_provider": {
+    "random": {
+      "mock_resource": {
+        "random_string": {
+          "defaults": {
+            "result": "MOCKED"
+          }
+        }
+      }
+    }
+  },
+  "run": {
+    "mocked": {
+      "command": "apply",
+      "assert": [
+        {
+          "condition": "${output.val == \"MOCKED\"}",
+          "error_message": "mock default should be used"
+        }
+      ]
+    }
+  }
+}

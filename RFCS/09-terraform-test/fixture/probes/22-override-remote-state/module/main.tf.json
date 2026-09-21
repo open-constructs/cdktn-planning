@@ -1,0 +1,24 @@
+{
+  "terraform": {
+    "backend": {
+      "local": {
+        "path": "terraform.consumer.tfstate"
+      }
+    }
+  },
+  "data": {
+    "terraform_remote_state": {
+      "upstream": {
+        "backend": "local",
+        "config": {
+          "path": "../does-not-exist/terraform.upstream.tfstate"
+        }
+      }
+    }
+  },
+  "output": {
+    "upstream_name": {
+      "value": "${data.terraform_remote_state.upstream.outputs.name}"
+    }
+  }
+}

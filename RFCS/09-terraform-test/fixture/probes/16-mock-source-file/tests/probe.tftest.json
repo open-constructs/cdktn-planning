@@ -1,0 +1,18 @@
+{
+  "mock_provider": {
+    "random": {
+      "source": "./mocks"
+    }
+  },
+  "run": {
+    "mocked": {
+      "command": "apply",
+      "assert": [
+        {
+          "condition": "${output.val == \"FROMFILE\"}",
+          "error_message": "mock file default should be used"
+        }
+      ]
+    }
+  }
+}

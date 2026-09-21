@@ -1,0 +1,13 @@
+{
+  "run": {
+    "unlucky": {
+      "command": "plan",
+      "variables": {
+        "len": 13
+      },
+      "expect_failures": [
+        "output.val"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+run "plan_known" {
+  command = plan
+  variables {
+    len = 5
+  }
+  assert {
+    condition     = random_string.s.length == 5
+    error_message = "length should follow var.len"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variables": {
+    "helper": 5
+  },
+  "run": {
+    "uses_file_variable": {
+      "command": "plan",
+      "variables": {
+        "len": "${var.helper}"
+      },
+      "assert": [
+        {
+          "condition": "${random_string.s.length == 5}",
+          "error_message": "len should come from the file-level variable"
+        }
+      ]
+    }
+  }
+}

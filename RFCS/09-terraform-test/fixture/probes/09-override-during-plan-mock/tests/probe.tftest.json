@@ -1,0 +1,25 @@
+{
+  "mock_provider": {
+    "random": {
+      "override_during": "plan",
+      "mock_resource": {
+        "random_string": {
+          "defaults": {
+            "result": "MOCKED"
+          }
+        }
+      }
+    }
+  },
+  "run": {
+    "mocked_plan": {
+      "command": "plan",
+      "assert": [
+        {
+          "condition": "${output.val == \"MOCKED\"}",
+          "error_message": "mock default should be known at plan"
+        }
+      ]
+    }
+  }
+}
