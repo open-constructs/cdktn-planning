@@ -1,0 +1,3118 @@
+{
+ "product": "opentofu",
+ "version": "1.10.10",
+ "parser_version": 2,
+ "global_options": [
+  {
+   "name": "-chdir",
+   "aliases": [],
+   "kind": "value",
+   "takes_value": true,
+   "placeholder": "DIR",
+   "section": "Global options (use these before the subcommand, if any)",
+   "deprecation_markers": [],
+   "desc": "Switch to a different working directory before executing the given subcommand."
+  },
+  {
+   "name": "-help",
+   "aliases": [],
+   "kind": "switch",
+   "takes_value": false,
+   "placeholder": null,
+   "section": "Global options (use these before the subcommand, if any)",
+   "deprecation_markers": [],
+   "desc": "Show this help output, or the help for a specified subcommand."
+  },
+  {
+   "name": "-version",
+   "aliases": [],
+   "kind": "switch",
+   "takes_value": false,
+   "placeholder": null,
+   "section": "Global options (use these before the subcommand, if any)",
+   "deprecation_markers": [],
+   "desc": "An alias for the \"version\" subcommand."
+  }
+ ],
+ "top_level": [
+  {
+   "name": "init",
+   "section": "main",
+   "desc": "Prepare your working directory for other commands"
+  },
+  {
+   "name": "validate",
+   "section": "main",
+   "desc": "Check whether the configuration is valid"
+  },
+  {
+   "name": "plan",
+   "section": "main",
+   "desc": "Show changes required by the current configuration"
+  },
+  {
+   "name": "apply",
+   "section": "main",
+   "desc": "Create or update infrastructure"
+  },
+  {
+   "name": "destroy",
+   "section": "main",
+   "desc": "Destroy previously-created infrastructure"
+  },
+  {
+   "name": "console",
+   "section": "other",
+   "desc": "Try OpenTofu expressions at an interactive command prompt"
+  },
+  {
+   "name": "fmt",
+   "section": "other",
+   "desc": "Reformat your configuration in the standard style"
+  },
+  {
+   "name": "force-unlock",
+   "section": "other",
+   "desc": "Release a stuck lock on the current workspace"
+  },
+  {
+   "name": "get",
+   "section": "other",
+   "desc": "Install or upgrade remote OpenTofu modules"
+  },
+  {
+   "name": "graph",
+   "section": "other",
+   "desc": "Generate a Graphviz graph of the steps in an operation"
+  },
+  {
+   "name": "import",
+   "section": "other",
+   "desc": "Associate existing infrastructure with a OpenTofu resource"
+  },
+  {
+   "name": "login",
+   "section": "other",
+   "desc": "Obtain and save credentials for a remote host"
+  },
+  {
+   "name": "logout",
+   "section": "other",
+   "desc": "Remove locally-stored credentials for a remote host"
+  },
+  {
+   "name": "metadata",
+   "section": "other",
+   "desc": "Metadata related commands"
+  },
+  {
+   "name": "output",
+   "section": "other",
+   "desc": "Show output values from your root module"
+  },
+  {
+   "name": "providers",
+   "section": "other",
+   "desc": "Show the providers required for this configuration"
+  },
+  {
+   "name": "refresh",
+   "section": "other",
+   "desc": "Update the state to match remote systems"
+  },
+  {
+   "name": "show",
+   "section": "other",
+   "desc": "Show the current state or a saved plan"
+  },
+  {
+   "name": "state",
+   "section": "other",
+   "desc": "Advanced state management"
+  },
+  {
+   "name": "taint",
+   "section": "other",
+   "desc": "Mark a resource instance as not fully functional"
+  },
+  {
+   "name": "test",
+   "section": "other",
+   "desc": "Execute integration tests for OpenTofu modules"
+  },
+  {
+   "name": "untaint",
+   "section": "other",
+   "desc": "Remove the 'tainted' state from a resource instance"
+  },
+  {
+   "name": "version",
+   "section": "other",
+   "desc": "Show the current OpenTofu version"
+  },
+  {
+   "name": "workspace",
+   "section": "other",
+   "desc": "Workspace management"
+  }
+ ],
+ "commands": {
+  "init": {
+   "listed_in": "main",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] init [options]",
+   "description": "Initialize a new or existing OpenTofu working directory by creating initial files, loading any remote state, downloading modules, etc. This is the first command that should be run for any new or existing OpenTofu configuration per machine. ",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-backend",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disable backend or cloud backend initialization for this configuration and use what was previously initialized instead. aliases: -cloud=false"
+    },
+    {
+     "name": "-backend-config",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Configuration to be merged with what is in the configuration file's 'backend' block. This can be either a path to an HCL file with key/value assignments (same format as terraform.tfvars) or a 'key=value' format, and can be specified multip\u2026"
+    },
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-force-copy",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Suppress prompts about copying state data when initializing a new state backend. This is equivalent to providing a \"yes\" to all confirmation prompts."
+    },
+    {
+     "name": "-from-module",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "SOURCE",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Copy the contents of the given module into the target directory before initialization."
+    },
+    {
+     "name": "-get",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disable downloading modules for this configuration."
+    },
+    {
+     "name": "-input",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disable interactive prompts. Note that some actions may require interactive prompts and will error if input is disabled."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during backend migration. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-plugin-dir",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Directory containing plugin binaries. This overrides all default search paths for plugins, and prevents the automatic installation of plugins. This flag can be used multiple times."
+    },
+    {
+     "name": "-reconfigure",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Reconfigure a backend, ignoring any saved configuration."
+    },
+    {
+     "name": "-migrate-state",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Reconfigure a backend, and attempt to migrate any existing state."
+    },
+    {
+     "name": "-upgrade",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Install the latest module and provider versions allowed within configured constraints, overriding the default behavior of selecting exactly the version recorded in the dependency lockfile."
+    },
+    {
+     "name": "-lockfile",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "MODE",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a dependency lockfile mode. Currently only \"readonly\" is valid."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for cloud backend and the remote backend only. Set this to ignore checking that the local and remote OpenTofu versions use compatible state representations, making an operation proceed even when there is a potential mism\u2026"
+    },
+    {
+     "name": "-test-directory",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set the OpenTofu test directory, defaults to \"tests\". When set, the test command will search for test files in the current directory and in the one specified by the flag."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "validate": {
+   "listed_in": "main",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] validate [options]",
+   "description": "Validate the configuration files in a directory, referring only to the configuration and not accessing any remote services such as remote state, provider APIs, etc. Validate runs checks that verify whether a configuration is syntactically v",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default.",
+     "loose": true
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-no-tests",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, OpenTofu will not validate test files."
+    },
+    {
+     "name": "-test-directory",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set the OpenTofu test directory, defaults to \"tests\". When set, the test command will search for test files in the current directory and in the one specified by the flag."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "plan": {
+   "listed_in": "main",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] plan [options]",
+   "description": "Generates a speculative execution plan, showing what actions OpenTofu would take to apply the current configuration. This command will not actually perform the planned actions. You can optionally save the plan to a file, which you can then ",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-destroy",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Select the \"destroy\" planning mode, which creates a plan to destroy all objects currently managed by this OpenTofu configuration instead of the usual behavior."
+    },
+    {
+     "name": "-refresh-only",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Select the \"refresh only\" planning mode, which checks whether remote objects still match the outcome of the most recent OpenTofu apply but does not propose any actions to undo any changes made outside of OpenTofu."
+    },
+    {
+     "name": "-refresh",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Skip checking for external changes to remote objects while creating the plan. This can potentially make planning faster, but at the expense of possibly planning against a stale record of the remote system state."
+    },
+    {
+     "name": "-replace",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "resource",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Force replacement of a particular resource instance using its resource address. If the plan would've otherwise produced an update or no-op action for this instance, OpenTofu will plan to replace it instead. You can use this option multiple\u2026"
+    },
+    {
+     "name": "-target",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "resource",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Limit the planning operation to only the given module, resource, or resource instance and all of its dependencies. You can use this option multiple times to include more than one object. This is for exceptional use only. Cannot be used alo\u2026"
+    },
+    {
+     "name": "-target-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Similar to -target, but specifies zero or more resource addresses from a file."
+    },
+    {
+     "name": "-exclude",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "resource",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Limit the planning operation to not operate on the given module, resource, or resource instance and all of the resources and modules that depend on it. You can use this option multiple times to exclude more than one object. This is for exc\u2026"
+    },
+    {
+     "name": "-exclude-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Similar to -exclude, but specifies zero or more resource addresses from a file."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Plan Customization Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, shows them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, do not attempt to consolidate similar messages. All locations for all warnings will be listed."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, attempt to consolidate similar messages into a single item."
+    },
+    {
+     "name": "-detailed-exitcode",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Return detailed exit codes when the command exits. The detailed exit codes are: 0 - Succeeded but no changes proposed 1 - Planning failed with an error 2 - Succeeded and changes are proposed"
+    },
+    {
+     "name": "-generate-config-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "(Experimental) If import blocks are present in configuration, instructs OpenTofu to generate HCL for any imported resources not already present. The configuration is written to a new file at PATH, which must not already exist. OpenTofu may\u2026"
+    },
+    {
+     "name": "-input",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Disable prompting for required input variables that are not set some other way."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "duration",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock, such as \"5s\" to represent five seconds."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Disable virtual terminal escape sequences."
+    },
+    {
+     "name": "-concise",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Disable progress-related messages."
+    },
+    {
+     "name": "-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Write a plan file to the given path. This can be used as input to the \"apply\" command."
+    },
+    {
+     "name": "-parallelism",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "n",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Limit the number of concurrent operations. Defaults to 10."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "statefile",
+     "section": "Other Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "A legacy option used for the local backend only. Refer to the local backend's documentation for more information."
+    },
+    {
+     "name": "-show-sensitive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "If specified, sensitive values will not be redacted in te UI output."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems."
+    },
+    {
+     "name": "-deprecation",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "module:m",
+     "section": "Other Options",
+     "deprecation_markers": [],
+     "desc": "Specify what type of warnings are shown. Accepted values for \"m\": all, local, none. Default: all. When \"all\" is selected, OpenTofu will show the deprecation warnings for all modules. When \"local\" is selected, the warns will be shown only f\u2026"
+    }
+   ]
+  },
+  "apply": {
+   "listed_in": "main",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] apply [options] [PLAN]",
+   "description": "Creates or updates infrastructure according to OpenTofu configuration files in the current directory. By default, OpenTofu will generate a new plan and present it for your approval before taking any action. You can optionally provide a plan",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-auto-approve",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Skip interactive approval of plan before applying."
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to backup the existing state file before modifying. Defaults to the \"-state-out\" path with \".backup\" extension. Set to \"-\" to disable backup."
+    },
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-destroy",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Destroy OpenTofu-managed infrastructure. The command \"tofu destroy\" is a convenience alias for this option."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-input",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "true",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Ask for input for variables if not directly set."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-concise",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disables progress-related messages in the output."
+    },
+    {
+     "name": "-parallelism",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "n",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Limit the number of parallel resource operations. Defaults to 10."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to read and save state (unless state-out is specified). Defaults to \"terraform.tfstate\"."
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to write state to that is different than \"-state\". This can be used to preserve the old state."
+    },
+    {
+     "name": "-show-sensitive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, sensitive values will be displayed."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
+    },
+    {
+     "name": "-deprecation",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "module:m",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Specify what type of warnings are shown. Accepted values for \"m\": all, local, none. Default: all. When \"all\" is selected, OpenTofu will show the deprecation warnings for all modules. When \"local\" is selected, the warns will be shown only f\u2026"
+    }
+   ],
+   "help_refers_to": "plan",
+   "prose_flag_mentions": [
+    {
+     "line": "tofu plan -help",
+     "flags": [
+      "-help"
+     ],
+     "section": "Options"
+    }
+   ]
+  },
+  "destroy": {
+   "listed_in": "main",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] destroy [options]",
+   "description": "Destroy OpenTofu-managed infrastructure. This command is a convenience alias for: tofu apply -destroy This command also accepts many of the plan-customization options accepted by the tofu plan command. For more information on those options,",
+   "subcommands": [],
+   "flags": [],
+   "help_refers_to": "apply"
+  },
+  "console": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] console [options]",
+   "description": "Starts an interactive console for experimenting with OpenTofu interpolations. This will open an interactive console that you can use to type interpolations into and inspect their values. This command loads the current state. This lets you e",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "Legacy option for the local backend only. See the local backend's documentation for more information."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a variable in the OpenTofu configuration. This flag can be set multiple times."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set variables in the OpenTofu configuration from a file. If \"terraform.tfvars\" or any \".auto.tfvars\" files are present, they will be automatically loaded."
+    }
+   ]
+  },
+  "fmt": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] fmt [options] [target...]",
+   "description": "Rewrites all OpenTofu configuration files to a canonical format. All configuration files (.tf), variables files (.tfvars), and testing files (.tftest.hcl) are updated. JSON files (.tf.json, .tfvars.json, or .tftest.json) are not modified. B",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-list",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't list files whose formatting differs (always disabled if using STDIN)"
+    },
+    {
+     "name": "-write",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't write to source files (always disabled if using STDIN or -check)"
+    },
+    {
+     "name": "-diff",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Display diffs of formatting changes"
+    },
+    {
+     "name": "-check",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Check if the input is formatted. Exit status will be 0 if all input is properly formatted and non-zero otherwise."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-recursive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Also process files in subdirectories. By default, only the given directory (or current directory) is processed."
+    }
+   ]
+  },
+  "force-unlock": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] force-unlock [options] LOCK_ID",
+   "description": "Manually unlock the state for the defined configuration. This will not modify your infrastructure. This command removes the lock on the state for the current workspace. The behavior of this lock is dependent on the backend being used. Local",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-force",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't ask for input for unlock confirmation."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "get": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] get [options]",
+   "description": "Downloads and installs modules needed for the configuration in the current working directory. This recursively downloads all modules needed, such as modules imported by modules imported by the root and so on. If a module is already download",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-update",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Check already-downloaded modules for available updates and install the newest versions available."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disable text coloring in the output."
+    },
+    {
+     "name": "-test-directory",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set the OpenTofu test directory, defaults to \"tests\". When set, the test command will search for test files in the current directory and in the one specified by the flag."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "graph": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] graph [options]",
+   "description": "Produces a representation of the dependency graph between different objects in the current configuration and state. The graph is presented in the DOT language. The typical program that can read this format is GraphViz, but many web services",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-plan",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "tfplan",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Render graph using the specified plan file instead of the configuration in the current directory."
+    },
+    {
+     "name": "-draw-cycles",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Highlight any cycles in the graph with colored edges. This helps when diagnosing cycle errors."
+    },
+    {
+     "name": "-type",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "plan",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Type of graph to output. Can be: plan, plan-refresh-only, plan-destroy, or apply. By default OpenTofu chooses \"plan\", or \"apply\" if you also set the -plan=... option."
+    },
+    {
+     "name": "-module-depth",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "n",
+     "section": "Options",
+     "deprecation_markers": [
+      "deprecated"
+     ],
+     "desc": "(deprecated) In prior versions of OpenTofu, specified the depth of modules to show in the output."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "import": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] import [options] ADDR ID",
+   "description": "Import existing infrastructure into your OpenTofu state. This will find and import the specified resource into your OpenTofu state, allowing existing infrastructure to come under OpenTofu management without having to be initially created by",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-config",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to a directory of OpenTofu configuration files to use to configure the provider. Defaults to pwd. If no config files are present, they must be provided via the input prompts or env vars."
+    },
+    {
+     "name": "-input",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disable interactive input prompts."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a variable in the OpenTofu configuration. This flag can be set multiple times. This is only useful with the \"-config\" flag."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set variables in the OpenTofu configuration from a file. If \"terraform.tfvars\" or any \".auto.tfvars\" files are present, they will be automatically loaded."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "login": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] login [hostname]",
+   "description": "Retrieves an authentication token for the given hostname, if it supports automatic login, and saves it in a credentials file in your home directory. If not overridden by credentials helper settings in the CLI configuration, the credentials ",
+   "subcommands": [],
+   "flags": []
+  },
+  "logout": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] logout [hostname]",
+   "description": "Removes locally-stored credentials for specified hostname. Note: the API token is only removed from local storage, not destroyed on the remote server, so it will remain valid until manually revoked. ~/.terraform.d/credentials.tfrc.json",
+   "subcommands": [],
+   "flags": []
+  },
+  "metadata": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] metadata <subcommand> [options] [args]",
+   "description": "This command has subcommands for metadata related purposes.",
+   "subcommands": [
+    "functions"
+   ],
+   "flags": []
+  },
+  "output": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] output [options] [NAME]",
+   "description": "Reads an output variable from a OpenTofu state file and prints the value. With no additional arguments, output will display all the outputs for the root module.  If NAME is not specified, all outputs are printed.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to the state file to read. Defaults to \"terraform.tfstate\". Ignored when remote state is used."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, machine readable output will be printed in JSON format."
+    },
+    {
+     "name": "-raw",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "For value types that can be automatically converted to a string, will print the raw string directly, rather than a human-oriented representation of the value."
+    },
+    {
+     "name": "-show-sensitive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, sensitive values will be displayed."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "providers": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] providers [options] [DIR]",
+   "description": "Prints out a tree of modules in the referenced configuration annotated with their provider requirements. This provides an overview of all of the provider requirements across all referenced modules, as an aid to understanding why particular ",
+   "subcommands": [
+    "lock",
+    "mirror",
+    "schema"
+   ],
+   "flags": [
+    {
+     "name": "-test-directory",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set the OpenTofu test directory, defaults to \"tests\". When set, the test command will search for test files in the current directory and in the one specified by the flag."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "refresh": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] refresh [options]",
+   "description": "Update the state file of your infrastructure with metadata that matches the physical resources they are tracking. This will not modify your infrastructure, but it can modify your state file to update metadata. This metadata might cause new ",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default."
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-exclude",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "resource",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Resource to exclude. Operation will be limited to all resources that are not excluded or dependent on excluded resources. This flag can be used multiple times. Cannot be used alongside the -target flag."
+    },
+    {
+     "name": "-input",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "true",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Ask for input for variables if not directly set."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-concise",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Disables progress-related messages in the output."
+    },
+    {
+     "name": "-parallelism",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "n",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Limit the number of concurrent operations. Defaults to 10."
+    },
+    {
+     "name": "-target",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "resource",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Resource to target. Operation will be limited to this resource and its dependencies. This flag can be used multiple times.  Cannot be used alongside the -exclude flag."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a variable in the OpenTofu configuration. This flag can be set multiple times."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set variables in the OpenTofu configuration from a file. If \"terraform.tfvars\" or any \".auto.tfvars\" files are present, they will be automatically loaded."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "show": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] show [target-selection-option] [other-options]",
+   "description": "Reads and outputs a OpenTofu state or plan file in a human-readable form. If no path is specified, the current state will be shown. Use one of the following options to specify what to show.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Target selection options",
+     "deprecation_markers": [],
+     "desc": "The latest state snapshot, if any."
+    },
+    {
+     "name": "-plan",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "FILENAME",
+     "section": "Target selection options",
+     "deprecation_markers": [],
+     "desc": "The plan from a saved plan file."
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other options",
+     "deprecation_markers": [],
+     "desc": "Disable terminal escape sequences."
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other options",
+     "deprecation_markers": [],
+     "desc": "Show the information in a machine-readable form."
+    },
+    {
+     "name": "-show-sensitive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Other options",
+     "deprecation_markers": [],
+     "desc": "If specified, sensitive values will be displayed."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Other options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Other options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ],
+   "prose_flag_mentions": [
+    {
+     "line": "If no target selection options are provided, -state is the default.",
+     "flags": [
+      "-state"
+     ],
+     "section": "Target selection options"
+    }
+   ]
+  },
+  "state": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state <subcommand> [options] [args]",
+   "description": "This command has subcommands for advanced state management. These subcommands can be used to slice and dice the OpenTofu state. This is sometimes necessary in advanced cases. For your safety, all state management commands that modify the st",
+   "subcommands": [
+    "list",
+    "mv",
+    "pull",
+    "push",
+    "replace-provider",
+    "rm",
+    "show"
+   ],
+   "flags": []
+  },
+  "taint": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] taint [options] <address>",
+   "description": "OpenTofu uses the term \"tainted\" to describe a resource instance which may not be fully functional, either because its creation partially failed or because you've manually marked it as such using this command. This will not modify your infr",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-allow-missing",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, the command will succeed (exit code 0) even if the resource is missing."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "test": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] test [options]",
+   "description": "Executes automated integration tests against the current OpenTofu configuration. OpenTofu will search for .tftest.hcl files within the current configuration and testing directories. OpenTofu will then execute the testing run blocks within a",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-compact-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings that are not accompanied by errors, show them in a more compact form that includes only the summary messages."
+    },
+    {
+     "name": "-consolidate-warnings",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any warnings, no consolidation will be performed. All locations, for all warnings will be listed. Enabled by default.",
+     "loose": true
+    },
+    {
+     "name": "-consolidate-errors",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If OpenTofu produces any errors, no consolidation will be performed. All locations, for all errors will be listed. Disabled by default"
+    },
+    {
+     "name": "-filter",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "testfile",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, OpenTofu will only execute the test files specified by this flag. You can use this option multiple times to execute more than one test file. The path should be relative to the current working directory, even if -test-director\u2026"
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, machine readable output will be printed in JSON format"
+    },
+    {
+     "name": "-no-color",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, output won't contain any color."
+    },
+    {
+     "name": "-test-directory",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set the OpenTofu test directory, defaults to \"tests\". When set, the test command will search for test files in the current directory and in the one specified by the flag."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-verbose",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Print the plan or state for each test run block as it executes."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "untaint": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] untaint [options] name",
+   "description": "OpenTofu uses the term \"tainted\" to describe a resource instance which may not be fully functional, either because its creation partially failed or because you've manually marked it as such using the \"tofu taint\" command. This command remov",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-allow-missing",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, the command will succeed (exit code 0) even if the resource is missing."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "version": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] version [options]",
+   "description": "Displays the version of OpenTofu and all installed plugins",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Output the version information as a JSON object."
+    }
+   ]
+  },
+  "workspace": {
+   "listed_in": "other",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace",
+   "description": "new, list, show, select and delete OpenTofu workspaces.",
+   "subcommands": [
+    "delete",
+    "list",
+    "new",
+    "select",
+    "show"
+   ],
+   "flags": []
+  },
+  "metadata functions": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] metadata functions -json",
+   "description": "Prints out a json representation of the available function signatures.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Usage",
+     "deprecation_markers": [],
+     "desc": ""
+    }
+   ]
+  },
+  "providers lock": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] providers lock [options] [providers...]",
+   "description": "Normally the dependency lock file (.terraform.lock.hcl) is updated automatically by \"tofu init\", but the information available to the normal provider installer can be constrained when you're installing providers from filesystem or network m",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-fs-mirror",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "dir",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Consult the given filesystem mirror directory instead of the origin registry for each of the given providers. This would be necessary to generate lock file entries for a provider that is available only via a mirror, and not published in an\u2026"
+    },
+    {
+     "name": "-net-mirror",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "url",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Consult the given network mirror (given as a base URL) instead of the origin registry for each of the given providers. This would be necessary to generate lock file entries for a provider that is available only via a mirror, and not publis\u2026"
+    },
+    {
+     "name": "-platform",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "os_arch",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Choose a target platform to request package checksums for. By default OpenTofu will request package checksums suitable only for the platform where you run this command. Use this option multiple times to include checksums for multiple targe\u2026"
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "providers mirror": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] providers mirror [options] <target-dir>",
+   "description": "Populates a local directory with copies of the provider plugins needed for the current configuration, so that the directory can be used either directly as a filesystem mirror or as the basis for a network mirror and thus obtain those provid",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-platform",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "os_arch",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Choose which target platform to build a mirror for. By default OpenTofu will obtain plugin packages suitable for the platform where you run this command. Use this flag multiple times to include packages for multiple target systems. Target \u2026"
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "providers schema": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] providers schema [options] -json",
+   "description": "Prints out a json representation of the schemas for all providers used in the current configuration.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    },
+    {
+     "name": "-json",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Usage",
+     "deprecation_markers": [],
+     "desc": ""
+    }
+   ]
+  },
+  "state list": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state (list|ls) [options] [address...]",
+   "description": "List resources in the OpenTofu state. This command lists resource instances in the OpenTofu state. The address argument can be used to filter the instances by resource or module. If no pattern is given, all resource instances are listed. Th",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "statefile",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to a OpenTofu state file to use to look up OpenTofu-managed resources. By default, OpenTofu will consult the state of the currently-selected workspace."
+    },
+    {
+     "name": "-id",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "ID",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Filters the results to include only instances whose resource types have an attribute named \"id\" whose value equals the given id string."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "state mv": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state (move|mv) [options] SOURCE DESTINATION",
+   "description": "This command will move an item matched by the address given to the destination address. This command can also move to a destination address in a completely different state file. This can be used for simple resource renaming, moving items to",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-dry-run",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If set, prints out what would've been moved but doesn't actually move anything."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "state pull": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state pull [options]",
+   "description": "Pull the state from its location, upgrade the local copy, and output it to stdout. This command \"pulls\" the current state and outputs it to stdout. As part of this process, OpenTofu will upgrade the state format of the local copy to the cur",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "state push": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state push [options] PATH",
+   "description": "Update remote state from a local state file at PATH. This command \"pushes\" a local state and overwrites remote state with a local state file. The command will protect you against writing an older serial or a different state file lineage unl",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-force",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Write the state even if lineages don't match or the remote serial is higher."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "state replace-provider": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state replace-provider [options] FROM_PROVIDER_FQN TO_PROVIDER_FQN",
+   "description": "Replace provider for resources in the OpenTofu state. backend only. For more information, see the local backend's documentation.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-auto-approve",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Skip interactive approval."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    }
+   ]
+  },
+  "state rm": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state (remove|rm) [options] ADDRESS...",
+   "description": "Remove one or more items from the OpenTofu state, causing OpenTofu to \"forget\" those items without first destroying them in the remote system. This command removes one or more resource instances from the OpenTofu state based on the addresse",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-dry-run",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If set, prints out what would've been removed but doesn't actually remove anything."
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "PATH",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path where OpenTofu should write the backup state."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "PATH",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to the state file to update. Defaults to the current workspace state."
+    },
+    {
+     "name": "-ignore-remote-version",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Continue even if remote and local OpenTofu versions are incompatible. This may result in an unusable workspace, and should be used with extreme caution."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "state show": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] state show [options] ADDRESS",
+   "description": "Shows the attributes of a resource in the OpenTofu state. This command shows the attributes of a single resource in the OpenTofu state. The address argument must be used to specify a single resource. You can view the list of available resou",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "statefile",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Path to a OpenTofu state file to use to look up OpenTofu-managed resources. By default it will use the state \"terraform.tfstate\" if it exists."
+    },
+    {
+     "name": "-show-sensitive",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "If specified, sensitive values will be displayed."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "workspace delete": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace delete [options] NAME",
+   "description": "Delete a OpenTofu workspace",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-force",
+     "aliases": [],
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Remove a workspace even if it is managing resources. OpenTofu can no longer track or manage the workspace's infrastructure."
+    },
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "workspace list": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace list [options]",
+   "description": "List OpenTofu workspaces.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file.",
+     "loose": true
+    }
+   ]
+  },
+  "workspace new": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace new [OPTIONS] NAME",
+   "description": "Create a new OpenTofu workspace.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-lock",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Don't hold a state lock during the operation. This is dangerous if others might concurrently run commands against the same workspace."
+    },
+    {
+     "name": "-lock-timeout",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "0s",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Duration to retry a state lock."
+    },
+    {
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "path",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Copy an existing state file into the new workspace."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "workspace select": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace select [options] NAME",
+   "description": "Select a different OpenTofu workspace.",
+   "subcommands": [],
+   "flags": [
+    {
+     "name": "-or-create",
+     "aliases": [],
+     "kind": "bool",
+     "takes_value": false,
+     "placeholder": "false",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Create the OpenTofu workspace if it doesn't exist."
+    },
+    {
+     "name": "-var",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "foo=bar",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Set a value for one of the input variables in the root module of the configuration. Use this option more than once to set more than one variable."
+    },
+    {
+     "name": "-var-file",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": "filename",
+     "section": "Options",
+     "deprecation_markers": [],
+     "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
+    }
+   ]
+  },
+  "workspace show": {
+   "listed_in": "subcommands",
+   "help_exit_code": 0,
+   "usage": "tofu [global options] workspace show",
+   "description": "Show the name of the current workspace.",
+   "subcommands": [],
+   "flags": []
+  }
+ },
+ "unparsed": {
+  "apply": [
+   "      tofu plan -help"
+  ],
+  "show": [
+   "  If no target selection options are provided, -state is the default."
+  ]
+ },
+ "counts": {
+  "commands": 40,
+  "flags": 248,
+  "global_options": 3,
+  "unparsed_lines": 2
+ }
+}

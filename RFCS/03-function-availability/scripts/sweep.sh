@@ -1,18 +1,38 @@
 #!/usr/bin/env bash
-# Baseline script that produced the initial function-availability dataset.
+# Builds the function-availability dataset.
 #
-# Downloads every stable Terraform (>= 1.5.7) and OpenTofu release binary for
-# the current machine, runs `<binary> metadata functions -json`, and stores the
-# output as data/functions-<product>-<version>.json next to this directory.
+# For every stable Terraform (>= 1.5.7) and OpenTofu release this script:
+#   1. installs the CLI via mise (`mise install terraform@<v>` /
+#      `opentofu@<v>`, run with `mise exec`; zip download fallback),
+#   2. runs `<binary> metadata functions -json`,
+#   3. stores the output as data/functions-<product>-<version>.json.
 #
-# Only needed for a full regeneration of the dataset; incremental updates for
-# new releases use `pnpm update-function-matrix` in tools/generate-function-bindings.
+# data/ is not committed. Versions already covered by the committed
+# functions-matrix.json are skipped (build-matrix.py reconstructs them from the
+# matrix), so a re-run only fetches new releases; FULL=1 sweeps every release.
+# (`pnpm update-function-matrix` in cdk-terrain's tools/generate-function-bindings
+# is a forward-only delta updater for that repo's copy of the matrix.)
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="$ROOT/data"
 WORK="${TMPDIR:-/tmp}/tf-func-matrix-work"
 mkdir -p "$DATA" "$WORK"
+# CLI binaries are installed by mise into a throwaway data dir under $WORK
+# (override with MISE_DATA_DIR to share an existing mise install cache)
+export MISE_DATA_DIR="${MISE_DATA_DIR:-$WORK/mise}"
+
+# "<product> <version>" lines already in the committed matrix
+KNOWN="$WORK/known-versions.txt"
+if [ -z "${FULL:-}" ] && [ -f "$ROOT/functions-matrix.json" ]; then
+  python3 -I -c "
+import json,sys
+for p, vs in json.load(open(sys.argv[1]))['versions'].items():
+    for v in vs: print(p, v)
+" "$ROOT/functions-matrix.json" > "$KNOWN"
+else
+  : > "$KNOWN"
+fi
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
@@ -23,7 +43,7 @@ esac
 export OS ARCH
 
 terraform_versions() {
-  curl -fsSL https://releases.hashicorp.com/terraform/index.json | python3 -c "
+  curl -fsSL https://releases.hashicorp.com/terraform/index.json | python3 -I -c "
 import json,sys,re
 data = json.load(sys.stdin)
 def vkey(v): return tuple(int(x) for x in v.split('.'))
@@ -34,7 +54,7 @@ print('\n'.join(stable))
 }
 
 opentofu_versions() {
-  curl -fsSL https://get.opentofu.org/tofu/api.json | python3 -c "
+  curl -fsSL https://get.opentofu.org/tofu/api.json | python3 -I -c "
 import json,sys,re
 data = json.load(sys.stdin)
 stable = [v['id'] for v in data['versions'] if re.fullmatch(r'\d+\.\d+\.\d+', v['id'])]
@@ -50,31 +70,45 @@ process_one() {
     echo "SKIP $product $version (exists)"
     return 0
   fi
+  if grep -qxF "$product $version" "$KNOWN"; then
+    echo "SKIP $product $version (in functions-matrix.json)"
+    return 0
+  fi
 
-  local url bin zip dir
+  local url exe zip dir
   dir="$WORK/${product}-${version}"
   mkdir -p "$dir"
   zip="$dir/pkg.zip"
 
   if [ "$product" = "terraform" ]; then
     url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/terraform"
+    exe=terraform
   else
     url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/tofu"
+    exe=tofu
   fi
 
-  if ! curl -fsSL -o "$zip" "$url"; then
-    echo "FAIL-DOWNLOAD $product $version"
-    rm -rf "$dir"
-    return 1
+  # install + select the CLI with mise (tool names match $product); fall back
+  # to the release zip only for versions mise cannot install
+  local -a cli
+  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1; then
+    cli=(mise exec "${product}@${version}" -- "$exe")
+  else
+    echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")"
+    if ! curl -fsSL -o "$zip" "$url"; then
+      echo "FAIL-DOWNLOAD $product $version"
+      rm -rf "$dir"
+      return 1
+    fi
+    if ! unzip -oq "$zip" -d "$dir"; then
+      echo "FAIL-UNZIP $product $version"
+      rm -rf "$dir"
+      return 1
+    fi
+    cli=("$dir/$exe")
   fi
-  if ! unzip -oq "$zip" -d "$dir"; then
-    echo "FAIL-UNZIP $product $version"
-    rm -rf "$dir"
-    return 1
-  fi
-  if ! "$bin" metadata functions -json > "$out.tmp" 2>"$dir/stderr.log"; then
+  # run outside the repo so no project mise.toml is picked up
+  if ! (cd "$dir" && "${cli[@]}" metadata functions -json > "$out.tmp" 2>"$dir/stderr.log"); then
     echo "FAIL-METADATA $product $version: $(head -c 200 "$dir/stderr.log")"
     rm -f "$out.tmp"
     rm -rf "$dir"
@@ -86,11 +120,13 @@ process_one() {
 }
 
 export -f process_one
-export DATA WORK
+export DATA WORK KNOWN
 
 {
   terraform_versions | sed 's/^/terraform /'
   opentofu_versions | sed 's/^/opentofu /'
 } | xargs -n 2 -P 6 bash -c 'process_one "$0" "$1"'
+rc=$? # non-zero if a release index fetch or any version failed
 
 echo "DONE: $(ls "$DATA" | wc -l | tr -d ' ') data files in $DATA"
+exit "$rc"

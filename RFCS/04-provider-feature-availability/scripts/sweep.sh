@@ -3,7 +3,8 @@
 #
 # For every minor-boundary release of Terraform (>= 1.5.7) and OpenTofu
 # (>= 1.6.0) plus the overall latest patch of each product, this script:
-#   1. downloads the CLI binary,
+#   1. installs the CLI via mise (`mise install terraform@<v>` /
+#      `opentofu@<v>`, run with `mise exec`; zip download fallback),
 #   2. runs `<binary> init` against fixture/main.tf.json (small providers that
 #      exercise provider functions, ephemeral resources, write-only attributes
 #      and actions),
@@ -24,6 +25,9 @@ RAW="$DATA/raw"
 WORK="${TMPDIR:-/tmp}/provider-feature-sweep"
 CACHE="$WORK/plugin-cache"
 mkdir -p "$DATA" "$RAW" "$WORK" "$CACHE"
+# CLI binaries are installed by mise into a throwaway data dir under $WORK
+# (override with MISE_DATA_DIR to share an existing mise install cache)
+export MISE_DATA_DIR="${MISE_DATA_DIR:-$WORK/mise}"
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
@@ -36,7 +40,7 @@ export OS ARCH ROOT DATA RAW WORK CACHE
 # Prints the minor-boundary selection (first stable patch of each minor within
 # range, normally X.Y.0) plus the overall latest stable release.
 select_versions() {
-  python3 -c "
+  python3 -I -c "
 import json, sys, re
 from collections import defaultdict
 floor = tuple(int(x) for x in sys.argv[1].split('.'))
@@ -53,13 +57,14 @@ print('\n'.join(sorted(chosen, key=vkey)))
 
 terraform_versions() {
   curl -fsSL https://releases.hashicorp.com/terraform/index.json \
-    | python3 -c "import json,sys; print('\n'.join(json.load(sys.stdin)['versions']))" \
-    | select_versions 1.5.7
+    | python3 -I -c "import json,sys; print('\n'.join(json.load(sys.stdin)['versions']))" \
+    | select_versions 1.5.7 \
+    | sed 's/^1\.6\.0$/1.6.6/' # 1.6.0 cannot init anymore, see single-version mode below
 }
 
 opentofu_versions() {
   curl -fsSL https://get.opentofu.org/tofu/api.json \
-    | python3 -c "import json,sys; print('\n'.join(v['id'] for v in json.load(sys.stdin)['versions']))" \
+    | python3 -I -c "import json,sys; print('\n'.join(v['id'] for v in json.load(sys.stdin)['versions']))" \
     | select_versions 1.6.0
 }
 
@@ -77,7 +82,7 @@ process_one() {
     return 0
   fi
 
-  local url bin zip dir
+  local url exe zip dir
   dir="$WORK/${product}-${version}"
   rm -rf "$dir"
   mkdir -p "$dir"
@@ -85,19 +90,29 @@ process_one() {
 
   if [ "$product" = "terraform" ]; then
     url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/terraform"
+    exe=terraform
   else
     url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/tofu"
+    exe=tofu
   fi
 
-  if ! curl -fsSL -o "$zip" "$url"; then
-    echo "FAIL-DOWNLOAD $product $version"
-    return 1
-  fi
-  if ! unzip -oq "$zip" -d "$dir"; then
-    echo "FAIL-UNZIP $product $version"
-    return 1
+  # install + select the CLI with mise (tool names match $product); fall back
+  # to the release zip only for versions mise cannot install. All commands
+  # run with cwd=$dir (outside the repo), so no project mise.toml applies.
+  local -a bin
+  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1; then
+    bin=(mise exec "${product}@${version}" -- "$exe")
+  else
+    echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")"
+    if ! curl -fsSL -o "$zip" "$url"; then
+      echo "FAIL-DOWNLOAD $product $version"
+      return 1
+    fi
+    if ! unzip -oq "$zip" -d "$dir"; then
+      echo "FAIL-UNZIP $product $version"
+      return 1
+    fi
+    bin=("$dir/$exe")
   fi
 
   if [ "$fixture" = "core" ]; then
@@ -109,7 +124,7 @@ process_one() {
   local attempt
   for attempt in 1 2; do
     if (cd "$dir" && TF_PLUGIN_CACHE_DIR="$CACHE" TF_IN_AUTOMATION=1 \
-        "$bin" init -backend=false -input=false -no-color > init.log 2>&1); then
+        "${bin[@]}" init -backend=false -input=false -no-color > init.log 2>&1); then
       break
     fi
     if [ "$attempt" = 2 ]; then
@@ -120,13 +135,13 @@ process_one() {
   done
 
   local raw_schema="$dir/schema.json"
-  if ! (cd "$dir" && "$bin" providers schema -json > "$raw_schema" 2> schema-err.log); then
+  if ! (cd "$dir" && "${bin[@]}" providers schema -json > "$raw_schema" 2> schema-err.log); then
     echo "FAIL-SCHEMA $product $version: $(tail -c 300 "$dir/schema-err.log")"
     return 1
   fi
-  (cd "$dir" && "$bin" version -json > version.json 2>/dev/null) || echo '{}' > "$dir/version.json"
+  (cd "$dir" && "${bin[@]}" version -json > version.json 2>/dev/null) || echo '{}' > "$dir/version.json"
 
-  if ! python3 "$ROOT/scripts/digest.py" "$raw_schema" "$dir/version.json" "$product" "$version" > "$out.tmp"; then
+  if ! python3 -I "$ROOT/scripts/digest.py" "$raw_schema" "$dir/version.json" "$product" "$version" > "$out.tmp"; then
     echo "FAIL-DIGEST $product $version"
     rm -f "$out.tmp"
     return 1
@@ -148,18 +163,20 @@ export -f process_one
 # (used for incremental updates and for substituting a broken release, e.g.
 # terraform 1.6.0 cannot init at all anymore — "openpgp: key expired" on every
 # provider install, fixed in later 1.6.x patches — so the 1.6 column uses 1.6.6)
+# any failed version makes the script exit non-zero (after the rest ran)
+failed=0
 if [ "$#" -ge 2 ]; then
   while [ "$#" -ge 2 ]; do
-    process_one "$1" "$2"
+    process_one "$1" "$2" || failed=1
     shift 2
   done
-  exit 0
+  exit "$failed"
 fi
 
 {
   terraform_versions | sed 's/^/terraform /'
   opentofu_versions | sed 's/^/opentofu /'
-} | FIXTURE=core xargs -n 2 -P "${SWEEP_PARALLELISM:-1}" bash -c 'process_one "$0" "$1"'
+} | FIXTURE=core xargs -n 2 -P "${SWEEP_PARALLELISM:-1}" bash -c 'process_one "$0" "$1"' || failed=1
 
 # Second pass: the aws fixture, only at CLI versions >= 1.12 — resource
 # identity emission starts at 1.12 in both products and list resources /
@@ -167,12 +184,13 @@ fi
 # burn ~700 MB of provider install each.
 aws_versions() {
   curl -fsSL https://releases.hashicorp.com/terraform/index.json \
-    | python3 -c "import json,sys; print('\n'.join(json.load(sys.stdin)['versions']))" \
+    | python3 -I -c "import json,sys; print('\n'.join(json.load(sys.stdin)['versions']))" \
     | select_versions 1.12.0 | sed 's/^/terraform /'
   curl -fsSL https://get.opentofu.org/tofu/api.json \
-    | python3 -c "import json,sys; print('\n'.join(v['id'] for v in json.load(sys.stdin)['versions']))" \
+    | python3 -I -c "import json,sys; print('\n'.join(v['id'] for v in json.load(sys.stdin)['versions']))" \
     | select_versions 1.12.0 | sed 's/^/opentofu /'
 }
-aws_versions | FIXTURE=aws xargs -n 2 -P "${SWEEP_PARALLELISM:-1}" bash -c 'process_one "$0" "$1"'
+aws_versions | FIXTURE=aws xargs -n 2 -P "${SWEEP_PARALLELISM:-1}" bash -c 'process_one "$0" "$1"' || failed=1
 
 echo "DONE: $(ls "$DATA" | grep -c '^schema-digest-') digests in $DATA"
+exit "$failed"
