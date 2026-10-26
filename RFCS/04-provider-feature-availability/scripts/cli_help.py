@@ -42,11 +42,14 @@ Every line that is neither blank, a heading, a list entry, a flag line, a
 continuation, nor plain section prose is reported in `unparsed` per command
 (and on stderr), so drift in the help layout is visible in the sweep log.
 """
+import atexit
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
 PARSER_VERSION = 2
 MAX_DEPTH = 3
@@ -103,20 +106,45 @@ LEGACY_PROSE_RE = re.compile(
 TAG_PLACEHOLDER_RE = re.compile(r"^\[[A-Z][A-Z -]*\]$")
 
 
+# Help must not depend on who runs the sweep: some pages interpolate $HOME
+# (OpenTofu 1.10-1.12 `logout` prints the credentials file path), and TF_*
+# variables (TF_LOG, TF_CLI_CONFIG_FILE, ...) can change output or read the
+# caller's CLI config. HOME, the CLI config and the data dir therefore point
+# into a throwaway directory, every TF_* / TOFU_* variable is dropped, and the
+# throwaway HOME is rewritten to "~" in the captured text.
+_SANDBOX = None
+
+
+def _sandbox():
+    global _SANDBOX
+    if _SANDBOX is None:
+        root = tempfile.mkdtemp(prefix="cli-help-")
+        atexit.register(shutil.rmtree, root, True)
+        home = os.path.join(root, "home")
+        os.makedirs(home)
+        cfg = os.path.join(root, "cli.tfrc")
+        open(cfg, "w").close()
+        env = {k: v for k, v in os.environ.items() if not k.startswith(("TF_", "TOFU_"))}
+        env.update({"HOME": home, "TF_CLI_CONFIG_FILE": cfg, "TF_DATA_DIR": os.path.join(root, "data"),
+                    "TF_INPUT": "0", "CHECKPOINT_DISABLE": "1"})
+        _SANDBOX = (env, home, os.path.realpath(home))
+    return _SANDBOX
+
+
 def run_help(binary, args, cwd):
-    env = dict(os.environ)
-    env["CHECKPOINT_DISABLE"] = "1"
-    env.pop("TF_CLI_ARGS", None)
+    env, home, real_home = _sandbox()
     try:
         p = subprocess.run(
             [binary, *args, "-help"],
             cwd=cwd,
             env=env,
+            stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             timeout=TIMEOUT_S,
         )
-        return p.returncode, p.stdout.decode("utf-8", "replace")
+        out = p.stdout.decode("utf-8", "replace")
+        return p.returncode, out.replace(real_home, "~").replace(home, "~")
     except subprocess.TimeoutExpired:
         return -1, ""
 

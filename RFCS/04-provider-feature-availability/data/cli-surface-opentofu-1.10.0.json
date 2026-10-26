@@ -1445,7 +1445,7 @@
    "listed_in": "other",
    "help_exit_code": 0,
    "usage": "tofu [global options] logout [hostname]",
-   "description": "Removes locally-stored credentials for specified hostname. Note: the API token is only removed from local storage, not destroyed on the remote server, so it will remain valid until manually revoked. /Users/vincentsmet/.terraform.d/credentia",
+   "description": "Removes locally-stored credentials for specified hostname. Note: the API token is only removed from local storage, not destroyed on the remote server, so it will remain valid until manually revoked. ~/.terraform.d/credentials.tfrc.json",
    "subcommands": [],
    "flags": []
   },

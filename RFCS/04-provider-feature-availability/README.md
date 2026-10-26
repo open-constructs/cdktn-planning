@@ -114,7 +114,10 @@ python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-report.py
   resolved once with `mise exec <product>@<v> -- sh -c 'command -v <exe>'`
   and run directly for the ~50 `-help` calls per version (cwd is an empty dir
   under `$TMPDIR/cli-surface-sweep`, so neither the repo `mise.toml` nor any
-  configuration applies; `CHECKPOINT_DISABLE=1`, `TF_CLI_ARGS` unset).
+  configuration applies; `CHECKPOINT_DISABLE=1`, every `TF_*` / `TOFU_*`
+  variable dropped, `HOME` / `TF_CLI_CONFIG_FILE` / `TF_DATA_DIR` in a
+  throwaway dir, and that `HOME` rewritten to `~` in the captured help, so
+  the dumps do not depend on who runs the sweep).
   `MISE_DATA_DIR` defaults to `$TMPDIR/cli-surface-sweep/mise`; zip download
   fallback logs `MISE-FALLBACK`. `SWEEP_PARALLELISM` defaults to 4 (no shared
   plugin cache is involved). A full run from a warm mise cache takes ~25 s.
