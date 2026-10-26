@@ -13,7 +13,9 @@
    "1.13.0",
    "1.14.0",
    "1.15.0",
-   "1.15.6"
+   "1.15.6",
+   "1.16.0",
+   "1.17.0"
   ],
   "opentofu": [
    "1.6.0",
@@ -23,7 +25,9 @@
    "1.10.0",
    "1.11.0",
    "1.12.0",
-   "1.12.1"
+   "1.12.1",
+   "1.13.0",
+   "1.13.2"
   ]
  },
  "fixture_provider_selections": {
@@ -33,7 +37,7 @@
    "hashicorp/random": "3.9.0",
    "hashicorp/time": "0.13.0",
    "hashicorp/tls": "4.2.0",
-   "hashicorp/vault": "5.9.0"
+   "hashicorp/vault": "5.13.0"
   },
   "opentofu": {
    "hashicorp/aws": "6.14.1",
@@ -41,7 +45,7 @@
    "hashicorp/random": "3.9.0",
    "hashicorp/time": "0.13.0",
    "hashicorp/tls": "4.2.0",
-   "hashicorp/vault": "5.9.0"
+   "hashicorp/vault": "5.13.0"
   }
  },
  "features": {
@@ -65,7 +69,9 @@
       "1.13.0",
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -78,13 +84,15 @@
       "1.10.0",
       "1.11.0",
       "1.12.0",
-      "1.12.1"
+      "1.12.1",
+      "1.13.0",
+      "1.13.2"
      ]
     }
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": [
        "arn_build",
@@ -102,7 +110,7 @@
      }
     },
     "opentofu": {
-     "version": "1.12.1",
+     "version": "1.13.2",
      "providers": {
       "hashicorp/aws": [
        "arn_build",
@@ -139,7 +147,9 @@
       "1.13.0",
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -149,13 +159,15 @@
      "observed_versions": [
       "1.11.0",
       "1.12.0",
-      "1.12.1"
+      "1.12.1",
+      "1.13.0",
+      "1.13.2"
      ]
     }
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": [
        "aws_cognito_identity_openid_token_for_developer_identity",
@@ -183,22 +195,32 @@
        "vault_aws_access_credentials",
        "vault_aws_static_access_credentials",
        "vault_azure_access_credentials",
+       "vault_azure_access_token",
        "vault_azure_static_credentials",
        "vault_cf_auth_login",
        "vault_database_secret",
        "vault_gcp_oauth2_access_token",
        "vault_gcp_service_account_key",
+       "vault_gcpkms_decrypt",
+       "vault_gcpkms_encrypt",
+       "vault_gcpkms_reencrypt",
+       "vault_gcpkms_sign",
        "vault_generic_endpoint",
        "vault_generic_secret",
+       "vault_kerberos_auth_backend_login",
        "vault_kubernetes_service_account_token",
        "vault_kv_secret_v2",
+       "vault_pki_secret_backend_ca_key_export",
+       "vault_radius_auth_login",
        "vault_spiffe_secret_backend_mintjwt",
-       "vault_terraform_token"
+       "vault_terraform_token",
+       "vault_token",
+       "vault_userpass_auth_login"
       ]
      }
     },
     "opentofu": {
-     "version": "1.12.1",
+     "version": "1.13.2",
      "providers": {
       "hashicorp/aws": [
        "aws_cognito_identity_openid_token_for_developer_identity",
@@ -226,17 +248,27 @@
        "vault_aws_access_credentials",
        "vault_aws_static_access_credentials",
        "vault_azure_access_credentials",
+       "vault_azure_access_token",
        "vault_azure_static_credentials",
        "vault_cf_auth_login",
        "vault_database_secret",
        "vault_gcp_oauth2_access_token",
        "vault_gcp_service_account_key",
+       "vault_gcpkms_decrypt",
+       "vault_gcpkms_encrypt",
+       "vault_gcpkms_reencrypt",
+       "vault_gcpkms_sign",
        "vault_generic_endpoint",
        "vault_generic_secret",
+       "vault_kerberos_auth_backend_login",
        "vault_kubernetes_service_account_token",
        "vault_kv_secret_v2",
+       "vault_pki_secret_backend_ca_key_export",
+       "vault_radius_auth_login",
        "vault_spiffe_secret_backend_mintjwt",
-       "vault_terraform_token"
+       "vault_terraform_token",
+       "vault_token",
+       "vault_userpass_auth_login"
       ]
      }
     }
@@ -259,7 +291,9 @@
       "1.13.0",
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -269,13 +303,15 @@
      "observed_versions": [
       "1.11.0",
       "1.12.0",
-      "1.12.1"
+      "1.12.1",
+      "1.13.0",
+      "1.13.2"
      ]
     }
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": {
        "aws_db_instance": [
@@ -322,6 +358,9 @@
        "vault_azure_secret_backend_static_role": [
         "client_secret"
        ],
+       "vault_cert_auth_backend_role": [
+        "certificate_wo"
+       ],
        "vault_cf_auth_backend_config": [
         "cf_password_wo"
        ],
@@ -366,8 +405,19 @@
        "vault_gcp_secret_backend": [
         "credentials_wo"
        ],
+       "vault_gcpkms_secret_backend": [
+        "credentials_wo"
+       ],
        "vault_jwt_auth_backend": [
         "oidc_client_secret_wo"
+       ],
+       "vault_kerberos_auth_backend_config": [
+        "keytab_wo"
+       ],
+       "vault_kerberos_auth_backend_ldap_config": [
+        "bindpass_wo",
+        "client_tls_cert_wo",
+        "client_tls_key_wo"
        ],
        "vault_keymgmt_aws_kms": [
         "credentials_wo"
@@ -413,8 +463,30 @@
         "eab_key",
         "eab_kid"
        ],
+       "vault_pki_external_ca_secret_backend_dns_provider_aws_route53": [
+        "secret_access_key_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_azure": [
+        "client_secret_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_gcp": [
+        "credentials_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_rfc2136": [
+        "tsig_secret_wo"
+       ],
+       "vault_pki_secret_backend_wrapped_key_import": [
+        "export_key_hmac",
+        "wrapped_key"
+       ],
        "vault_rabbitmq_secret_backend": [
         "password_wo"
+       ],
+       "vault_radius_auth_backend": [
+        "secret_wo"
+       ],
+       "vault_raft_snapshot_agent_config": [
+        "aws_secret_access_key_wo"
        ],
        "vault_secrets_sync_aws_destination": [
         "identity_token_audience_wo",
@@ -433,12 +505,16 @@
        ],
        "vault_terraform_cloud_secret_backend": [
         "token_wo"
+       ],
+       "vault_userpass_auth_backend_user": [
+        "password_hash_wo",
+        "password_wo"
        ]
       }
      }
     },
     "opentofu": {
-     "version": "1.12.1",
+     "version": "1.13.2",
      "providers": {
       "hashicorp/aws": {
        "aws_db_instance": [
@@ -485,6 +561,9 @@
        "vault_azure_secret_backend_static_role": [
         "client_secret"
        ],
+       "vault_cert_auth_backend_role": [
+        "certificate_wo"
+       ],
        "vault_cf_auth_backend_config": [
         "cf_password_wo"
        ],
@@ -529,8 +608,19 @@
        "vault_gcp_secret_backend": [
         "credentials_wo"
        ],
+       "vault_gcpkms_secret_backend": [
+        "credentials_wo"
+       ],
        "vault_jwt_auth_backend": [
         "oidc_client_secret_wo"
+       ],
+       "vault_kerberos_auth_backend_config": [
+        "keytab_wo"
+       ],
+       "vault_kerberos_auth_backend_ldap_config": [
+        "bindpass_wo",
+        "client_tls_cert_wo",
+        "client_tls_key_wo"
        ],
        "vault_keymgmt_aws_kms": [
         "credentials_wo"
@@ -576,8 +666,30 @@
         "eab_key",
         "eab_kid"
        ],
+       "vault_pki_external_ca_secret_backend_dns_provider_aws_route53": [
+        "secret_access_key_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_azure": [
+        "client_secret_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_gcp": [
+        "credentials_wo"
+       ],
+       "vault_pki_external_ca_secret_backend_dns_provider_rfc2136": [
+        "tsig_secret_wo"
+       ],
+       "vault_pki_secret_backend_wrapped_key_import": [
+        "export_key_hmac",
+        "wrapped_key"
+       ],
        "vault_rabbitmq_secret_backend": [
         "password_wo"
+       ],
+       "vault_radius_auth_backend": [
+        "secret_wo"
+       ],
+       "vault_raft_snapshot_agent_config": [
+        "aws_secret_access_key_wo"
        ],
        "vault_secrets_sync_aws_destination": [
         "identity_token_audience_wo",
@@ -596,6 +708,10 @@
        ],
        "vault_terraform_cloud_secret_backend": [
         "token_wo"
+       ],
+       "vault_userpass_auth_backend_user": [
+        "password_hash_wo",
+        "password_wo"
        ]
       }
      }
@@ -607,7 +723,7 @@
    "schema_key": "resource_identity_schemas",
    "protocol": "5.9 / 6.9",
    "plugin_go": "v0.27.0 (2025-05)",
-   "notes": "Top-level map (resource type -> identity schema), not nested in the resource schema. No HashiCorp utility provider implements it (June 2026) \u2014 observed via the aws fixture instead: aws 6.14.1 ships identity on 475 resources, emitted identically by both products.",
+   "notes": "Top-level map (resource type -> identity schema), not nested in the resource schema. No HashiCorp utility provider implements it (October 2026) \u2014 observed via the aws fixture instead: aws 6.14.1 ships identity on 475 resources, emitted identically by both products.",
    "products": {
     "terraform": {
      "documented_emitted_from": "1.12.0",
@@ -618,7 +734,9 @@
       "1.13.0",
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -627,13 +745,15 @@
      "observed_introduced": "1.12.0",
      "observed_versions": [
       "1.12.0",
-      "1.12.1"
+      "1.12.1",
+      "1.13.0",
+      "1.13.2"
      ]
     }
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": [
        "aws_acm_certificate",
@@ -691,7 +811,7 @@
      }
     },
     "opentofu": {
-     "version": "1.12.1",
+     "version": "1.13.2",
      "providers": {
       "hashicorp/aws": [
        "aws_acm_certificate",
@@ -764,7 +884,9 @@
      "observed_versions": [
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -776,7 +898,7 @@
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": [
        "aws_batch_job_queue",
@@ -802,7 +924,9 @@
      "observed_versions": [
       "1.14.0",
       "1.15.0",
-      "1.15.6"
+      "1.15.6",
+      "1.16.0",
+      "1.17.0"
      ]
     },
     "opentofu": {
@@ -814,7 +938,7 @@
    },
    "evidence": {
     "terraform": {
-     "version": "1.15.6",
+     "version": "1.17.0",
      "providers": {
       "hashicorp/aws": [
        "aws_cloudfront_create_invalidation",
@@ -835,7 +959,7 @@
    "schema_key": "state_store_schemas",
    "protocol": "6.11 only",
    "plugin_go": "v0.30.0 (2026-02)",
-   "notes": "Protocol 6 only (no tfplugin5 counterpart). Terraform CLI serializer has the key from 1.15.0 but `state_store` is not GA in core through 1.15.x. OpenTofu has no equivalent (its differentiator is built-in state encryption, OpenTofu >= 1.7).",
+   "notes": "Protocol 6 only (no tfplugin5 counterpart). Terraform CLI serializer has the key from 1.15.0 but `state_store` is not GA in core through 1.17.0. OpenTofu has no equivalent (its differentiator is built-in state encryption, OpenTofu >= 1.7).",
    "products": {
     "terraform": {
      "documented_emitted_from": "1.15.0",

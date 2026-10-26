@@ -35,8 +35,8 @@ EVIDENCE_FIELDS = {
 # Source-verified overlay. "emitted_from" = first CLI minor whose
 # `providers schema -json` serializer has the field (verified by diffing
 # internal/command/jsonprovider across release tags of both products).
-# None = the product does not support the feature at all (as of TF 1.15.x /
-# OpenTofu 1.12.x, June 2026).
+# None = the product does not support the feature at all (as of TF 1.17.0 /
+# OpenTofu 1.13.2, October 2026).
 DOCUMENTED = {
     "provider_functions": {
         "title": "Provider-defined functions",
@@ -79,7 +79,7 @@ DOCUMENTED = {
         "opentofu": {"emitted_from": "1.12.0", "ga": "1.12.0"},
         "notes": "Top-level map (resource type -> identity schema), not nested "
         "in the resource schema. No HashiCorp utility provider implements it "
-        "(June 2026) — observed via the aws fixture instead: aws 6.14.1 ships "
+        "(October 2026) — observed via the aws fixture instead: aws 6.14.1 ships "
         "identity on 475 resources, emitted identically by both products.",
     },
     "list_resources": {
@@ -116,7 +116,7 @@ DOCUMENTED = {
         "opentofu": None,
         "notes": "Protocol 6 only (no tfplugin5 counterpart). Terraform CLI "
         "serializer has the key from 1.15.0 but `state_store` is not GA in core "
-        "through 1.15.x. OpenTofu has no equivalent (its differentiator is "
+        "through 1.17.0. OpenTofu has no equivalent (its differentiator is "
         "built-in state encryption, OpenTofu >= 1.7).",
     },
 }
