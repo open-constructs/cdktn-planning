@@ -1,7 +1,7 @@
 {
  "product": "opentofu",
  "version": "1.6.3",
- "parser_version": 1,
+ "parser_version": 2,
  "global_options": [
   {
    "name": "-chdir",
@@ -999,16 +999,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1206,16 +1235,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Set variables in the OpenTofu configuration from a file. If \"terraform.tfvars\" or any \".auto.tfvars\" files are present, they will be automatically loaded."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1310,16 +1368,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1448,16 +1535,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1665,16 +1781,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1771,16 +1916,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1989,30 +2163,12 @@
  "unparsed": {
   "apply": [
    "      tofu plan -help"
-  ],
-  "import": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "refresh": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "taint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "untaint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state mv": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state replace-provider": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
   ]
  },
  "counts": {
   "commands": 40,
-  "flags": 138,
+  "flags": 156,
   "global_options": 3,
-  "unparsed_lines": 7
+  "unparsed_lines": 1
  }
 }

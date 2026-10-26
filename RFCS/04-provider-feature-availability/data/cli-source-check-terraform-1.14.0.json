@@ -1,0 +1,4323 @@
+{
+ "product": "terraform",
+ "version": "1.14.0",
+ "tag": "v1.14.0",
+ "parser": "cli-source-check v2 (all commands)",
+ "commands": {
+  "source": [
+   "apply",
+   "console",
+   "destroy",
+   "env",
+   "env delete",
+   "env list",
+   "env new",
+   "env select",
+   "fmt",
+   "force-unlock",
+   "get",
+   "graph",
+   "import",
+   "init",
+   "login",
+   "logout",
+   "metadata",
+   "metadata functions",
+   "modules",
+   "output",
+   "plan",
+   "providers",
+   "providers lock",
+   "providers mirror",
+   "providers schema",
+   "push",
+   "query",
+   "refresh",
+   "rpcapi",
+   "show",
+   "stacks",
+   "state",
+   "state identities",
+   "state list",
+   "state mv",
+   "state pull",
+   "state push",
+   "state replace-provider",
+   "state rm",
+   "state show",
+   "taint",
+   "test",
+   "untaint",
+   "validate",
+   "version",
+   "workspace",
+   "workspace delete",
+   "workspace list",
+   "workspace new",
+   "workspace select",
+   "workspace show"
+  ],
+  "experimental_only": [
+   "cloud",
+   "test cleanup"
+  ],
+  "hidden_set": [
+   "env",
+   "internal-plugin",
+   "push",
+   "rpcapi"
+  ],
+  "in_source_not_in_help": [
+   "env",
+   "env delete",
+   "env list",
+   "env new",
+   "env select",
+   "push",
+   "rpcapi"
+  ],
+  "in_help_not_in_source": [],
+  "types": {
+   "apply": {
+    "type": "ApplyCommand"
+   },
+   "cloud": {
+    "type": "CloudCommand"
+   },
+   "console": {
+    "type": "ConsoleCommand"
+   },
+   "destroy": {
+    "type": "ApplyCommand",
+    "fields": {
+     "Destroy": true
+    }
+   },
+   "env": {
+    "type": "WorkspaceCommand",
+    "fields": {
+     "LegacyName": true
+    }
+   },
+   "env delete": {
+    "type": "WorkspaceDeleteCommand",
+    "fields": {
+     "LegacyName": true
+    }
+   },
+   "env list": {
+    "type": "WorkspaceListCommand",
+    "fields": {
+     "LegacyName": true
+    }
+   },
+   "env new": {
+    "type": "WorkspaceNewCommand",
+    "fields": {
+     "LegacyName": true
+    }
+   },
+   "env select": {
+    "type": "WorkspaceSelectCommand",
+    "fields": {
+     "LegacyName": true
+    }
+   },
+   "fmt": {
+    "type": "FmtCommand"
+   },
+   "force-unlock": {
+    "type": "UnlockCommand"
+   },
+   "get": {
+    "type": "GetCommand"
+   },
+   "graph": {
+    "type": "GraphCommand"
+   },
+   "import": {
+    "type": "ImportCommand"
+   },
+   "init": {
+    "type": "InitCommand"
+   },
+   "login": {
+    "type": "LoginCommand"
+   },
+   "logout": {
+    "type": "LogoutCommand"
+   },
+   "metadata": {
+    "type": "MetadataCommand"
+   },
+   "metadata functions": {
+    "type": "MetadataFunctionsCommand"
+   },
+   "modules": {
+    "type": "ModulesCommand"
+   },
+   "output": {
+    "type": "OutputCommand"
+   },
+   "plan": {
+    "type": "PlanCommand"
+   },
+   "providers": {
+    "type": "ProvidersCommand"
+   },
+   "providers lock": {
+    "type": "ProvidersLockCommand"
+   },
+   "providers mirror": {
+    "type": "ProvidersMirrorCommand"
+   },
+   "providers schema": {
+    "type": "ProvidersSchemaCommand"
+   },
+   "push": {
+    "type": "PushCommand"
+   },
+   "query": {
+    "type": "QueryCommand"
+   },
+   "refresh": {
+    "type": "RefreshCommand"
+   },
+   "rpcapi": {
+    "type": "ShowCommand"
+   },
+   "show": {
+    "type": "ShowCommand"
+   },
+   "stacks": {
+    "type": "StacksCommand"
+   },
+   "state": {
+    "type": "StateCommand"
+   },
+   "state identities": {
+    "type": "StateIdentitiesCommand"
+   },
+   "state list": {
+    "type": "StateListCommand"
+   },
+   "state mv": {
+    "type": "StateMvCommand"
+   },
+   "state pull": {
+    "type": "StatePullCommand"
+   },
+   "state push": {
+    "type": "StatePushCommand"
+   },
+   "state replace-provider": {
+    "type": "StateReplaceProviderCommand"
+   },
+   "state rm": {
+    "type": "StateRmCommand"
+   },
+   "state show": {
+    "type": "StateShowCommand"
+   },
+   "taint": {
+    "type": "TaintCommand"
+   },
+   "test": {
+    "type": "TestCommand"
+   },
+   "test cleanup": {
+    "type": "TestCleanupCommand"
+   },
+   "untaint": {
+    "type": "UntaintCommand"
+   },
+   "validate": {
+    "type": "ValidateCommand"
+   },
+   "version": {
+    "type": "VersionCommand"
+   },
+   "workspace": {
+    "type": "WorkspaceCommand"
+   },
+   "workspace delete": {
+    "type": "WorkspaceDeleteCommand"
+   },
+   "workspace list": {
+    "type": "WorkspaceListCommand"
+   },
+   "workspace new": {
+    "type": "WorkspaceNewCommand"
+   },
+   "workspace select": {
+    "type": "WorkspaceSelectCommand"
+   },
+   "workspace show": {
+    "type": "WorkspaceShowCommand"
+   }
+  }
+ },
+ "flags": {
+  "apply": {
+   "type": "ApplyCommand",
+   "visited": [
+    "internal/command/apply.go:ApplyCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/apply.go:ParseApply",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/apply.go:ApplyCommand.LoadPlanFile",
+    "internal/command/apply.go:ApplyCommand.PrepareBackend",
+    "internal/command/apply.go:ApplyCommand.OperationRequest",
+    "internal/command/apply.go:ApplyCommand.GatherVariables"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-deferral",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-auto-approve",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-invoke",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-auto-approve",
+    "-backup",
+    "-compact-warnings",
+    "-destroy",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-replace",
+    "-state",
+    "-state-out",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-auto-approve",
+    "-backup",
+    "-compact-warnings",
+    "-destroy",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-state",
+    "-state-out",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": "plan",
+   "in_source_not_in_help": [
+    "-allow-deferral",
+    "-invoke",
+    "-json"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [
+    "-refresh",
+    "-refresh-only",
+    "-target"
+   ],
+   "unresolved_calls": []
+  },
+  "console": {
+   "type": "ConsoleCommand",
+   "visited": [
+    "internal/command/console.go:ConsoleCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/console.go:ConsoleCommand.Help",
+    "internal/command/console.go:ConsoleCommand.modePiped",
+    "internal/command/console_interactive.go:ConsoleCommand.modeInteractive"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-plan",
+     "origin": "internal/command/console.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/console.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-plan",
+    "-state",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-plan",
+    "-state",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-input",
+    "-no-color",
+    "-target"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "destroy": {
+   "type": "ApplyCommand",
+   "visited": [
+    "internal/command/apply.go:ApplyCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/apply.go:ParseApplyDestroy",
+    "internal/command/arguments/apply.go:ParseApply",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/apply.go:ApplyCommand.LoadPlanFile",
+    "internal/command/apply.go:ApplyCommand.PrepareBackend",
+    "internal/command/apply.go:ApplyCommand.OperationRequest",
+    "internal/command/apply.go:ApplyCommand.GatherVariables"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-deferral",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-auto-approve",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-invoke",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/apply.go:ParseApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [
+    "-auto-approve",
+    "-backup",
+    "-compact-warnings",
+    "-destroy",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-state",
+    "-state-out",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": "apply",
+   "in_source_not_in_help": [
+    "-allow-deferral",
+    "-invoke",
+    "-json"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [
+    "-auto-approve",
+    "-backup",
+    "-compact-warnings",
+    "-destroy",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-state",
+    "-state-out",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "unresolved_calls": []
+  },
+  "env": {
+   "type": "WorkspaceCommand",
+   "visited": [
+    "internal/command/workspace_command.go:WorkspaceCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_command.go:WorkspaceCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-input",
+    "-no-color",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "env delete": {
+   "type": "WorkspaceDeleteCommand",
+   "visited": [
+    "internal/command/workspace_delete.go:WorkspaceDeleteCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_delete.go:WorkspaceDeleteCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-force",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-force",
+    "-lock",
+    "-lock-timeout",
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "env list": {
+   "type": "WorkspaceListCommand",
+   "visited": [
+    "internal/command/workspace_list.go:WorkspaceListCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_list.go:WorkspaceListCommand.Help"
+   ],
+   "parses_flags": false,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "env new": {
+   "type": "WorkspaceNewCommand",
+   "visited": [
+    "internal/command/workspace_new.go:WorkspaceNewCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_new.go:WorkspaceNewCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-lock",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-state"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "env select": {
+   "type": "WorkspaceSelectCommand",
+   "visited": [
+    "internal/command/workspace_select.go:WorkspaceSelectCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_select.go:WorkspaceSelectCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-or-create",
+     "origin": "internal/command/workspace_select.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color",
+    "-or-create"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "fmt": {
+   "type": "FmtCommand",
+   "visited": [
+    "internal/command/fmt.go:FmtCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/fmt.go:FmtCommand.Help",
+    "internal/command/fmt.go:FmtCommand.fmt",
+    "internal/command/fmt.go:FmtCommand.processFile",
+    "internal/command/fmt.go:FmtCommand.formatSourceCode",
+    "internal/command/fmt.go:FmtCommand.formatBody",
+    "internal/command/fmt.go:FmtCommand.formatTypeExpr",
+    "internal/command/fmt.go:FmtCommand.formatValueExpr",
+    "internal/command/fmt.go:FmtCommand.trimNewlines",
+    "internal/command/fmt.go:FmtCommand.processDir"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-check",
+     "origin": "internal/command/fmt.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-diff",
+     "origin": "internal/command/fmt.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-list",
+     "origin": "internal/command/fmt.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-recursive",
+     "origin": "internal/command/fmt.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-write",
+     "origin": "internal/command/fmt.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-check",
+    "-diff",
+    "-list",
+    "-no-color",
+    "-recursive",
+    "-write"
+   ],
+   "help_effective": [
+    "-check",
+    "-diff",
+    "-list",
+    "-no-color",
+    "-recursive",
+    "-write"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "force-unlock": {
+   "type": "UnlockCommand",
+   "visited": [
+    "internal/command/unlock.go:UnlockCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/unlock.go:UnlockCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-force",
+     "origin": "internal/command/unlock.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-force"
+   ],
+   "help_effective": [
+    "-force"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "get": {
+   "type": "GetCommand",
+   "visited": [
+    "internal/command/get.go:GetCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/get.go:GetCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/get.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-update",
+     "origin": "internal/command/get.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-no-color",
+    "-test-directory",
+    "-update"
+   ],
+   "help_effective": [
+    "-no-color",
+    "-test-directory",
+    "-update"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "graph": {
+   "type": "GraphCommand",
+   "visited": [
+    "internal/command/graph.go:GraphCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/graph.go:GraphCommand.Help",
+    "internal/command/graph.go:GraphCommand.resourceOnlyGraph"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-draw-cycles",
+     "origin": "internal/command/graph.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-module-depth",
+     "origin": "internal/command/graph.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-plan",
+     "origin": "internal/command/graph.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-type",
+     "origin": "internal/command/graph.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-verbose",
+     "origin": "internal/command/graph.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-draw-cycles",
+    "-module-depth",
+    "-plan",
+    "-type"
+   ],
+   "help_effective": [
+    "-draw-cycles",
+    "-module-depth",
+    "-plan",
+    "-type"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color",
+    "-verbose"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "import": {
+   "type": "ImportCommand",
+   "visited": [
+    "internal/command/import.go:ImportCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/import.go:ImportCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-backup",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-config",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/import.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-backup",
+    "-config",
+    "-ignore-remote-version",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-state",
+    "-state-out",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-backup",
+    "-config",
+    "-ignore-remote-version",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-state",
+    "-state-out",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-parallelism",
+    "-target"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "init": {
+   "type": "InitCommand",
+   "visited": [
+    "internal/command/init.go:InitCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/arguments/init.go:ParseInit",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/init_run_experiment.go:InitCommand.runPssInit",
+    "internal/command/init.go:InitCommand.getModules",
+    "internal/command/init.go:InitCommand.getProvidersFromConfig",
+    "internal/command/init.go:InitCommand.prepareInstallerEvents",
+    "internal/command/init.go:InitCommand.initCloud",
+    "internal/command/init.go:InitCommand.initBackend",
+    "internal/command/init.go:InitCommand.backendConfigOverrideBody",
+    "internal/command/init.go:InitCommand.getProvidersFromState",
+    "internal/command/init.go:InitCommand.saveDependencyLockFile",
+    "internal/command/init_run.go:InitCommand.run",
+    "internal/command/init.go:InitCommand.getProviders"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-backend",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backend-config",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-cloud",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-enable-pluggable-state-storage-experiment",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-force-copy",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-from-module",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-get",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-lockfile",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-migrate-state",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-plugin-dir",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-reconfigure",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-upgrade",
+     "origin": "internal/command/arguments/init.go:ParseInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-backend",
+    "-backend-config",
+    "-force-copy",
+    "-from-module",
+    "-get",
+    "-ignore-remote-version",
+    "-input",
+    "-json",
+    "-lock",
+    "-lock-timeout",
+    "-lockfile",
+    "-migrate-state",
+    "-no-color",
+    "-plugin-dir",
+    "-reconfigure",
+    "-test-directory",
+    "-upgrade"
+   ],
+   "help_effective": [
+    "-backend",
+    "-backend-config",
+    "-force-copy",
+    "-from-module",
+    "-get",
+    "-ignore-remote-version",
+    "-input",
+    "-json",
+    "-lock",
+    "-lock-timeout",
+    "-lockfile",
+    "-migrate-state",
+    "-no-color",
+    "-plugin-dir",
+    "-reconfigure",
+    "-test-directory",
+    "-upgrade"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-cloud",
+    "-compact-warnings",
+    "-enable-pluggable-state-storage-experiment",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "login": {
+   "type": "LoginCommand",
+   "visited": [
+    "internal/command/login.go:LoginCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/login.go:LoginCommand.Help",
+    "internal/command/login.go:LoginCommand.defaultOutputFile",
+    "internal/command/login.go:LoginCommand.interactiveGetTokenByCode",
+    "internal/command/login.go:LoginCommand.interactiveContextConsent",
+    "internal/command/login.go:LoginCommand.proofKey",
+    "internal/command/login.go:LoginCommand.listenerForCallback",
+    "internal/command/login.go:LoginCommand.interactiveGetTokenByPassword",
+    "internal/command/login.go:LoginCommand.interactiveGetTokenByUI",
+    "internal/command/login.go:LoginCommand.logMOTDError",
+    "internal/command/login.go:LoginCommand.outputDefaultTFCLoginSuccess",
+    "internal/command/login.go:LoginCommand.outputDefaultTFELoginSuccess"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-input",
+    "-no-color",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "logout": {
+   "type": "LogoutCommand",
+   "visited": [
+    "internal/command/logout.go:LogoutCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/logout.go:LogoutCommand.Help",
+    "internal/command/logout.go:LogoutCommand.defaultOutputFile"
+   ],
+   "parses_flags": false,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "metadata": {
+   "type": "MetadataCommand",
+   "visited": [
+    "internal/command/metadata_command.go:MetadataCommand.Run"
+   ],
+   "parses_flags": false,
+   "source": [],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "metadata functions": {
+   "type": "MetadataFunctionsCommand",
+   "visited": [
+    "internal/command/metadata_functions.go:MetadataFunctionsCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/metadata_functions.go:MetadataFunctionsCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-json",
+     "origin": "internal/command/metadata_functions.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-json"
+   ],
+   "help_effective": [
+    "-json"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "modules": {
+   "type": "ModulesCommand",
+   "visited": [
+    "internal/command/modules.go:ModulesCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/modules.go:ParseModules",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/modules.go:ModulesCommand.internalManifest"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/modules.go:ParseModules",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-json"
+   ],
+   "help_effective": [
+    "-json"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "output": {
+   "type": "OutputCommand",
+   "visited": [
+    "internal/command/output.go:OutputCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/output.go:ParseOutput",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/output.go:OutputCommand.Outputs"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/output.go:ParseOutput",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-raw",
+     "origin": "internal/command/arguments/output.go:ParseOutput",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/output.go:ParseOutput",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-json",
+    "-no-color",
+    "-raw",
+    "-state"
+   ],
+   "help_effective": [
+    "-json",
+    "-no-color",
+    "-raw",
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "plan": {
+   "type": "PlanCommand",
+   "visited": [
+    "internal/command/plan.go:PlanCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/plan.go:ParsePlan",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/plan.go:PlanCommand.PrepareBackend",
+    "internal/command/plan.go:PlanCommand.OperationRequest",
+    "internal/command/plan.go:PlanCommand.GatherVariables"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-deferral",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-detailed-exitcode",
+     "origin": "internal/command/arguments/plan.go:ParsePlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-generate-config-out",
+     "origin": "internal/command/arguments/plan.go:ParsePlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/plan.go:ParsePlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-invoke",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/plan.go:ParsePlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-out",
+     "origin": "internal/command/arguments/plan.go:ParsePlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-destroy",
+    "-detailed-exitcode",
+    "-generate-config-out",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-out",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-state",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-destroy",
+    "-detailed-exitcode",
+    "-generate-config-out",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-out",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-state",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-allow-deferral",
+    "-backup",
+    "-invoke",
+    "-json",
+    "-state-out"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers": {
+   "type": "ProvidersCommand",
+   "visited": [
+    "internal/command/providers.go:ProvidersCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/providers.go:ProvidersCommand.Help",
+    "internal/command/providers.go:ProvidersCommand.populateTreeNode"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/providers.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-test-directory"
+   ],
+   "help_effective": [
+    "-test-directory"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers lock": {
+   "type": "ProvidersLockCommand",
+   "visited": [
+    "internal/command/providers_lock.go:ProvidersLockCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/providers_lock.go:ProvidersLockCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-enable-plugin-cache",
+     "origin": "internal/command/providers_lock.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "Bool",
+     "takes_value": false
+    },
+    {
+     "name": "-fs-mirror",
+     "origin": "internal/command/providers_lock.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-net-mirror",
+     "origin": "internal/command/providers_lock.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-platform",
+     "origin": "internal/command/providers_lock.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-enable-plugin-cache",
+    "-fs-mirror",
+    "-net-mirror",
+    "-platform"
+   ],
+   "help_effective": [
+    "-enable-plugin-cache",
+    "-fs-mirror",
+    "-net-mirror",
+    "-platform"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers mirror": {
+   "type": "ProvidersMirrorCommand",
+   "visited": [
+    "internal/command/providers_mirror.go:ProvidersMirrorCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/providers_mirror.go:ProvidersMirrorCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-lock-file",
+     "origin": "internal/command/providers_mirror.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-platform",
+     "origin": "internal/command/providers_mirror.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-lock-file",
+    "-platform"
+   ],
+   "help_effective": [
+    "-lock-file",
+    "-platform"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers schema": {
+   "type": "ProvidersSchemaCommand",
+   "visited": [
+    "internal/command/providers_schema.go:ProvidersSchemaCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/providers_schema.go:ProvidersSchemaCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-json",
+     "origin": "internal/command/providers_schema.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-json"
+   ],
+   "help_effective": [
+    "-json"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "push": {
+   "type": "PushCommand",
+   "visited": [
+    "internal/command/push.go:PushCommand.Run"
+   ],
+   "parses_flags": false,
+   "source": [],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "query": {
+   "type": "QueryCommand",
+   "visited": [
+    "internal/command/query.go:QueryCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/query.go:ParseQuery",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/query.go:QueryCommand.PrepareBackend",
+    "internal/command/query.go:QueryCommand.OperationRequest",
+    "internal/command/query.go:QueryCommand.GatherVariables"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-generate-config-out",
+     "origin": "internal/command/arguments/query.go:ParseQuery",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/query.go:ParseQuery",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/query.go:ParseQuery",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/query.go:ParseQuery",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-generate-config-out",
+    "-json",
+    "-no-color",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-generate-config-out",
+    "-json",
+    "-no-color",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "refresh": {
+   "type": "RefreshCommand",
+   "visited": [
+    "internal/command/refresh.go:RefreshCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/refresh.go:ParseRefresh",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/refresh.go:RefreshCommand.PrepareBackend",
+    "internal/command/refresh.go:RefreshCommand.OperationRequest",
+    "internal/command/refresh.go:RefreshCommand.GatherVariables"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-deferral",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/refresh.go:ParseRefresh",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-invoke",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/refresh.go:ParseRefresh",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-backup",
+    "-compact-warnings",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-state",
+    "-state-out",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-backup",
+    "-compact-warnings",
+    "-input",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-state",
+    "-state-out",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-allow-deferral",
+    "-destroy",
+    "-invoke",
+    "-json",
+    "-refresh",
+    "-refresh-only",
+    "-replace"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "show": {
+   "type": "ShowCommand",
+   "visited": [
+    "internal/command/show.go:ShowCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/show.go:ParseShow",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/show.go:ShowCommand.show",
+    "internal/command/show.go:ShowCommand.showFromLatestStateSnapshot",
+    "internal/command/show.go:ShowCommand.showFromPath",
+    "internal/command/show.go:ShowCommand.getPlanFromPath",
+    "internal/command/show.go:ShowCommand.getDataFromCloudPlan"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/show.go:ParseShow",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-json",
+    "-no-color"
+   ],
+   "help_effective": [
+    "-json",
+    "-no-color"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state": {
+   "type": "StateCommand",
+   "visited": [
+    "internal/command/state_command.go:StateCommand.Run"
+   ],
+   "parses_flags": false,
+   "source": [],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state identities": {
+   "type": "StateIdentitiesCommand",
+   "visited": [
+    "internal/command/state_identities.go:StateIdentitiesCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-id",
+     "origin": "internal/command/state_identities.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "String",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/state_identities.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_identities.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-id",
+    "-json",
+    "-state"
+   ],
+   "help_effective": [
+    "-id",
+    "-json",
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state list": {
+   "type": "StateListCommand",
+   "visited": [
+    "internal/command/state_list.go:StateListCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-id",
+     "origin": "internal/command/state_list.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "String",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_list.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-id",
+    "-state"
+   ],
+   "help_effective": [
+    "-id",
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state mv": {
+   "type": "StateMvCommand",
+   "visited": [
+    "internal/command/state_mv.go:StateMvCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/state_mv.go:StateMvCommand.sourceObjectAddrs",
+    "internal/command/state_mv.go:StateMvCommand.validateResourceMove"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-backup",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-backup-out",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-dry-run",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/state_mv.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-backup",
+    "-dry-run",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_effective": [
+    "-backup",
+    "-dry-run",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-backup-out",
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state pull": {
+   "type": "StatePullCommand",
+   "visited": [
+    "internal/command/state_pull.go:StatePullCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": false,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state push": {
+   "type": "StatePushCommand",
+   "visited": [
+    "internal/command/state_push.go:StatePushCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-force",
+     "origin": "internal/command/state_push.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/state_push.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/state_push.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-force",
+    "-lock",
+    "-lock-timeout"
+   ],
+   "help_effective": [
+    "-force",
+    "-lock",
+    "-lock-timeout"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-ignore-remote-version",
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state replace-provider": {
+   "type": "StateReplaceProviderCommand",
+   "visited": [
+    "internal/command/state_replace_provider.go:StateReplaceProviderCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-auto-approve",
+     "origin": "internal/command/state_replace_provider.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/state_replace_provider.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/state_replace_provider.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/state_replace_provider.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_replace_provider.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-auto-approve",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_effective": [
+    "-auto-approve",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [
+    "-state-out"
+   ],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state rm": {
+   "type": "StateRmCommand",
+   "visited": [
+    "internal/command/state_rm.go:StateRmCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-backup",
+     "origin": "internal/command/state_rm.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-dry-run",
+     "origin": "internal/command/state_rm.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/state_rm.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/state_rm.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_rm.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-backup",
+    "-dry-run",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state"
+   ],
+   "help_effective": [
+    "-backup",
+    "-dry-run",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "state show": {
+   "type": "StateShowCommand",
+   "visited": [
+    "internal/command/state_show.go:StateShowCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/state_show.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-state"
+   ],
+   "help_effective": [
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "taint": {
+   "type": "TaintCommand",
+   "visited": [
+    "internal/command/taint.go:TaintCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/taint.go:TaintCommand.Help",
+    "internal/command/taint.go:TaintCommand.allowMissingExit"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-missing",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/taint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-allow-missing",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_effective": [
+    "-allow-missing",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "test": {
+   "type": "TestCommand",
+   "visited": [
+    "internal/command/test.go:TestCommand.Run",
+    "internal/command/test.go:Meta.setupTestExecution",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/test.go:ParseTest",
+    "internal/command/arguments/extended.go:extendedFlagSet",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/meta_config.go:Meta.loadConfigWithTests",
+    "internal/command/meta_config.go:Meta.normalizePath",
+    "internal/command/meta.go:Meta.fixupMissingWorkingDir",
+    "internal/command/meta_config.go:Meta.initConfigLoader",
+    "internal/command/meta_config.go:Meta.modulesDir",
+    "internal/command/meta.go:Meta.DataDir",
+    "internal/command/meta_vars.go:Meta.collectVariableValuesForTests",
+    "internal/command/meta_vars.go:Meta.addVarsFromFile",
+    "internal/command/meta_vars.go:Meta.collectVariableValues",
+    "internal/command/meta.go:Meta.contextOpts",
+    "internal/command/meta.go:Meta.Workspace",
+    "internal/command/meta.go:Meta.WorkspaceOverridden",
+    "internal/command/meta.go:Meta.UIInput",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta_providers.go:Meta.providerFactories",
+    "internal/command/meta_dependencies.go:Meta.lockedDependencies",
+    "internal/command/meta_dependencies.go:Meta.annotateDependencyLocksWithOverrides",
+    "internal/command/meta_providers.go:Meta.providerLocalCacheDir",
+    "internal/command/meta_providers.go:Meta.internalProviders",
+    "internal/command/plugins.go:Meta.provisionerFactories",
+    "internal/command/plugins.go:Meta.pluginDirs",
+    "internal/command/plugins.go:Meta.pluginDir"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-deferral",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-cloud-run",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-filter",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-junit-xml",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-repair",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-run-parallelism",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "takes_value": true
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-verbose",
+     "origin": "internal/command/arguments/test.go:ParseTest",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-cloud-run",
+    "-filter",
+    "-json",
+    "-junit-xml",
+    "-no-color",
+    "-parallelism",
+    "-test-directory",
+    "-var",
+    "-var-file",
+    "-verbose"
+   ],
+   "help_effective": [
+    "-cloud-run",
+    "-filter",
+    "-json",
+    "-junit-xml",
+    "-no-color",
+    "-parallelism",
+    "-test-directory",
+    "-var",
+    "-var-file",
+    "-verbose"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-allow-deferral",
+    "-compact-warnings",
+    "-repair",
+    "-run-parallelism"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "untaint": {
+   "type": "UntaintCommand",
+   "visited": [
+    "internal/command/untaint.go:UntaintCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.ignoreRemoteVersionFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/untaint.go:UntaintCommand.Help",
+    "internal/command/untaint.go:UntaintCommand.allowMissingExit"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-allow-missing",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/meta.go:ignoreRemoteVersionFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/untaint.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-allow-missing",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_effective": [
+    "-allow-missing",
+    "-backup",
+    "-ignore-remote-version",
+    "-lock",
+    "-lock-timeout",
+    "-state",
+    "-state-out"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "validate": {
+   "type": "ValidateCommand",
+   "visited": [
+    "internal/command/validate.go:ValidateCommand.Run",
+    "internal/command/arguments/view.go:ParseView",
+    "internal/command/arguments/validate.go:ParseValidate",
+    "internal/command/arguments/default.go:defaultFlagSet",
+    "internal/command/validate.go:ValidateCommand.validate",
+    "internal/command/validate.go:ValidateCommand.validateConfig",
+    "internal/command/validate.go:ValidateCommand.validateTestFiles"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/validate.go:ParseValidate",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:ParseView",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-switch",
+     "takes_value": false
+    },
+    {
+     "name": "-no-tests",
+     "origin": "internal/command/arguments/validate.go:ParseValidate",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-query",
+     "origin": "internal/command/arguments/validate.go:ParseValidate",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/arguments/validate.go:ParseValidate",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-json",
+    "-no-color",
+    "-no-tests",
+    "-query",
+    "-test-directory"
+   ],
+   "help_effective": [
+    "-json",
+    "-no-color",
+    "-no-tests",
+    "-query",
+    "-test-directory"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "version": {
+   "type": "VersionCommand",
+   "visited": [
+    "internal/command/version.go:VersionCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/version.go:VersionCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-json",
+     "origin": "internal/command/version.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-v",
+     "origin": "internal/command/version.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "Bool",
+     "takes_value": false
+    },
+    {
+     "name": "-version",
+     "origin": "internal/command/version.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "Bool",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-json"
+   ],
+   "help_effective": [
+    "-json"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color",
+    "-v",
+    "-version"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace": {
+   "type": "WorkspaceCommand",
+   "visited": [
+    "internal/command/workspace_command.go:WorkspaceCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_command.go:WorkspaceCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-input",
+    "-no-color",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace delete": {
+   "type": "WorkspaceDeleteCommand",
+   "visited": [
+    "internal/command/workspace_delete.go:WorkspaceDeleteCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_delete.go:WorkspaceDeleteCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-force",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/workspace_delete.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-force",
+    "-lock",
+    "-lock-timeout"
+   ],
+   "help_effective": [
+    "-force",
+    "-lock",
+    "-lock-timeout"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace list": {
+   "type": "WorkspaceListCommand",
+   "visited": [
+    "internal/command/workspace_list.go:WorkspaceListCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_list.go:WorkspaceListCommand.Help"
+   ],
+   "parses_flags": false,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace new": {
+   "type": "WorkspaceNewCommand",
+   "visited": [
+    "internal/command/workspace_new.go:WorkspaceNewCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_new.go:WorkspaceNewCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-lock",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "takes_value": true
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/workspace_new.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [
+    "-lock",
+    "-lock-timeout",
+    "-state"
+   ],
+   "help_effective": [
+    "-lock",
+    "-lock-timeout",
+    "-state"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace select": {
+   "type": "WorkspaceSelectCommand",
+   "visited": [
+    "internal/command/workspace_select.go:WorkspaceSelectCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_select.go:WorkspaceSelectCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-or-create",
+     "origin": "internal/command/workspace_select.go:Run",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    }
+   ],
+   "help_listed": [
+    "-or-create"
+   ],
+   "help_effective": [
+    "-or-create"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-no-color"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "workspace show": {
+   "type": "WorkspaceShowCommand",
+   "visited": [
+    "internal/command/workspace_show.go:WorkspaceShowCommand.Run",
+    "internal/command/meta.go:Meta.process",
+    "internal/command/meta.go:Meta.Colorize",
+    "internal/command/meta.go:Meta.extendedFlagSet",
+    "internal/command/meta.go:Meta.defaultFlagSet",
+    "internal/command/workspace_show.go:WorkspaceShowCommand.Help"
+   ],
+   "parses_flags": true,
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "takes_value": false
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/meta.go:Meta.process",
+     "guards": [],
+     "hidden": false,
+     "kind": "manual-strip",
+     "takes_value": false
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/meta.go:extendedFlagSet",
+     "guards": [],
+     "hidden": false,
+     "kind": "Var",
+     "takes_value": true
+    }
+   ],
+   "help_listed": [],
+   "help_effective": [],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-compact-warnings",
+    "-input",
+    "-no-color",
+    "-target",
+    "-var",
+    "-var-file"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  }
+ }
+}

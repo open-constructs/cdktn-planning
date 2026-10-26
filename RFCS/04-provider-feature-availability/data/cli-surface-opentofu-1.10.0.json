@@ -1,7 +1,7 @@
 {
  "product": "opentofu",
  "version": "1.10.0",
- "parser_version": 1,
+ "parser_version": 2,
  "global_options": [
   {
    "name": "-chdir",
@@ -1391,16 +1391,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1699,16 +1728,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems. Always disables color."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1882,16 +1940,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2091,16 +2178,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2411,16 +2527,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2579,16 +2724,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2931,32 +3105,14 @@
   "apply": [
    "      tofu plan -help"
   ],
-  "import": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "refresh": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
   "show": [
    "  If no target selection options are provided, -state is the default."
-  ],
-  "taint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "untaint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state mv": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state replace-provider": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
   ]
  },
  "counts": {
   "commands": 40,
-  "flags": 230,
+  "flags": 248,
   "global_options": 3,
-  "unparsed_lines": 8
+  "unparsed_lines": 2
  }
 }

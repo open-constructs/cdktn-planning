@@ -1,7 +1,7 @@
 {
  "product": "terraform",
  "version": "1.16.0",
- "parser_version": 1,
+ "parser_version": 2,
  "global_options": [
   {
    "name": "-chdir",
@@ -372,22 +372,22 @@
     {
      "name": "-enable-pluggable-state-storage-experiment",
      "aliases": [],
-     "kind": "value",
-     "takes_value": true,
-     "placeholder": "[EXPERIMENTAL]",
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
      "section": "Options",
      "deprecation_markers": [],
-     "desc": "A flag to enable an alternative init command that allows use of pluggable state storage. Only usable with experiments enabled."
+     "desc": "[EXPERIMENTAL] A flag to enable an alternative init command that allows use of pluggable state storage. Only usable with experiments enabled."
     },
     {
      "name": "-state-provider-lock-file",
      "aliases": [],
-     "kind": "value",
-     "takes_value": true,
-     "placeholder": "[EXPERIMENTAL]",
+     "kind": "switch",
+     "takes_value": false,
+     "placeholder": null,
      "section": "Options",
      "deprecation_markers": [],
-     "desc": "Specifies a lock file Terraform should use to establish trust in a provider before initializing a state store for the first time. Only usable when input is disabled through -input=false. Only usable with experiments enabled and the -enable\u2026"
+     "desc": "[EXPERIMENTAL] Specifies a lock file Terraform should use to establish trust in a provider before initializing a state store for the first time. Only usable when input is disabled through -input=false. Only usable with experiments enabled \u2026"
     }
    ]
   },
@@ -1198,16 +1198,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1525,16 +1554,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Set variables in the Terraform configuration from a file. If \"terraform.tfvars\" or any \".auto.tfvars\" files are present, they will be automatically loaded."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1654,16 +1712,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -1822,16 +1909,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "A rare option used for the remote backend only. See the remote backend documentation for more information."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2188,16 +2304,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2355,16 +2500,45 @@
      "section": "Options",
      "deprecation_markers": [],
      "desc": "Load variable values from the given file, in addition to the default files terraform.tfvars and *.auto.tfvars. Use this option more than once to include more than one variables file."
-    }
-   ],
-   "prose_flag_mentions": [
+    },
     {
-     "line": "-state, state-out, and -backup are legacy options supported for the local",
-     "flags": [
-      "-state",
-      "-backup"
+     "name": "-state",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
      ],
-     "section": "Options"
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-state-out",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
+    },
+    {
+     "name": "-backup",
+     "aliases": [],
+     "kind": "value",
+     "takes_value": true,
+     "placeholder": null,
+     "section": "Options",
+     "deprecation_markers": [
+      "legacy"
+     ],
+     "desc": "-state, state-out, and -backup are legacy options supported for the local",
+     "from": "legacy-prose"
     }
    ]
   },
@@ -2616,30 +2790,12 @@
  "unparsed": {
   "apply": [
    "      terraform plan -help"
-  ],
-  "import": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "refresh": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "taint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "untaint": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state mv": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
-  ],
-  "state replace-provider": [
-   "  -state, state-out, and -backup are legacy options supported for the local"
   ]
  },
  "counts": {
   "commands": 44,
-  "flags": 195,
+  "flags": 213,
   "global_options": 3,
-  "unparsed_lines": 7
+  "unparsed_lines": 1
  }
 }
