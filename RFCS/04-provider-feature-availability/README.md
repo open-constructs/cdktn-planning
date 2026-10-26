@@ -1,11 +1,14 @@
-# provider-feature-availability
+# 04-provider-feature-availability
 
 Dataset, comparison report and proposal for supporting the newer provider
 plugin-protocol features (provider-defined functions, ephemeral resources,
 write-only attributes, resource identity, list resources, actions, state
-stores) in CDKTN — sibling of
-`tools/generate-function-bindings/function-availability`, but sweeping
-`providers schema -json` instead of `metadata functions -json`.
+stores) in CDKTN — sibling of [`../03-function-availability`](../03-function-availability/)
+(whose matrix cdk-terrain copies to
+`tools/generate-function-bindings/function-availability/`), but sweeping
+`providers schema -json` instead of `metadata functions -json`. It also
+carries the [CLI command/flag surface sweep](#cli-commandflag-surface-sweep)
+(`<binary> [cmd [sub]] -help` across versions).
 
 | File | Purpose |
 | --- | --- |
@@ -16,6 +19,10 @@ stores) in CDKTN — sibling of
 | `data/raw/` | Full schema dumps (gitignored, rebuildable; aws dumps >100 MB are never retained) |
 | `fixture/main.tf.json` | Pinned small providers exercising each feature (all CLI versions) |
 | `fixture/aws.tf.json` | `hashicorp/aws` 6.14.1 — sole fixture for identity / list resources / cloud actions (CLI ≥ 1.12 only) |
+| `cli-matrix.json` | CLI surface matrix: per command, per command × flag and per global option, first/last swept version, removals, product-only items, source-only (hidden) flags, and the flags cdktn emits |
+| `cli-report.html` | Self-contained interactive CLI surface report (linked from `report.html`) |
+| `data/cli-surface-<product>-<version>.json` | Committed per-version parse of the binary's `-help` pages |
+| `data/cli-source-check-<product>-<version>.json` | Committed help-vs-source cross-check at the newest version of each product |
 
 ## How to re-run
 
@@ -69,6 +76,94 @@ python3 RFCS/04-provider-feature-availability/scripts/build-report.py
   (gitignored); aws dumps are never kept. `build-matrix.py` uses only the
   digests; its `DOCUMENTED` overlay (source-verified emission boundaries) is
   hand-maintained and flags any observation that contradicts it.
+
+## CLI command/flag surface sweep
+
+Enumerates every command, subcommand and flag that `terraform` / `tofu`
+document in their `-help` output, per version, to answer "which flags can a
+caller pass to which binary at which version" (input for the cdk-terrain
+unknown-option work in PR #513 — see `PROPOSAL.md`, "CLI command/flag
+surface").
+
+### How to re-run
+
+```bash
+RFCS/04-provider-feature-availability/scripts/cli-sweep.sh          # installs CLIs via mise, parses -help (idempotent)
+python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-matrix.py
+python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-report.py
+```
+
+- **Version selection:** the first *and* last stable patch of every minor
+  line, Terraform ≥ 1.5.7 and OpenTofu ≥ 1.6.0, from the same indexes as
+  `sweep.sh` (`releases.hashicorp.com/terraform/index.json`,
+  `get.opentofu.org/tofu/api.json`). New commands/flags ship in minors, but
+  both products have changed CLI surface in patches (e.g. Terraform
+  `providers lock -test-directory` arrived in a 1.14.x patch: listed at
+  1.14.9, absent at 1.14.0), so
+  the last patch of each line catches patch-level additions and removals at
+  ~2 binaries per minor (24 Terraform + 16 OpenTofu today) instead of every
+  release. A new patch therefore replaces nothing — it adds a column and the
+  previous "last patch" stays. Terraform 1.6.0 is swept as is: its
+  expired-key problem only breaks provider installs, not `-help`.
+- **Binaries:** `mise install <product>@<v>`, then the binary path is
+  resolved once with `mise exec <product>@<v> -- sh -c 'command -v <exe>'`
+  and run directly for the ~50 `-help` calls per version (cwd is an empty dir
+  under `$TMPDIR/cli-surface-sweep`, so neither the repo `mise.toml` nor any
+  configuration applies; `CHECKPOINT_DISABLE=1`, `TF_CLI_ARGS` unset).
+  `MISE_DATA_DIR` defaults to `$TMPDIR/cli-surface-sweep/mise`; zip download
+  fallback logs `MISE-FALLBACK`. `SWEEP_PARALLELISM` defaults to 4 (no shared
+  plugin cache is involved). A full run from a warm mise cache takes ~25 s.
+- **Walk:** `<bin> -help` → every listed command ("Main commands" and "All
+  other commands") → `<bin> <cmd> -help` → every "Subcommands:" entry,
+  recursively (depth ≤ 3: `state *`, `workspace *`, `providers *`,
+  `metadata *`). `stacks` (Terraform ≥ 1.13) is recorded but not walked: its
+  help downloads and runs the separately versioned HCP Terraform stacks
+  plugin.
+- **Parser (`scripts/cli_help.py`):** explicit and line-oriented — column-0
+  lines are section headings; indented `-flag[=X| X]  description` lines at
+  the section's flag indent are flags (`switch` / `bool` when shown as
+  `=true|false` / `value`), comma-separated flag tokens are aliases, deeper
+  lines are continuations, `deprecated` / `legacy` / `will be removed` in
+  the description are deprecation markers, and flags that appear only in the
+  usage line (`providers schema -json`) are recorded with section `Usage`.
+  Two help-delegation patterns are modelled: apply/destroy pages that say
+  "see `terraform plan -help`" inherit the plan page's "Plan Customization
+  Options", and Terraform's destroy page ("alias for: terraform apply
+  -destroy") inherits apply's flags (`via` = `plan-reference` /
+  `apply-reference` in the matrix). Every other unmatched line is logged as
+  `UNPARSED <product> <version> '<cmd>': …` and kept in the JSON's
+  `unparsed` map; the remaining ones are prose (`-state, state-out, and
+  -backup are legacy options …`, "see terraform plan -help").
+- **Source cross-check (`scripts/cli-source-check.py`):** at the newest swept
+  version of each product, reads `commands.go` (all registered and
+  experimental commands, `HiddenCommands`) and follows `internal/command/<cmd>.go`
+  → `arguments.Parse*/Bind*` → flag-set helpers (`extendedFlagSet`,
+  `ParseView`, `Meta.process`; OpenTofu `BindView`/`BindOperation`/
+  `BindVars`/`BindState`/`BindBackend*`, with their bit-mask guards
+  evaluated) for plan, apply, destroy, init and the other commands cdktn
+  runs. Flags accepted by the parser but missing from help are recorded as
+  `hidden_in_source`. Needs the reference clones (`REF_TERRAFORM`,
+  `REF_OPENTOFU`, default `~/cdktn/ref-terraform` / `~/cdktn/ref-opentofu`;
+  blobless clones are fine); skipped when absent.
+- **Caching / SKIP:** a version is skipped when
+  `data/cli-surface-<product>-<version>.json` exists (and the source check
+  when its output exists). Delete a file or use single-version mode
+  (`scripts/cli-sweep.sh <product> <version> [...]`) to re-sweep.
+- **Committed:** `data/cli-surface-*.json`, `data/cli-source-check-*.json`,
+  `cli-matrix.json`, `cli-report.html`. `build-cli-matrix.py` prints the
+  product-only lists used in `PROPOSAL.md`; `CDKTN_EMITTED` in it lists the
+  flags cdk-terrain passes to the binary (update it when cli-core changes).
+
+**Result (Terraform 1.5.7–1.17.0, OpenTofu 1.6.0–1.13.2):** 54 commands and
+552 command × flag pairs. Product-only: 5 Terraform-only commands (`query`,
+`modules`, `stacks`, `state identities`, hidden `rpcapi`) and 3
+OpenTofu-only hidden aliases (`state ls` / `move` / `remove`); 24
+Terraform-only and 51 OpenTofu-only command × flag pairs once OpenTofu's
+"view" flags (`-concise`, `-consolidate-*`, `-deprecation`, `-json-into`,
+`-lint`, `-show-sensitive`, …, listed on every command since 1.13) are set
+aside (28 / 322 including them). The source check finds 25 Terraform and 14
+OpenTofu flags that are accepted but not in help. Every flag cdktn emits is
+accepted by every swept version of both products.
 
 ## Prebuilt-provider collision sweep
 

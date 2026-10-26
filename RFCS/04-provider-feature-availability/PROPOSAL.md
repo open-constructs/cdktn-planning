@@ -2,9 +2,12 @@
 
 Status: **proposed** · Companion dataset (`features-matrix.json`), interactive
 report (`report.html`) and sweep tooling (`scripts/`) live next to this file —
-the same shape as `tools/generate-function-bindings/function-availability`,
+the same shape as [`../03-function-availability`](../03-function-availability/)
+(copied into cdk-terrain as `tools/generate-function-bindings/function-availability`),
 but sweeping `<binary> providers schema -json` instead of
-`metadata functions -json`.
+`metadata functions -json`. A second dataset (`cli-matrix.json`,
+`cli-report.html`) covers the CLI command/flag surface — see
+[CLI command/flag surface](#cli-commandflag-surface).
 
 ## Problem
 
@@ -301,6 +304,212 @@ author can say "this must work on Terraform 1.9 *and* OpenTofu 1.8"; only a
 synth-time check against the declared range catches "works on my machine,
 breaks for the OpenTofu half of my users" before release.
 
+## CLI command/flag surface
+
+`scripts/cli-sweep.sh` parses `<binary> [cmd [sub]] -help` at the first and
+last stable patch of every minor line (24 Terraform binaries 1.5.7 → 1.17.0,
+16 OpenTofu binaries 1.6.0 → 1.13.2) into `data/cli-surface-*.json`;
+`build-cli-matrix.py` merges them into `cli-matrix.json` and
+`build-cli-report.py` renders `cli-report.html`. Method, parser rules and
+caveats are in `README.md` ("CLI command/flag surface sweep"). Two caveats
+matter for reading the numbers:
+
+- **Help-listed ≠ accepted.** The sweep sees what help documents. Both
+  products accept flags their help omits (Terraform `plan -json`, legacy
+  `-state-out`/`-backup`, `-no-color` stripped by `Meta.process`), and
+  OpenTofu 1.13 switched to help generated from flag definitions, so many
+  flags "appear" in 1.13 that older parsers already accepted. The source
+  cross-check (`data/cli-source-check-*.json`) records, for the newest
+  version of each product, what the parser accepts but help hides.
+- **"View family".** OpenTofu registers its output/diagnostic flags
+  (`-no-color`, `-compact-warnings`, `-concise`, `-consolidate-warnings`,
+  `-consolidate-errors`, `-deprecation`, `-json`, `-json-into`, `-lint`,
+  `-show-sensitive`, `-input`) through one `BindView` helper and, since
+  1.13, lists them on nearly every command. They are tagged
+  `family: "view"` and counted separately.
+
+### Totals
+
+| | Terraform | OpenTofu |
+| --- | --- | --- |
+| swept versions | 24 | 16 |
+| product-only commands | 5 (`query` 1.14, `modules` 1.10, `stacks` 1.13 — external plugin, `state identities` 1.12, hidden `rpcapi`) | 3 hidden aliases (`state ls`, `state move`, `state remove`) |
+| product-only command × flag pairs (of 552) | 28 (24 excl. view family) | 322 (51 excl. view family) |
+| flags accepted but hidden from help (newest version, checked commands) | 25 | 14 |
+| commands registered but hidden from help | 7 (`env *`, `push`, `rpcapi`) + experimental-build-only `cloud`, `state migrate`, `test cleanup` | 9 (`env *`, `push`, `state ls/move/remove`) |
+| global options | `-chdir`, `-help`, `-version` (both) | + `-install-autocomplete`, `-uninstall-autocomplete` listed (Terraform accepts both too via `mitchellh/cli` `Autocomplete: true` in `main.go`, unlisted) |
+
+### Key product-only commands and flags
+
+Terraform-only (help-listed; first swept version that lists it):
+
+| Command / flag | Since | Note |
+| --- | --- | --- |
+| `query` (+ `-generate-config-out`, `-json`, `-var`, `-var-file`), `validate -query` | 1.14.0 | list resources / `.tfquery.hcl` |
+| `query -policies` | 1.17.0 | |
+| `plan` / `apply` / `destroy` `-minimal-refresh` | 1.17.0 | apply/destroy via the plan-options reference |
+| `console -scope`, `graph -format` | 1.16.0 | |
+| `init -state-provider-lock-file` | 1.16.0 | pluggable state storage |
+| `init -enable-pluggable-state-storage-experiment` | 1.15.0 | experimental |
+| `init -create-default-workspace` | 1.15.x only | gone from help in 1.16.0 |
+| `state identities` (`-id`, `-state`, `-json`) | 1.12.0 | resource identity |
+| `modules` (`-json` 1.11, `-var`/`-var-file` 1.15) | 1.10.0 | |
+| `test -parallelism` 1.12, `test -cloud-run` 1.6, `test -junit-xml` | | |
+| `console -plan` | 1.7.0 | |
+| `providers lock -enable-plugin-cache` 1.8, `providers mirror -lock-file` 1.9, `providers lock -test-directory` 1.14.x patch | | |
+| hidden in source at 1.17.0: `plan`/`apply`/`destroy` `-json`, `-invoke` (actions), `-allow-deferral` (deferred actions), `-policies`; `init -policies`, `-target`, `-cloud` | | not in help |
+
+OpenTofu-only (help-listed, excluding the view family):
+
+| Command / flag | Since | Note |
+| --- | --- | --- |
+| `plan`/`apply`/`destroy`/`refresh` `-exclude` | 1.9.0 | |
+| `-exclude-file`, `-target-file` | 1.10.0 | |
+| `apply`/`destroy` `-suppress-forget-errors` | 1.12.0 | `removed` blocks with `destroy = false` |
+| `show -config` 1.11, `show -module` 1.13, `show -state`/`-plan` (explicit target selection) 1.10 | | |
+| `providers lock -oci-mirror` | 1.13.0 | OCI registry mirrors |
+| `refresh -destroy`, `-refresh`, `-refresh-only`, `-replace`, `-target-file`, `-exclude-file`; `import -parallelism`; `state push -ignore-remote-version` | 1.13.0 | newly listed by the generated help (operation flags bound on refresh/import) |
+| `-var` / `-var-file` on `output`, `show`, `state list/show`, `untaint`, `force-unlock`, `workspace *` | 1.8.0 (`login`, `workspace show` 1.13) | early static evaluation |
+| view family: `-concise` (plan 1.7), `-consolidate-warnings`/`-errors` and `-show-sensitive` (1.9), `-deprecation` (1.10), `-json-into` (1.12), `-lint` (1.13) | | listed on most commands from 1.13 |
+
+### Notable recent changes
+
+- **Terraform 1.16:** `console -scope`, `graph -format`,
+  `init -state-provider-lock-file`; `init -create-default-workspace`
+  (1.15) disappears.
+- **Terraform 1.17:** `plan`/`apply`/`destroy -minimal-refresh`,
+  `query -policies`; the source also registers `-policies` on plan/apply/init
+  without listing it.
+- **OpenTofu 1.13:** help is generated from the flag definitions — every
+  command now documents the view family and its real operation flags
+  (e.g. `refresh` lists `-target-file`/`-exclude-file`/`-replace`), `destroy`
+  lists its own flags instead of pointing at `plan -help`, and the legacy
+  `-state`/`-state-out`/`-backup` flags vanish from help (they are
+  `SetHidden(true)`, still accepted — the matrix shows them as "gone from
+  help" plus "hidden in source"). New: `-lint`, `providers lock
+  -oci-mirror`, `show -module`.
+
+### Help vs source disagreements (newest versions)
+
+- Terraform `plan`/`apply`/`destroy`: `-json`, `-invoke`, `-allow-deferral`,
+  `-policies` are parsed (`arguments.extendedFlagSet` / `ParsePlan`) but
+  undocumented; `-state-out` and `-backup` are only mentioned in prose.
+  `apply` and `destroy` help documents only its own flags and points at
+  `terraform plan -help` (destroy: "alias for terraform apply -destroy"), so
+  `-target`, `-replace`, `-refresh-only`, `-minimal-refresh` on apply are
+  "accepted via reference" (`via: plan-reference`), not listed.
+- Terraform `init`: `-cloud`, `-compact-warnings`, `-policies`, `-target`
+  hidden; `providers lock`/`providers schema` accept `-no-color`
+  (`Meta.process`) without listing it; `version -v`/`-version` hidden aliases.
+- OpenTofu: `-cloud` on init, `-state`/`-state-out`/`-backup` (now hidden),
+  `output -state`; `destroy` help (alias of `apply -destroy`) implies `-lint`,
+  but `BindApplyDestroy` calls `bindApply(cli, false)`, which drops the lint
+  view flag — `tofu destroy -lint` is not accepted.
+- Apart from that `-lint` case, no help-listed flag of the checked commands
+  is missing from the source in either product.
+
+### Relation to cdk-terrain PR #513 (reject unknown options)
+
+[open-constructs/cdk-terrain#513](https://github.com/open-constructs/cdk-terrain/pull/513)
+(open, fixes #168) adds `rejectUnknownOptions`
+(`packages/cdktn-cli/src/bin/unknown-options.ts`) as a global yargs
+middleware: it compares the parsed `argv` keys with the current command's
+`getOptions().key` and aliases (kebab and camel case), always accepts
+`--color`/`--no-color`/`--get-yargs-completions`, ignores keys that only
+came from `CDKTF_*` environment variables (the CLI calls `.env("CDKTF")`,
+which is why `.strictOptions()` was not usable), skips the `*` catch-all
+command, and throws `Errors.Usage("Unknown argument: …")` before the handler
+runs. It drops the per-command `.strict()` on `init`/`login` in favour of
+the middleware and declares the previously undeclared
+`synth --show-performance-info`.
+
+**How cdktn passes options to terraform/tofu today** (cdk-terrain `main`):
+there is no pass-through. The binary is `TERRAFORM_BINARY_NAME` (default
+`terraform`); every flag is a literal built in `@cdktn/cli-core`
+(`models/terraform-cli.ts`, `models/deploy-machine.ts`) or
+`@cdktn/provider-schema`, mostly derived from declared cdktn options:
+
+| cdktn option / situation | Binary invocation |
+| --- | --- |
+| `deploy`/`diff`/`destroy` `--migrate-state`; provider upgrades | `init [-upgrade] [-no-color] [-migrate-state]` |
+| lock-file update (unless `--skip-provider-lock`) | `providers lock -platform=linux_amd64 [-no-color]` |
+| `diff` | `plan -input=false [-generate-config-out=…] [-out plan] [-destroy] [-refresh-only] [-parallelism=N] [-no-color] -var=… -var-file=…` |
+| `deploy` | `apply [-auto-approve] [-refresh-only] [-no-color] [-parallelism=N] -var=… -var-file=…` |
+| `destroy` | `destroy [-auto-approve] [-no-color] [-parallelism=N] -var=… -var-file=…` |
+| `--terraform-parallelism` | `-parallelism=N` on plan/apply/destroy |
+| `output` / `deploy --outputs-file` | `output -json` |
+| `get` | `init`, `providers schema -json`, `version -json`, `get` |
+
+`createAndStartDeployService` / `createAndStartDestroyService` accept an
+`extraOptions: string[]` that is spread into the argv, but no caller sets it
+(always `[]`). `cli-matrix.json` → `cdktn_emitted` checks each emitted flag:
+**all 28 are accepted by every swept version of both products**
+(`providers lock -no-color` is source-verified — help lists it only on
+OpenTofu ≥ 1.13), so the CLI needs no per-version gating today.
+
+**What #513 rejects, per product and version.** Because nothing is
+forwarded, #513 cannot reject a flag that used to reach the binary. Every
+terraform-style flag a user types was already ignored before #513 — the
+footgun from #168 — and is now an error:
+
+| User types | Before #513 | After #513 | Would the binary accept it? |
+| --- | --- | --- | --- |
+| `cdktn deploy --target=aws_instance.a` | silently applies **everything** | `Unknown argument: target` | both, all versions (apply via plan reference) |
+| `cdktn deploy --replace=…` | silently ignored | rejected | both, all versions |
+| `cdktn deploy --exclude=…` | ignored | rejected | OpenTofu ≥ 1.9 only |
+| `cdktn diff --minimal-refresh` | ignored | rejected | Terraform ≥ 1.17 only |
+| `cdktn deploy --lock-timeout=60s` | ignored | rejected | both, all versions |
+| `cdktn deploy --concise` / `--show-sensitive` | ignored | rejected | OpenTofu only (apply: ≥ 1.10 / ≥ 1.9) |
+| `cdktn deploy -target=aws_instance.a` (single dash) | ignored | `Unknown arguments: t, a, r, g, e` (yargs 17.7 reads it as a short-option group) | — |
+| `cdktn deploy -- -target=…` | the token becomes a stack name | unchanged | — (never forwarded) |
+
+So "falsely rejected" pass-through flags do not exist today, and nothing is
+"falsely accepted" either: the only accepted options are cdktn's own, all
+of which map onto flags every swept binary accepts. The real escape hatch is
+untouched by #513: `TF_CLI_ARGS` / `TF_CLI_ARGS_plan` / `TF_CLI_ARGS_apply`
+(honoured by both products; cli-core forwards `process.env`), e.g.
+`TF_CLI_ARGS_apply="-target=aws_instance.a" cdktn deploy`. That path is
+validated by nobody — a flag the selected binary does not know fails inside
+the binary after synth.
+
+**Recommendation.**
+
+1. Merge #513 as is; it is correct for cdktn's own option surface. Two small
+   follow-ups: (a) when an unknown key matches a terraform/tofu flag of the
+   mapped command in `cli-matrix.json` (or is a single-letter group from a
+   single-dash spelling), say so in the error: "`--target` is a Terraform
+   flag; cdktn does not forward binary flags — use `TF_CLI_ARGS_apply`"; (b)
+   keep the catch-all and env-var exemptions.
+2. Do not add a generic pass-through. If one is added (wiring the unused
+   `extraOptions`, or forwarding argv after `--`), or for the
+   `TF_CLI_ARGS_*` env vars, validate against a **generated allowlist**:
+   `build-cli-matrix.py` → `terraform-cli-flags.generated.ts` in
+   `@cdktn/cli-core`, `{ [command]: { [flag]: { terraform?: ">=1.5.7",
+   opentofu?: ">=1.9.0", takesValue, hidden? } } }` — the same shape and
+   regeneration flow as `function-availability.generated.ts`
+   (`pnpm update-cli-matrix` appending new releases forward-only). Use the
+   help-listed set plus `hidden_in_source` flags (real but undocumented)
+   and the `plan-reference`/`apply-reference` inheritance.
+3. **When to validate:** at command start, before synth (the point of #168
+   is not to pay for a synth on a typo), against the binary detected by the
+   existing `terraformCli()` probe (`@cdktn/commons/src/terraform.ts`, name +
+   version).
+   - **error** when the detected product/version is known and the flag is
+     absent for it (it would fail in the binary anyway, but after synth and
+     with a less clear message);
+   - **warn** when the flag is accepted by the detected binary but not
+     across the project's `targetVersions` range (portability, mirroring the
+     RFC-03 function check), or when it is `hidden_in_source`
+     (undocumented);
+   - **warn only** (never block) when the probe fails or the binary is newer
+     than the matrix — a new minor may add the flag.
+4. Prefer first-class, gated cdktn options for the frequently requested
+   flags over a pass-through: `--target` and `--replace` (both products, all
+   supported versions), `--exclude` (OpenTofu ≥ 1.9: error on Terraform),
+   `--minimal-refresh` (Terraform ≥ 1.17: error on OpenTofu or older
+   Terraform), `--lock-timeout`. Each one is a one-line lookup in the
+   generated allowlist.
+
 ## Maintenance
 
 New CLI minors append to the dataset the same way `pnpm
@@ -311,3 +520,10 @@ existing digests are skipped). The documented overlay in
 ships, and `build-matrix.py` fails loudly if observation ever contradicts the
 overlay (e.g. OpenTofu ships list resources — the `!!` sanity check fires and
 the matrix must be re-verified before regeneration).
+
+The CLI surface dataset is maintained the same way: `scripts/cli-sweep.sh`
+skips versions that already have a `data/cli-surface-*.json`, so a new patch
+or minor adds one dump per product; re-run `build-cli-matrix.py` and
+`build-cli-report.py`, review any `UNPARSED` lines in the sweep log, and
+re-run the source check for the new newest version (delete the old
+`data/cli-source-check-*.json` first if it should be replaced).
