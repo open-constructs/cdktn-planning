@@ -1,4 +1,4 @@
-# function-availability
+# 03-function-availability
 
 Dataset, comparison report and proposal for validating built-in Terraform /
 OpenTofu function usage against the selected CLI product and version.
