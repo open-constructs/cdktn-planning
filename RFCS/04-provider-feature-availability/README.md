@@ -17,23 +17,58 @@ stores) in CDKTN — sibling of
 | `fixture/main.tf.json` | Pinned small providers exercising each feature (all CLI versions) |
 | `fixture/aws.tf.json` | `hashicorp/aws` 6.14.1 — sole fixture for identity / list resources / cloud actions (CLI ≥ 1.12 only) |
 
-## Rebuild
+## How to re-run
+
+Requirements: `bash`, `python3`, `curl`, [`mise`](https://mise.jdx.dev),
+network access to the Terraform and OpenTofu registries (`unzip` only for
+the fallback path).
 
 ```bash
-scripts/sweep.sh           # downloads CLI binaries, inits fixture, digests schemas (idempotent)
-python3 scripts/build-matrix.py
-python3 scripts/build-report.py
+RFCS/04-provider-feature-availability/scripts/sweep.sh   # installs CLIs, inits fixtures, digests schemas (idempotent)
+python3 RFCS/04-provider-feature-availability/scripts/build-matrix.py
+python3 RFCS/04-provider-feature-availability/scripts/build-report.py
 ```
 
-The sweep covers every minor-boundary release (first stable patch of each
-minor) of Terraform ≥ 1.5.7 and OpenTofu ≥ 1.6.0 plus the overall latest patch
-of each product — `providers schema -json` keys are fixed struct fields per
-CLI minor, so patches cannot change emission. One substitution: the Terraform
-1.6 column uses **1.6.6**, because 1.6.0 can no longer install any provider
-(`openpgp: key expired`, fixed in later 1.6.x patches). Single versions can be
-(re)swept with `scripts/sweep.sh <product> <version>`; `SWEEP_PARALLELISM`
-defaults to 1 because a shared `TF_PLUGIN_CACHE_DIR` is not safe for
-concurrent `init` (parallel first runs corrupt the cache).
+- **Version selection:** from the official indexes
+  (`https://releases.hashicorp.com/terraform/index.json`,
+  `https://get.opentofu.org/tofu/api.json`), every minor-boundary release
+  (first stable patch of each minor, normally `X.Y.0`) of Terraform ≥ 1.5.7
+  and OpenTofu ≥ 1.6.0, plus the overall latest stable patch of each product.
+  `providers schema -json` keys are fixed struct fields per CLI minor, so
+  patches cannot change emission. A new minor line therefore adds its `.0`
+  column, and a new latest patch adds a column; earlier "latest" columns
+  (e.g. Terraform 1.15.6) stay as committed digests. One substitution: the
+  Terraform 1.6 column uses **1.6.6**, because 1.6.0 can no longer install any
+  provider (`openpgp: key expired`, fixed in later 1.6.x patches) — the
+  full-mode selection maps 1.6.0 → 1.6.6 automatically.
+- **Two passes:** the `core` fixture (`fixture/main.tf.json`, small providers)
+  at every selected version, then the `aws` fixture (`fixture/aws.tf.json`,
+  `hashicorp/aws` 6.14.1) only at selected versions ≥ 1.12.0. The core fixture
+  pins exact versions except `vault ~> 5.0`; the resolved provider versions
+  are recorded per digest (`provider_selections`).
+- **Binaries:** each version is installed with
+  `mise install terraform@<v>` / `mise install opentofu@<v>` and every command
+  (`init`, `providers schema -json`, `version -json`) runs as
+  `mise exec terraform@<v> -- terraform ...` (or `opentofu@<v> -- tofu ...`)
+  from a per-version work dir under `$TMPDIR/provider-feature-sweep`, outside
+  the repo, so the repo `mise.toml` does not apply. `MISE_DATA_DIR` defaults
+  to `$TMPDIR/provider-feature-sweep/mise` (set it to reuse your normal mise
+  cache). If mise cannot install a version, the script logs `MISE-FALLBACK`
+  and downloads the release zip for that version only. Providers come from a
+  shared `TF_PLUGIN_CACHE_DIR` (`$TMPDIR/provider-feature-sweep/plugin-cache`).
+- **Caching / SKIP:** a version is skipped when its digest
+  `data/schema-digest-[aws-]<product>-<version>.json` already exists, so a
+  re-run only sweeps new columns. Delete a digest (or use single-version mode)
+  to re-sweep it.
+- **Single versions:** `[FIXTURE=aws] scripts/sweep.sh <product> <version> [...]`.
+- **Parallelism:** `SWEEP_PARALLELISM` defaults to 1 because a shared
+  `TF_PLUGIN_CACHE_DIR` is not safe for concurrent `init` (parallel first runs
+  corrupt the cache).
+- **Committed:** `data/schema-digest-*.json`, `features-matrix.json`,
+  `report.html`. Raw dumps ≤ `RAW_KEEP_LIMIT_BYTES` (8 MB) go to `data/raw/`
+  (gitignored); aws dumps are never kept. `build-matrix.py` uses only the
+  digests; its `DOCUMENTED` overlay (source-verified emission boundaries) is
+  hand-maintained and flags any observation that contradicts it.
 
 ## Prebuilt-provider collision sweep
 

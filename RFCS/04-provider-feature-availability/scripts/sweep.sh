@@ -3,7 +3,8 @@
 #
 # For every minor-boundary release of Terraform (>= 1.5.7) and OpenTofu
 # (>= 1.6.0) plus the overall latest patch of each product, this script:
-#   1. downloads the CLI binary,
+#   1. installs the CLI via mise (`mise install terraform@<v>` /
+#      `opentofu@<v>`, run with `mise exec`; zip download fallback),
 #   2. runs `<binary> init` against fixture/main.tf.json (small providers that
 #      exercise provider functions, ephemeral resources, write-only attributes
 #      and actions),
@@ -24,6 +25,9 @@ RAW="$DATA/raw"
 WORK="${TMPDIR:-/tmp}/provider-feature-sweep"
 CACHE="$WORK/plugin-cache"
 mkdir -p "$DATA" "$RAW" "$WORK" "$CACHE"
+# CLI binaries are installed by mise into a throwaway data dir under $WORK
+# (override with MISE_DATA_DIR to share an existing mise install cache)
+export MISE_DATA_DIR="${MISE_DATA_DIR:-$WORK/mise}"
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
@@ -78,7 +82,7 @@ process_one() {
     return 0
   fi
 
-  local url bin zip dir
+  local url exe zip dir
   dir="$WORK/${product}-${version}"
   rm -rf "$dir"
   mkdir -p "$dir"
@@ -86,19 +90,29 @@ process_one() {
 
   if [ "$product" = "terraform" ]; then
     url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/terraform"
+    exe=terraform
   else
     url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/tofu"
+    exe=tofu
   fi
 
-  if ! curl -fsSL -o "$zip" "$url"; then
-    echo "FAIL-DOWNLOAD $product $version"
-    return 1
-  fi
-  if ! unzip -oq "$zip" -d "$dir"; then
-    echo "FAIL-UNZIP $product $version"
-    return 1
+  # install + select the CLI with mise (tool names match $product); fall back
+  # to the release zip only for versions mise cannot install. All commands
+  # run with cwd=$dir (outside the repo), so no project mise.toml applies.
+  local -a bin
+  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1; then
+    bin=(mise exec "${product}@${version}" -- "$exe")
+  else
+    echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")"
+    if ! curl -fsSL -o "$zip" "$url"; then
+      echo "FAIL-DOWNLOAD $product $version"
+      return 1
+    fi
+    if ! unzip -oq "$zip" -d "$dir"; then
+      echo "FAIL-UNZIP $product $version"
+      return 1
+    fi
+    bin=("$dir/$exe")
   fi
 
   if [ "$fixture" = "core" ]; then
@@ -110,7 +124,7 @@ process_one() {
   local attempt
   for attempt in 1 2; do
     if (cd "$dir" && TF_PLUGIN_CACHE_DIR="$CACHE" TF_IN_AUTOMATION=1 \
-        "$bin" init -backend=false -input=false -no-color > init.log 2>&1); then
+        "${bin[@]}" init -backend=false -input=false -no-color > init.log 2>&1); then
       break
     fi
     if [ "$attempt" = 2 ]; then
@@ -121,11 +135,11 @@ process_one() {
   done
 
   local raw_schema="$dir/schema.json"
-  if ! (cd "$dir" && "$bin" providers schema -json > "$raw_schema" 2> schema-err.log); then
+  if ! (cd "$dir" && "${bin[@]}" providers schema -json > "$raw_schema" 2> schema-err.log); then
     echo "FAIL-SCHEMA $product $version: $(tail -c 300 "$dir/schema-err.log")"
     return 1
   fi
-  (cd "$dir" && "$bin" version -json > version.json 2>/dev/null) || echo '{}' > "$dir/version.json"
+  (cd "$dir" && "${bin[@]}" version -json > version.json 2>/dev/null) || echo '{}' > "$dir/version.json"
 
   if ! python3 "$ROOT/scripts/digest.py" "$raw_schema" "$dir/version.json" "$product" "$version" > "$out.tmp"; then
     echo "FAIL-DIGEST $product $version"

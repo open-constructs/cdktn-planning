@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Baseline script that produced the initial function-availability dataset.
 #
-# Downloads every stable Terraform (>= 1.5.7) and OpenTofu release binary for
-# the current machine, runs `<binary> metadata functions -json`, and stores the
+# Installs every stable Terraform (>= 1.5.7) and OpenTofu release via mise
+# (`mise install terraform@<v>` / `opentofu@<v>`, zip download fallback), runs `<binary> metadata functions -json`, and stores the
 # output as data/functions-<product>-<version>.json next to this directory.
 #
 # data/ is not committed. Versions already covered by the committed
@@ -16,6 +16,9 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="$ROOT/data"
 WORK="${TMPDIR:-/tmp}/tf-func-matrix-work"
 mkdir -p "$DATA" "$WORK"
+# CLI binaries are installed by mise into a throwaway data dir under $WORK
+# (override with MISE_DATA_DIR to share an existing mise install cache)
+export MISE_DATA_DIR="${MISE_DATA_DIR:-$WORK/mise}"
 
 # "<product> <version>" lines already in the committed matrix
 KNOWN="$WORK/known-versions.txt"
@@ -70,30 +73,40 @@ process_one() {
     return 0
   fi
 
-  local url bin zip dir
+  local url exe zip dir
   dir="$WORK/${product}-${version}"
   mkdir -p "$dir"
   zip="$dir/pkg.zip"
 
   if [ "$product" = "terraform" ]; then
     url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/terraform"
+    exe=terraform
   else
     url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
-    bin="$dir/tofu"
+    exe=tofu
   fi
 
-  if ! curl -fsSL -o "$zip" "$url"; then
-    echo "FAIL-DOWNLOAD $product $version"
-    rm -rf "$dir"
-    return 1
+  # install + select the CLI with mise (tool names match $product); fall back
+  # to the release zip only for versions mise cannot install
+  local -a cli
+  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1; then
+    cli=(mise exec "${product}@${version}" -- "$exe")
+  else
+    echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")"
+    if ! curl -fsSL -o "$zip" "$url"; then
+      echo "FAIL-DOWNLOAD $product $version"
+      rm -rf "$dir"
+      return 1
+    fi
+    if ! unzip -oq "$zip" -d "$dir"; then
+      echo "FAIL-UNZIP $product $version"
+      rm -rf "$dir"
+      return 1
+    fi
+    cli=("$dir/$exe")
   fi
-  if ! unzip -oq "$zip" -d "$dir"; then
-    echo "FAIL-UNZIP $product $version"
-    rm -rf "$dir"
-    return 1
-  fi
-  if ! "$bin" metadata functions -json > "$out.tmp" 2>"$dir/stderr.log"; then
+  # run outside the repo so no project mise.toml is picked up
+  if ! (cd "$dir" && "${cli[@]}" metadata functions -json > "$out.tmp" 2>"$dir/stderr.log"); then
     echo "FAIL-METADATA $product $version: $(head -c 200 "$dir/stderr.log")"
     rm -f "$out.tmp"
     rm -rf "$dir"
