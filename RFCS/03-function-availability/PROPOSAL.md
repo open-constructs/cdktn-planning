@@ -19,10 +19,10 @@ synth output against whatever `terraform`/`tofu` binary they have:
   only finds out at `terraform plan` time, with an HCL-level error far removed
   from their CDK code.
 - Terraform and OpenTofu have **diverged**: OpenTofu added `base64gunzip`,
-  `cidrcontains`, `urldecode` (1.7) which Terraform doesn't have; Terraform
-  added `convert` (1.15) which OpenTofu doesn't have. `templatestring`,
-  `issensitive` and `ephemeralasnull` exist in both but were introduced at
-  different versions (TF 1.9/1.8/1.10 vs OpenTofu 1.7/1.7/1.11).
+  `cidrcontains`, `urldecode` (1.7) and the twelve `assume*` functions
+  (1.13) which Terraform doesn't have. `templatestring`, `issensitive`,
+  `ephemeralasnull` and `convert` exist in both but were introduced at
+  different versions (TF 1.9/1.8/1.10/1.15 vs OpenTofu 1.7/1.7/1.11/1.13).
 - The same divergence applies to features the bindings will grow when
   `functions.json` is regenerated from a newer binary.
 
@@ -44,7 +44,8 @@ the baseline needs encoding:
 | `issensitive` | ≥ 1.8.0 | ≥ 1.7.0 |
 | `templatestring` | ≥ 1.9.0 | ≥ 1.7.0 |
 | `ephemeralasnull` | ≥ 1.10.0 | ≥ 1.11.0 |
-| `convert` | ≥ 1.15.0 | — |
+| `convert` | ≥ 1.15.0 | ≥ 1.13.0 |
+| `assumeequal`, `assumenotnull`, `assumestringprefix`, `assume{list,map,set}length{,min,max}` (12) | — | ≥ 1.13.0 |
 | `base64gunzip` | — | ≥ 1.7.0 |
 | `cidrcontains` | — | ≥ 1.7.0 |
 | `urldecode` | — | ≥ 1.7.0 |
@@ -71,7 +72,8 @@ export const functionVersionConstraints: Record<
   issensitive: { terraform: ">=1.8.0", opentofu: ">=1.7.0" },
   templatestring: { terraform: ">=1.9.0", opentofu: ">=1.7.0" },
   ephemeralasnull: { terraform: ">=1.10.0", opentofu: ">=1.11.0" },
-  convert: { terraform: ">=1.15.0" },
+  convert: { terraform: ">=1.15.0", opentofu: ">=1.13.0" },
+  assumenotnull: { opentofu: ">=1.13.0" }, // + the other 11 assume* functions
   base64gunzip: { opentofu: ">=1.7.0" },
   cidrcontains: { opentofu: ">=1.7.0" },
   urldecode: { opentofu: ">=1.7.0" },
@@ -85,7 +87,7 @@ baseline functions. A missing product key means "not supported by this product
 at any version" (mirrors `TerraformFeatureVersionConstraints` semantics, which
 already produces the right error message for that case).
 
-The sweep does **not** need to run 120 binaries in CI on every regen: the
+The sweep does **not** need to run ~150 binaries in CI on every regen: the
 committed `functions-matrix.json` is the source of truth and only needs
 appending when a new minor of either product ships (a single
 `metadata functions -json` run against the new release).

@@ -139,5 +139,11 @@ OUT_DIR=RFCS/04-provider-feature-availability/data \
   node RFCS/04-provider-feature-availability/scripts/collision-sweep.js
 ```
 
+The verdict depends on the provider catalog/versions and the cdk-terrain
+sanitizers, not on the CLI release: any Terraform ≥ 1.8 only serializes the
+provider's schema, and `internal/command/jsonprovider` is unchanged from
+1.15 through 1.17.0. It is therefore not re-run when the CLI sweeps above
+add columns (it was not re-run in the October 2026 refresh).
+
 Raw schema dumps are not committed (they're large and fully rebuildable);
 only the manifest and results digests are.

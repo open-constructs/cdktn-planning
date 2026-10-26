@@ -63,10 +63,10 @@ provider-protocol features.
 
 ## Data: the comparison report
 
-`scripts/sweep.sh` downloads every minor-boundary release of both products
-(Terraform 1.5.7 → 1.15.x, OpenTofu 1.6.0 → 1.12.x), runs `init` +
-`providers schema -json` against two fixtures, and commits compact digests
-under `data/`:
+`scripts/sweep.sh` installs (via mise) every minor-boundary release of both
+products plus each product's latest patch (Terraform 1.5.7 → 1.17.0,
+OpenTofu 1.6.0 → 1.13.2), runs `init` + `providers schema -json` against two
+fixtures, and commits compact digests under `data/`:
 
 - **core** (all versions): small providers chosen per feature — `random`
   3.9.0 and `tls` 4.2.0 for ephemeral, `time` 0.13.0 and `local` 2.8.0 for
@@ -103,6 +103,16 @@ Key facts the data establishes:
    actions (5, including `aws_lambda_invoke`) from Terraform 1.14.0, absent
    under OpenTofu. Only `state_store_schemas` remains documented-only: no
    provider implements it because `state_store` is not GA in core.
+5. **The October 2026 refresh (Terraform 1.16.0 / 1.17.0, OpenTofu
+   1.13.0 / 1.13.2) changes no boundary.** Both new Terraform minors emit the
+   same per-provider top-level keys and aws counts as 1.15.6; OpenTofu 1.13
+   still emits no `list_resource_schemas`, `action_schemas` or
+   `state_store_schemas` (aws 6.14.1: 0 list resources / 0 actions vs 4 / 5
+   under Terraform). Terraform 1.16's computed nested blocks
+   (hashicorp/terraform#38305) are a `configschema` change only — the
+   `jsonprovider` block struct has no computed flag through 1.17.0, so it is
+   not visible in `providers schema -json`. The floating `vault ~> 5.0` pin
+   resolved to 5.13.0 for the new columns (5.9.0 before).
 
 ## Design
 
