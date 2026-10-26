@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Baseline script that produced the initial function-availability dataset.
+# Builds the function-availability dataset.
 #
-# Installs every stable Terraform (>= 1.5.7) and OpenTofu release via mise
-# (`mise install terraform@<v>` / `opentofu@<v>`, zip download fallback), runs `<binary> metadata functions -json`, and stores the
-# output as data/functions-<product>-<version>.json next to this directory.
+# For every stable Terraform (>= 1.5.7) and OpenTofu release this script:
+#   1. installs the CLI via mise (`mise install terraform@<v>` /
+#      `opentofu@<v>`, run with `mise exec`; zip download fallback),
+#   2. runs `<binary> metadata functions -json`,
+#   3. stores the output as data/functions-<product>-<version>.json.
 #
 # data/ is not committed. Versions already covered by the committed
 # functions-matrix.json are skipped (build-matrix.py reconstructs them from the
