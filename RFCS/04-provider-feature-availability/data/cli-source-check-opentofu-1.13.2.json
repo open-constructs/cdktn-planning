@@ -1,0 +1,1728 @@
+{
+ "product": "opentofu",
+ "version": "1.13.2",
+ "tag": "v1.13.2",
+ "commands": {
+  "source": [
+   "apply",
+   "console",
+   "destroy",
+   "env",
+   "env delete",
+   "env list",
+   "env new",
+   "env select",
+   "fmt",
+   "force-unlock",
+   "get",
+   "graph",
+   "import",
+   "init",
+   "login",
+   "logout",
+   "metadata",
+   "metadata functions",
+   "output",
+   "plan",
+   "providers",
+   "providers lock",
+   "providers mirror",
+   "providers schema",
+   "push",
+   "refresh",
+   "show",
+   "state",
+   "state list",
+   "state ls",
+   "state move",
+   "state mv",
+   "state pull",
+   "state push",
+   "state remove",
+   "state replace-provider",
+   "state rm",
+   "state show",
+   "taint",
+   "test",
+   "untaint",
+   "validate",
+   "version",
+   "workspace",
+   "workspace delete",
+   "workspace list",
+   "workspace new",
+   "workspace select",
+   "workspace show"
+  ],
+  "experimental_only": [],
+  "hidden_set": [
+   "env",
+   "internal-plugin",
+   "push"
+  ],
+  "in_source_not_in_help": [
+   "env",
+   "env delete",
+   "env list",
+   "env new",
+   "env select",
+   "push",
+   "state ls",
+   "state move",
+   "state remove"
+  ],
+  "in_help_not_in_source": []
+ },
+ "flags": {
+  "plan": {
+   "roots": [
+    "BindPlan"
+   ],
+   "source": [
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-detailed-exitcode",
+     "origin": "internal/command/arguments/plan.go:BindPlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-exclude",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-exclude-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-generate-config-out",
+     "origin": "internal/command/arguments/plan.go:BindPlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=path"
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-lint",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=all"
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "display": "=duration"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-out",
+     "origin": "internal/command/arguments/plan.go:BindPlan",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=path"
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "display": "=n"
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-show-sensitive",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar",
+     "display": "=statefile"
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-target-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-detailed-exitcode",
+    "-exclude",
+    "-exclude-file",
+    "-generate-config-out",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lint",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-out",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-detailed-exitcode",
+    "-exclude",
+    "-exclude-file",
+    "-generate-config-out",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lint",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-out",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-backup",
+    "-state",
+    "-state-out"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "apply": {
+   "roots": [
+    "BindApply"
+   ],
+   "source": [
+    {
+     "name": "-auto-approve",
+     "origin": "internal/command/arguments/apply.go:bindApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-exclude",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-exclude-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-lint",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=all"
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "display": "=duration"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "display": "=n"
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-show-sensitive",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar",
+     "display": "=statefile"
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-suppress-forget-errors",
+     "origin": "internal/command/arguments/apply.go:bindApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-target-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-auto-approve",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-exclude",
+    "-exclude-file",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lint",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-suppress-forget-errors",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-auto-approve",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-exclude",
+    "-exclude-file",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lint",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-suppress-forget-errors",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-backup",
+    "-state",
+    "-state-out"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "destroy": {
+   "roots": [
+    "BindApplyDestroy"
+   ],
+   "source": [
+    {
+     "name": "-auto-approve",
+     "origin": "internal/command/arguments/apply.go:bindApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-backup",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-destroy",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-exclude",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-exclude-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "display": "=duration"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-parallelism",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "IntVar",
+     "display": "=n"
+    },
+    {
+     "name": "-refresh",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-refresh-only",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-replace",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-show-sensitive",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar",
+     "display": "=statefile"
+    },
+    {
+     "name": "-state-out",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-suppress-forget-errors",
+     "origin": "internal/command/arguments/apply.go:bindApply",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-target",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=resource"
+    },
+    {
+     "name": "-target-file",
+     "origin": "internal/command/arguments/extended.go:BindOperation",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=filename"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-auto-approve",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-exclude",
+    "-exclude-file",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-suppress-forget-errors",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-auto-approve",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-destroy",
+    "-exclude",
+    "-exclude-file",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lint",
+    "-lock",
+    "-lock-timeout",
+    "-no-color",
+    "-parallelism",
+    "-refresh",
+    "-refresh-only",
+    "-replace",
+    "-show-sensitive",
+    "-suppress-forget-errors",
+    "-target",
+    "-target-file",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": "apply",
+   "in_source_not_in_help": [
+    "-backup",
+    "-state",
+    "-state-out"
+   ],
+   "in_help_not_in_source": [
+    "-lint"
+   ],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "init": {
+   "roots": [
+    "BindInit"
+   ],
+   "source": [
+    {
+     "name": "-backend",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-backend-config",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=path"
+    },
+    {
+     "name": "-cloud",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": true,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-force-copy",
+     "origin": "internal/command/arguments/backend.go:BindBackendWithMigration",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-from-module",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=SOURCE"
+    },
+    {
+     "name": "-get",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-ignore-remote-version",
+     "origin": "internal/command/arguments/backend.go:BindBackend",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-input",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-lock",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-lock-timeout",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": false,
+     "kind": "DurationVar",
+     "display": "=duration"
+    },
+    {
+     "name": "-lockfile",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=MODE"
+    },
+    {
+     "name": "-migrate-state",
+     "origin": "internal/command/arguments/backend.go:BindBackendWithMigration",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-plugin-dir",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar"
+    },
+    {
+     "name": "-reconfigure",
+     "origin": "internal/command/arguments/backend.go:BindBackendWithMigration",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-show-sensitive",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-test-directory",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=path"
+    },
+    {
+     "name": "-upgrade",
+     "origin": "internal/command/arguments/init.go:BindInit",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-backend",
+    "-backend-config",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-force-copy",
+    "-from-module",
+    "-get",
+    "-ignore-remote-version",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lock",
+    "-lock-timeout",
+    "-lockfile",
+    "-migrate-state",
+    "-no-color",
+    "-plugin-dir",
+    "-reconfigure",
+    "-show-sensitive",
+    "-test-directory",
+    "-upgrade",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-backend",
+    "-backend-config",
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-force-copy",
+    "-from-module",
+    "-get",
+    "-ignore-remote-version",
+    "-input",
+    "-json",
+    "-json-into",
+    "-lock",
+    "-lock-timeout",
+    "-lockfile",
+    "-migrate-state",
+    "-no-color",
+    "-plugin-dir",
+    "-reconfigure",
+    "-show-sensitive",
+    "-test-directory",
+    "-upgrade",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-cloud"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers lock": {
+   "roots": [
+    "BindProvidersLock"
+   ],
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-fs-mirror",
+     "origin": "internal/command/arguments/providers_lock.go:BindProvidersLock",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=dir"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-net-mirror",
+     "origin": "internal/command/arguments/providers_lock.go:BindProvidersLock",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=url"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-oci-mirror",
+     "origin": "internal/command/arguments/providers_lock.go:BindProvidersLock",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=tmpl"
+    },
+    {
+     "name": "-platform",
+     "origin": "internal/command/arguments/providers_lock.go:BindProvidersLock",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=os_arch"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-fs-mirror",
+    "-json",
+    "-json-into",
+    "-net-mirror",
+    "-no-color",
+    "-oci-mirror",
+    "-platform",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-fs-mirror",
+    "-json",
+    "-json-into",
+    "-net-mirror",
+    "-no-color",
+    "-oci-mirror",
+    "-platform",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "providers schema": {
+   "roots": [
+    "BindProvidersSchema"
+   ],
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-no-color",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-no-color",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "output": {
+   "roots": [
+    "BindOutput"
+   ],
+   "source": [
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-json-into",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringVar",
+     "display": "=out.json"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-raw",
+     "origin": "internal/command/arguments/output.go:BindOutput",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-show-sensitive",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-state",
+     "origin": "internal/command/arguments/extended.go:BindState",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar",
+     "display": "=statefile"
+    },
+    {
+     "name": "-var",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": " 'foo=bar'"
+    },
+    {
+     "name": "-var-file",
+     "origin": "internal/command/arguments/extended.go:BindVars",
+     "guards": [],
+     "hidden": false,
+     "kind": "RawFlags",
+     "display": "=filename"
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-json-into",
+    "-no-color",
+    "-raw",
+    "-show-sensitive",
+    "-var",
+    "-var-file"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-json-into",
+    "-no-color",
+    "-raw",
+    "-show-sensitive",
+    "-var",
+    "-var-file"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-state"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  },
+  "version": {
+   "roots": [
+    "BindVersion"
+   ],
+   "source": [
+    {
+     "name": "-chdir",
+     "origin": "internal/command/arguments/version.go:BindVersion",
+     "guards": [],
+     "hidden": true,
+     "kind": "StringVar"
+    },
+    {
+     "name": "-compact-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-concise",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-errors",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-consolidate-warnings",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar",
+     "display": "=false"
+    },
+    {
+     "name": "-deprecation",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "StringArrayVar",
+     "display": "=module:m"
+    },
+    {
+     "name": "-json",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-no-color",
+     "origin": "internal/command/arguments/view.go:BindView",
+     "guards": [],
+     "hidden": false,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-v",
+     "origin": "internal/command/arguments/version.go:BindVersion",
+     "guards": [],
+     "hidden": true,
+     "kind": "BoolVar"
+    },
+    {
+     "name": "-version",
+     "origin": "internal/command/arguments/version.go:BindVersion",
+     "guards": [],
+     "hidden": true,
+     "kind": "BoolVar"
+    }
+   ],
+   "help_listed": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-no-color"
+   ],
+   "help_effective": [
+    "-compact-warnings",
+    "-concise",
+    "-consolidate-errors",
+    "-consolidate-warnings",
+    "-deprecation",
+    "-json",
+    "-no-color"
+   ],
+   "help_refers_to": null,
+   "in_source_not_in_help": [
+    "-chdir",
+    "-v",
+    "-version"
+   ],
+   "in_help_not_in_source": [],
+   "in_source_only_via_plan_reference": [],
+   "unresolved_calls": []
+  }
+ }
+}
