@@ -28,7 +28,9 @@ Data backed Proposals for improvements to the CDK Terrain framework.
 [`04-provider-feature-availability/`](04-provider-feature-availability/) — the Provider Feature availability matrix was built from data sweeps on
 every minor-boundary binary release; the same directory carries the CLI
 command/flag surface sweep (`cli-matrix.json`, `cli-report.html`) comparing
-Terraform and OpenTofu commands and flags across versions.
+Terraform and OpenTofu commands and flags across versions — both what help
+lists and what each version's flag parser accepts (read from source,
+verified by probing the binaries).
 
 - [x] Report made available at [cdktn.io/provider-feature-matrix](https://cdktn.io/provider-feature-matrix.html).
 - [ ] Proposal implemention pending

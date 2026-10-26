@@ -8,7 +8,8 @@ stores) in CDKTN — sibling of [`../03-function-availability`](../03-function-a
 `tools/generate-function-bindings/function-availability/`), but sweeping
 `providers schema -json` instead of `metadata functions -json`. It also
 carries the [CLI command/flag surface sweep](#cli-commandflag-surface-sweep)
-(`<binary> [cmd [sub]] -help` across versions).
+(`<binary> [cmd [sub]] -help`, the Go flag parsers and a binary probe across
+versions).
 
 | File | Purpose |
 | --- | --- |
@@ -19,10 +20,11 @@ carries the [CLI command/flag surface sweep](#cli-commandflag-surface-sweep)
 | `data/raw/` | Full schema dumps (gitignored, rebuildable; aws dumps >100 MB are never retained) |
 | `fixture/main.tf.json` | Pinned small providers exercising each feature (all CLI versions) |
 | `fixture/aws.tf.json` | `hashicorp/aws` 6.14.1 — sole fixture for identity / list resources / cloud actions (CLI ≥ 1.12 only) |
-| `cli-matrix.json` | CLI surface matrix: per command, per command × flag and per global option, first/last swept version, removals, product-only items, source-only (hidden) flags, and the flags cdktn emits |
+| `cli-matrix.json` | CLI surface matrix: per command × flag a `listed` (help) and an `accepted` (parser) span plus a per-version status string, product-only items, an allowlist preview, and the flags cdktn emits |
 | `cli-report.html` | Self-contained interactive CLI surface report (linked from `report.html`) |
 | `data/cli-surface-<product>-<version>.json` | Committed per-version parse of the binary's `-help` pages |
-| `data/cli-source-check-<product>-<version>.json` | Committed help-vs-source cross-check at the newest version of each product |
+| `data/cli-source-check-<product>-<version>.json` | Committed per-version flag-parser registrations (Go source) of every command, compared with help |
+| `data/cli-probe-<product>-<version>.json` | Committed per-version binary probe: accepted / rejected per command × candidate flag |
 
 ## How to re-run
 
@@ -80,15 +82,18 @@ python3 RFCS/04-provider-feature-availability/scripts/build-report.py
 ## CLI command/flag surface sweep
 
 Enumerates every command, subcommand and flag that `terraform` / `tofu`
-document in their `-help` output, per version, to answer "which flags can a
-caller pass to which binary at which version" (input for the cdk-terrain
+document in their `-help` output (**listed**) and that their flag parsers
+register (**accepted**), per version, to answer "which flags can a caller
+pass to which binary at which version" (input for the cdk-terrain
 unknown-option work in PR #513 — see `PROPOSAL.md`, "CLI command/flag
-surface").
+surface"). Help is not a reliable proxy for acceptance in either direction,
+so every "since" / product-only claim and the allowlist preview use the
+accepted data; a binary probe checks it.
 
 ### How to re-run
 
 ```bash
-RFCS/04-provider-feature-availability/scripts/cli-sweep.sh          # installs CLIs via mise, parses -help (idempotent)
+RFCS/04-provider-feature-availability/scripts/cli-sweep.sh          # installs CLIs via mise, parses -help, source check, probe (idempotent)
 python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-matrix.py
 python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-report.py
 ```
@@ -126,44 +131,84 @@ python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-report.py
   lines are continuations, `deprecated` / `legacy` / `will be removed` in
   the description are deprecation markers, and flags that appear only in the
   usage line (`providers schema -json`) are recorded with section `Usage`.
+  A bracketed all-caps tag after the name (`-state-provider-lock-file
+  [EXPERIMENTAL]`) is a description prefix, not a placeholder. Terraform's
+  prose line "-state, state-out, and -backup are legacy options …"
+  (`import`, `refresh`, `taint`, `untaint`, `state mv`,
+  `state replace-provider`) declares those three flags (`"from":
+  "legacy-prose"`; `via: legacy-prose` in the matrix). Help-derived value
+  kinds are overridden by the source registration kind in the matrix
+  (`init -plugin-dir` shows no placeholder but takes a path).
   Two help-delegation patterns are modelled: apply/destroy pages that say
   "see `terraform plan -help`" inherit the plan page's "Plan Customization
   Options", and Terraform's destroy page ("alias for: terraform apply
   -destroy") inherits apply's flags (`via` = `plan-reference` /
   `apply-reference` in the matrix). Every other unmatched line is logged as
   `UNPARSED <product> <version> '<cmd>': …` and kept in the JSON's
-  `unparsed` map; the remaining ones are prose (`-state, state-out, and
-  -backup are legacy options …`, "see terraform plan -help").
-- **Source cross-check (`scripts/cli-source-check.py`):** at the newest swept
-  version of each product, reads `commands.go` (all registered and
-  experimental commands, `HiddenCommands`) and follows `internal/command/<cmd>.go`
-  → `arguments.Parse*/Bind*` → flag-set helpers (`extendedFlagSet`,
-  `ParseView`, `Meta.process`; OpenTofu `BindView`/`BindOperation`/
-  `BindVars`/`BindState`/`BindBackend*`, with their bit-mask guards
-  evaluated) for plan, apply, destroy, init and the other commands cdktn
-  runs. Flags accepted by the parser but missing from help are recorded as
-  `hidden_in_source`. Needs the reference clones (`REF_TERRAFORM`,
-  `REF_OPENTOFU`, default `~/cdktn/ref-terraform` / `~/cdktn/ref-opentofu`;
-  blobless clones are fine); skipped when absent.
-- **Caching / SKIP:** a version is skipped when
-  `data/cli-surface-<product>-<version>.json` exists (and the source check
-  when its output exists). Delete a file or use single-version mode
-  (`scripts/cli-sweep.sh <product> <version> [...]`) to re-sweep.
+  `unparsed` map; the remaining ones are prose ("see terraform plan -help",
+  OpenTofu `show`'s "-state is the default").
+- **Source check (`scripts/cli-source-check.py`), every swept version:**
+  reads `commands.go` (Terraform) / `cmd/tofu/commands.go` (OpenTofu) for
+  all registered and experimental-only commands, `HiddenCommands` and each
+  entry's `&command.<Type>{…}` literal (`Destroy: true`, `AliasCommand`
+  targets), then walks every command from `(*<Type>).Run` through
+  `arguments.Parse*/Bind*`, the package flag-set helpers
+  (`extendedFlagSet`, `defaultFlagSet`, `ParseView`, OpenTofu `Bind*`/
+  `bind*`, 1.11–1.12 `ViewOptions.AddFlags` / `Backend.Add*Flag`), `Meta`
+  flag sets and `setup*` helpers, `Meta.process` (`-no-color` strip) and
+  OpenTofu ≥ 1.13 `RunCommand(<X>Commander())`, collecting every
+  `<fs>.<Kind>Var(…, "<name>", …)`, `case "-x":` and
+  `-deprecation=module:` prefix match. Guards are evaluated where possible
+  (`if state != nil` against the caller's arguments, OpenTofu bit masks,
+  literal booleans, command struct fields); `ApplyCommand`'s apply/destroy
+  dispatch is resolved by name. Each flag records `takes_value` from its
+  registration kind. Files come from one `git cat-file --batch` per tag;
+  `cli-sweep.sh` first prefetches all needed blobs in one `git fetch
+  --filter=blob:none --stdin` (a blobless clone otherwise fetches blob by
+  blob). Needs the reference clones (`REF_TERRAFORM`, `REF_OPENTOFU`,
+  default `~/cdktn/ref-terraform` / `~/cdktn/ref-opentofu`); skipped when
+  absent.
+- **Binary probe (`scripts/cli-probe.py`), every swept version:** for every
+  flag-parsing command, runs each candidate flag — every flag any help page
+  lists or any source check registers for that command, in either product
+  at any version — as `<bin> <cmd> -flag[=value] <dummy positionals>` in a
+  fresh empty directory (throwaway `HOME`, empty CLI config, stdin
+  `/dev/null`), next to a baseline with `-zzz-probe-bogus`. Output equal to
+  the baseline with the bogus name replaced by the flag name means
+  "rejected"; anything else means the parser got past the flag. `login`,
+  `logout`, `push`, `stacks`, `rpcapi` and parent commands are skipped.
+  `build-cli-matrix.py` compares every verdict with the source check and
+  prints `!!` on disagreement (`summary.probe`). ~4 s per version.
+- **Caching / SKIP:** a version is skipped when its
+  `data/cli-surface-<product>-<version>.json` exists; the source check and
+  the probe likewise skip existing outputs. Delete files or use
+  single-version mode (`scripts/cli-sweep.sh <product> <version> [...]`) to
+  re-sweep; after a parser change delete all outputs of that stage.
 - **Committed:** `data/cli-surface-*.json`, `data/cli-source-check-*.json`,
-  `cli-matrix.json`, `cli-report.html`. `build-cli-matrix.py` prints the
-  product-only lists used in `PROPOSAL.md`; `CDKTN_EMITTED` in it lists the
+  `data/cli-probe-*.json`, `cli-matrix.json`, `cli-report.html`.
+  `build-cli-matrix.py` prints the product-only lists (with accepted-since
+  and listed-since) used in `PROPOSAL.md`; `CDKTN_EMITTED` in it lists the
   flags cdk-terrain passes to the binary (update it when cli-core changes).
+- **Limits:** "accepted" means the flag parser takes it; a few accepted
+  flags are refused later at runtime in release builds (Terraform
+  `-allow-deferral`, `test -junit-xml` 1.8–1.11). Version sampling is per
+  minor (first + last patch), so an item first seen at `X.Y.0` shipped in
+  `(previous swept version, X.Y.0]`.
 
 **Result (Terraform 1.5.7–1.17.0, OpenTofu 1.6.0–1.13.2):** 54 commands and
-552 command × flag pairs. Product-only: 5 Terraform-only commands (`query`,
-`modules`, `stacks`, `state identities`, hidden `rpcapi`) and 3
-OpenTofu-only hidden aliases (`state ls` / `move` / `remove`); 24
-Terraform-only and 51 OpenTofu-only command × flag pairs once OpenTofu's
+724 command × flag pairs accepted or listed (570 listed in help at some
+version). Product-only: 5 Terraform-only commands (`query`, `modules`,
+`stacks`, `state identities`, hidden `rpcapi`) and 3 OpenTofu-only hidden
+aliases (`state ls` / `move` / `remove`); by accepted-or-listed, 40
+Terraform-only and 77 OpenTofu-only command × flag pairs once OpenTofu's
 "view" flags (`-concise`, `-consolidate-*`, `-deprecation`, `-json-into`,
 `-lint`, `-show-sensitive`, …, listed on every command since 1.13) are set
-aside (28 / 322 including them). The source check finds 25 Terraform and 14
-OpenTofu flags that are accepted but not in help. Every flag cdktn emits is
-accepted by every swept version of both products.
+aside (48 / 373 including them). At the newest versions 102 Terraform and
+136 OpenTofu command × flag pairs are accepted but not in help; three are
+listed but rejected (`state replace-provider -state-out` in both products,
+OpenTofu 1.13 `destroy -lint`). 24,175 probe runs agree with the source
+check without exception. Every flag cdktn emits is accepted by every swept
+version of both products.
 
 ## Prebuilt-provider collision sweep
 
