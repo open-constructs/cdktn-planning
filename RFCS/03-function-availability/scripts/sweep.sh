@@ -5,14 +5,29 @@
 # the current machine, runs `<binary> metadata functions -json`, and stores the
 # output as data/functions-<product>-<version>.json next to this directory.
 #
-# Only needed for a full regeneration of the dataset; incremental updates for
-# new releases use `pnpm update-function-matrix` in tools/generate-function-bindings.
+# data/ is not committed. Versions already covered by the committed
+# functions-matrix.json are skipped (build-matrix.py reconstructs them from the
+# matrix), so a re-run only fetches new releases; FULL=1 sweeps every release.
+# (`pnpm update-function-matrix` in cdk-terrain's tools/generate-function-bindings
+# is a forward-only delta updater for that repo's copy of the matrix.)
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="$ROOT/data"
 WORK="${TMPDIR:-/tmp}/tf-func-matrix-work"
 mkdir -p "$DATA" "$WORK"
+
+# "<product> <version>" lines already in the committed matrix
+KNOWN="$WORK/known-versions.txt"
+if [ -z "${FULL:-}" ] && [ -f "$ROOT/functions-matrix.json" ]; then
+  python3 -c "
+import json,sys
+for p, vs in json.load(open(sys.argv[1]))['versions'].items():
+    for v in vs: print(p, v)
+" "$ROOT/functions-matrix.json" > "$KNOWN"
+else
+  : > "$KNOWN"
+fi
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
@@ -48,6 +63,10 @@ process_one() {
   local out="$DATA/functions-${product}-${version}.json"
   if [ -s "$out" ]; then
     echo "SKIP $product $version (exists)"
+    return 0
+  fi
+  if grep -qxF "$product $version" "$KNOWN"; then
+    echo "SKIP $product $version (in functions-matrix.json)"
     return 0
   fi
 
@@ -86,7 +105,7 @@ process_one() {
 }
 
 export -f process_one
-export DATA WORK
+export DATA WORK KNOWN
 
 {
   terraform_versions | sed 's/^/terraform /'

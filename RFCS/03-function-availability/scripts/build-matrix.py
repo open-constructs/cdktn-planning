@@ -29,7 +29,7 @@ def main():
     # newest version seen for that product
     product_signatures = defaultdict(dict)
 
-    for fname in sorted(os.listdir(DATA)):
+    for fname in sorted(os.listdir(DATA)) if os.path.isdir(DATA) else []:
         m = re.fullmatch(r"functions-(terraform|opentofu)-(\d+\.\d+\.\d+)\.json", fname)
         if not m:
             continue
@@ -47,6 +47,41 @@ def main():
             known = product_signatures[name].get(product)
             if known is None or vkey(version) > known[0]:
                 product_signatures[name][product] = (vkey(version), sig)
+
+    # Versions covered by the previously committed functions-matrix.json but
+    # without a raw dump in data/ (data/ is not committed) are reconstructed
+    # from the matrix: per-version presence is fully determined by
+    # introduced / removed / gaps. This lets an incremental sweep fetch only
+    # new releases. Set FULL=1 to ignore the committed matrix.
+    if os.path.exists(OUT) and not os.environ.get("FULL"):
+        with open(OUT) as f:
+            prev = json.load(f)
+        for product, prev_versions in prev["versions"].items():
+            seeded = [v for v in prev_versions if v not in funcs[product]]
+            for version in seeded:
+                versions[product].append(version)
+                funcs[product][version] = set()
+            if seeded:
+                print(f"{product}: {len(seeded)} version(s) reconstructed from committed matrix")
+            for name, e in prev["functions"].items():
+                p = e["products"].get(product)
+                if not p:
+                    continue
+                gaps = set(p["gaps"])
+                present = [
+                    v for v in prev_versions
+                    if vkey(v) >= vkey(p["introduced"])
+                    and v not in gaps
+                    and (p["removed"] is None or vkey(v) < vkey(p["removed"]))
+                ]
+                for version in present:
+                    if version in seeded:
+                        funcs[product][version].add(name)
+                if present and seeded:
+                    known = product_signatures[name].get(product)
+                    last = vkey(present[-1])
+                    if known is None or last > known[0]:
+                        product_signatures[name][product] = (last, e["signature"])
 
     for p in versions:
         versions[p].sort(key=vkey)

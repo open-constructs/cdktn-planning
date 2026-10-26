@@ -54,7 +54,8 @@ print('\n'.join(sorted(chosen, key=vkey)))
 terraform_versions() {
   curl -fsSL https://releases.hashicorp.com/terraform/index.json \
     | python3 -c "import json,sys; print('\n'.join(json.load(sys.stdin)['versions']))" \
-    | select_versions 1.5.7
+    | select_versions 1.5.7 \
+    | sed 's/^1\.6\.0$/1.6.6/' # 1.6.0 cannot init anymore, see single-version mode below
 }
 
 opentofu_versions() {
