@@ -25,7 +25,7 @@ export MISE_DATA_DIR="${MISE_DATA_DIR:-$WORK/mise}"
 # "<product> <version>" lines already in the committed matrix
 KNOWN="$WORK/known-versions.txt"
 if [ -z "${FULL:-}" ] && [ -f "$ROOT/functions-matrix.json" ]; then
-  python3 -c "
+  python3 -I -c "
 import json,sys
 for p, vs in json.load(open(sys.argv[1]))['versions'].items():
     for v in vs: print(p, v)
@@ -43,7 +43,7 @@ esac
 export OS ARCH
 
 terraform_versions() {
-  curl -fsSL https://releases.hashicorp.com/terraform/index.json | python3 -c "
+  curl -fsSL https://releases.hashicorp.com/terraform/index.json | python3 -I -c "
 import json,sys,re
 data = json.load(sys.stdin)
 def vkey(v): return tuple(int(x) for x in v.split('.'))
@@ -54,7 +54,7 @@ print('\n'.join(stable))
 }
 
 opentofu_versions() {
-  curl -fsSL https://get.opentofu.org/tofu/api.json | python3 -c "
+  curl -fsSL https://get.opentofu.org/tofu/api.json | python3 -I -c "
 import json,sys,re
 data = json.load(sys.stdin)
 stable = [v['id'] for v in data['versions'] if re.fullmatch(r'\d+\.\d+\.\d+', v['id'])]
@@ -126,5 +126,7 @@ export DATA WORK KNOWN
   terraform_versions | sed 's/^/terraform /'
   opentofu_versions | sed 's/^/opentofu /'
 } | xargs -n 2 -P 6 bash -c 'process_one "$0" "$1"'
+rc=$? # non-zero if a release index fetch or any version failed
 
 echo "DONE: $(ls "$DATA" | wc -l | tr -d ' ') data files in $DATA"
+exit "$rc"

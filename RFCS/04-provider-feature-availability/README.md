@@ -119,7 +119,10 @@ python3 -I RFCS/04-provider-feature-availability/scripts/build-cli-report.py
   throwaway dir, and that `HOME` rewritten to `~` in the captured help, so
   the dumps do not depend on who runs the sweep).
   `MISE_DATA_DIR` defaults to `$TMPDIR/cli-surface-sweep/mise`; zip download
-  fallback logs `MISE-FALLBACK`. `SWEEP_PARALLELISM` defaults to 4 (no shared
+  fallback logs `MISE-FALLBACK` (the probe stage resolves its binaries the
+  same way, so the whole sweep also runs without mise). Any failed version
+  or stage is logged as `FAIL…` and makes the script exit non-zero after
+  the remaining work has run. `SWEEP_PARALLELISM` defaults to 4 (no shared
   plugin cache is involved). A full run from a warm mise cache takes ~25 s.
 - **Walk:** `<bin> -help` → every listed command ("Main commands" and "All
   other commands") → `<bin> <cmd> -help` → every "Subcommands:" entry,

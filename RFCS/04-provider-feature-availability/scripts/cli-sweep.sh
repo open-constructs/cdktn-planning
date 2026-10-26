@@ -26,6 +26,11 @@
 # Terraform 1.6.0 is swept as is (its expired-key problem only affects
 # provider installation).
 #
+# Afterwards it probes every swept version's binary (scripts/cli-probe.py ->
+# data/cli-probe-<product>-<version>.json), resolving it as in step 1.
+# Every stage skips outputs that already exist; any FAIL makes the script
+# exit 1 once the rest has run.
+#
 # Unparsed help lines are printed as `UNPARSED <product> <version> '<cmd>':`
 # and kept in each JSON's "unparsed" map; review them after a run.
 set -uo pipefail
@@ -78,6 +83,40 @@ opentofu_versions() {
     | select_versions 1.6.0
 }
 
+# Installs <product>@<version> and prints the path of its binary. Tries mise
+# first (`mise install`, then the real path via `mise exec ... command -v`, so
+# callers can run the binary ~50+ times without a mise round-trip each), and
+# falls back to the release zip, unpacked into <dir>/zip. cwd=<dir> (outside
+# the repo), so no project mise.toml applies. Diagnostics go to stderr.
+resolve_bin() {
+  local product="$1" version="$2" dir="$3"
+  local url exe bin
+  mkdir -p "$dir"
+  if [ "$product" = "terraform" ]; then
+    url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
+    exe=terraform
+  else
+    url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
+    exe=tofu
+  fi
+  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1 \
+     && bin="$(cd "$dir" && mise exec "${product}@${version}" -- sh -c "command -v $exe")" \
+     && [ -x "$bin" ]; then
+    echo "$bin"
+    return 0
+  fi
+  echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")" >&2
+  if ! curl -fsSL -o "$dir/pkg.zip" "$url"; then
+    echo "FAIL-DOWNLOAD $product $version" >&2
+    return 1
+  fi
+  if ! unzip -oq "$dir/pkg.zip" -d "$dir/zip"; then
+    echo "FAIL-UNZIP $product $version" >&2
+    return 1
+  fi
+  echo "$dir/zip/$exe"
+}
+
 process_one() {
   local product="$1" version="$2"
   local out="$DATA/cli-surface-${product}-${version}.json"
@@ -86,38 +125,11 @@ process_one() {
     return 0
   fi
 
-  local url exe zip dir bin
+  local dir bin
   dir="$WORK/${product}-${version}"
   rm -rf "$dir"
   mkdir -p "$dir/cwd"
-  zip="$dir/pkg.zip"
-  if [ "$product" = "terraform" ]; then
-    url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${OS}_${ARCH}.zip"
-    exe=terraform
-  else
-    url="https://github.com/opentofu/opentofu/releases/download/v${version}/tofu_${version}_${OS}_${ARCH}.zip"
-    exe=tofu
-  fi
-
-  # install with mise; resolve the real binary once so cli_help.py can run
-  # ~50 `-help` invocations without a mise round-trip each. cwd=$dir (outside
-  # the repo), so no project mise.toml applies.
-  if mise install -q "${product}@${version}" > "$dir/mise.log" 2>&1 \
-     && bin="$(cd "$dir" && mise exec "${product}@${version}" -- sh -c "command -v $exe")" \
-     && [ -x "$bin" ]; then
-    :
-  else
-    echo "MISE-FALLBACK $product $version: $(tail -c 200 "$dir/mise.log")"
-    if ! curl -fsSL -o "$zip" "$url"; then
-      echo "FAIL-DOWNLOAD $product $version"
-      return 1
-    fi
-    if ! unzip -oq "$zip" -d "$dir"; then
-      echo "FAIL-UNZIP $product $version"
-      return 1
-    fi
-    bin="$dir/$exe"
-  fi
+  bin="$(resolve_bin "$product" "$version" "$dir")" || return 1
 
   # empty cwd: no configuration, no .terraform dir, no -chdir surprises
   if ! CLI_SWEEP_CWD="$dir/cwd" python3 -I "$ROOT/scripts/cli_help.py" "$bin" "$product" "$version" \
@@ -132,19 +144,24 @@ process_one() {
   echo "OK $product $version $(python3 -I -c "import json,sys; print(json.load(open(sys.argv[1]))['counts'])" "$out")"
 }
 
-export -f process_one
+export -f resolve_bin process_one
+
+# any failed stage makes the script exit non-zero (after finishing the rest)
+failed=0
 
 # single-version mode: cli-sweep.sh <product> <version> [<product> <version> ...]
 if [ "$#" -ge 2 ]; then
   while [ "$#" -ge 2 ]; do
-    process_one "$1" "$2"
+    process_one "$1" "$2" || failed=1
     shift 2
   done
 else
+  tf_list="$(terraform_versions)" && [ -n "$tf_list" ] || { echo "FAIL terraform release index"; failed=1; }
+  tofu_list="$(opentofu_versions)" && [ -n "$tofu_list" ] || { echo "FAIL opentofu release index"; failed=1; }
   {
-    terraform_versions | sed 's/^/terraform /'
-    opentofu_versions | sed 's/^/opentofu /'
-  } | xargs -n 2 -P "${SWEEP_PARALLELISM:-4}" bash -c 'process_one "$0" "$1"'
+    [ -n "$tf_list" ] && echo "$tf_list" | sed 's/^/terraform /'
+    [ -n "$tofu_list" ] && echo "$tofu_list" | sed 's/^/opentofu /'
+  } | xargs -n 2 -P "${SWEEP_PARALLELISM:-4}" bash -c 'process_one "$0" "$1"' || failed=1
 fi
 
 # Source cross-check at EVERY swept version: what the parser accepts (the
@@ -189,7 +206,7 @@ for product in terraform opentofu; do
     python3 -I "$ROOT/scripts/cli-source-check.py" "$ref" "$product" "$v" \
       "$DATA/cli-surface-${product}-${v}.json" > "$check.tmp" \
       && mv "$check.tmp" "$check" && echo "OK source-check $product $v" \
-      || { echo "FAIL source-check $product $v"; rm -f "$check.tmp"; }
+      || { echo "FAIL source-check $product $v"; rm -f "$check.tmp"; failed=1; }
   done
 done
 
@@ -197,19 +214,22 @@ done
 # real binary (scripts/cli-probe.py) as ground truth for the source check;
 # build-cli-matrix.py reports any disagreement with `!!`.
 for product in terraform opentofu; do
-  exe=terraform; [ "$product" = opentofu ] && exe=tofu
   for v in $(ls "$DATA" | sed -n "s/^cli-source-check-${product}-\([0-9.]*\)\.json$/\1/p" | sort -t. -k1,1n -k2,2n -k3,3n); do
     probe="$DATA/cli-probe-${product}-${v}.json"
     [ -s "$probe" ] && continue
-    mkdir -p "$WORK/probe"
-    if ! bin="$(cd "$WORK/probe" && mise exec "${product}@${v}" -- sh -c "command -v $exe")" || [ ! -x "$bin" ]; then
-      echo "SKIP probe $product $v (mise exec failed; run the sweep for it first)"
+    pdir="$WORK/probe-${product}-${v}"
+    rm -rf "$pdir"
+    if ! bin="$(resolve_bin "$product" "$v" "$pdir")" || [ ! -x "$bin" ]; then
+      echo "FAIL probe $product $v (no binary)"
+      failed=1
       continue
     fi
     python3 -I "$ROOT/scripts/cli-probe.py" "$bin" "$product" "$v" "$DATA" > "$probe.tmp" \
       && mv "$probe.tmp" "$probe" && echo "OK probe $product $v" \
-      || { echo "FAIL probe $product $v"; rm -f "$probe.tmp"; }
+      || { echo "FAIL probe $product $v"; rm -f "$probe.tmp"; failed=1; }
+    rm -rf "$pdir"
   done
 done
 
 echo "DONE: $(ls "$DATA" | grep -c '^cli-surface-') CLI surface dumps in $DATA"
+exit "$failed"
