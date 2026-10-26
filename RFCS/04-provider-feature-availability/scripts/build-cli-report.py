@@ -60,6 +60,7 @@ html = """<!DOCTYPE html>
   td.cell.listed div { background: var(--ok); opacity: 1; }
   td.cell.ref div { background: repeating-linear-gradient(45deg, #b6d7f5 0 4px, #e7f1fb 4px 8px); opacity: 1; border: 1px solid #9ec5e8; }
   td.cell.hidden div { background: #fff; opacity: 1; border: 1px dashed #cf222e; }
+  td.cell.notacc div { background: #cf222e; opacity: .8; }
   td.gapcol { width: 16px; min-width: 16px; border-right: 1px solid var(--border);}
   .badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 10px; margin-left: 6px; vertical-align: 1px; font-weight: 600;}
   .badge.tf-only { background: #f0e7fa; color: var(--tf); }
@@ -74,18 +75,19 @@ html = """<!DOCTYPE html>
 <body>
 <header>
   <h1>Terraform / OpenTofu CLI command &amp; flag surface</h1>
-  <div class="sub">Parsed from <code>&lt;binary&gt; [cmd [sub]] -help</code> at the first and last stable patch of every minor line ·
+  <div class="sub">Help parsed from <code>&lt;binary&gt; [cmd [sub]] -help</code>, parser registrations read from the Go source and probed against the binary, at the first and last stable patch of every minor line ·
     Terraform <span id="tfRange"></span> · OpenTofu <span id="tofuRange"></span> ·
     <a href="report.html">provider-protocol feature matrix</a></div>
   <div class="legend">
-    <span><span class="sw" style="background:var(--ok)"></span>listed in help</span>
-    <span><span class="sw hatch"></span>accepted via a help reference (apply/destroy → plan options, destroy → apply)</span>
-    <span><span class="sw" style="border:1px dashed #cf222e"></span>accepted but hidden from help (source cross-check, newest version only)</span>
-    <span><span class="sw" style="background:var(--absent);opacity:.35"></span>not listed</span>
+    <span><span class="sw" style="background:var(--ok)"></span>listed in help and accepted</span>
+    <span><span class="sw hatch"></span>accepted, listed via a help reference (apply/destroy → plan options, destroy → apply)</span>
+    <span><span class="sw" style="border:1px dashed #cf222e"></span>accepted but not listed (source + binary probe)</span>
+    <span><span class="sw" style="background:#cf222e;opacity:.8"></span>listed but rejected by the parser</span>
+    <span><span class="sw" style="background:var(--absent);opacity:.35"></span>not accepted</span>
   </div>
   <div class="controls">
     <input type="search" id="q" placeholder="filter: plan, -target, state …">
-    <label><input type="checkbox" id="onlyDiff"> product-only rows</label>
+    <label><input type="checkbox" id="onlyDiff"> product-only rows (accepted or listed)</label>
     <label><input type="checkbox" id="onlyChanged"> rows that change across versions</label>
     <label><input type="checkbox" id="hideView" checked> hide OpenTofu view-family flags on non-core commands</label>
     <label><input type="checkbox" id="onlyCdktn"> flags cdktn emits</label>
@@ -118,16 +120,18 @@ document.getElementById("stats").innerHTML =
   stat("command × flag pairs", S.flags_total, `TF-only ${S.flags_only.terraform} · Tofu-only ${S.flags_only.opentofu}`) +
   stat("product-only excl. view family", S.flags_only_excluding_view_family.terraform + S.flags_only_excluding_view_family.opentofu,
        `TF ${S.flags_only_excluding_view_family.terraform} · Tofu ${S.flags_only_excluding_view_family.opentofu}`) +
-  stat("hidden from help (source)", S.flags_hidden_in_source.terraform + S.flags_hidden_in_source.opentofu,
-       `flags: TF ${S.flags_hidden_in_source.terraform} · Tofu ${S.flags_hidden_in_source.opentofu}; commands: TF ${S.commands_hidden_in_source.terraform} · Tofu ${S.commands_hidden_in_source.opentofu}`);
+  stat("accepted but not listed (newest)", S.flags_hidden_in_source.terraform + S.flags_hidden_in_source.opentofu,
+       `flags: TF ${S.flags_hidden_in_source.terraform} · Tofu ${S.flags_hidden_in_source.opentofu}; commands: TF ${S.commands_hidden_in_source.terraform} · Tofu ${S.commands_hidden_in_source.opentofu}`) +
+  stat("binary probe runs", S.probe.runs.terraform + S.probe.runs.opentofu,
+       `${S.probe.disagreements_with_source.length} disagreements with the source check`);
 
 document.getElementById("cdktn").innerHTML =
   "<tr><th>command</th><th>flag</th><th>Terraform</th><th>OpenTofu</th><th>emitted by</th></tr>" +
   DATA.cdktn_emitted.map(r => {
     const cell = p => { const x = r.products[p];
-      if (x.all_swept_versions) return "all swept";
-      if (x.source_verified_all_versions) return `all swept <span class="muted" title="${esc(x.source_verified_all_versions)}">(source-verified; help from ${x.first_seen || "never"})</span>`;
-      return x.first_seen ? `from ${x.first_seen}` : "<b>not listed</b>"; };
+      if (x.all_swept_versions) return x.listed_all_swept_versions ? "all swept" :
+        `all swept <span class="muted">(accepted; listed in help ${x.first_seen ? "from " + x.first_seen : "never"})</span>`;
+      return x.accepted_first_seen ? `accepted from ${x.accepted_first_seen}` : "<b>not accepted</b>"; };
     return `<tr><td><code>${esc(r.command)}</code></td><td><code>${esc(r.flag)}</code></td><td>${cell("terraform")}</td><td>${cell("opentofu")}</td><td class="muted">${esc(r.emitted_by)}</td></tr>`;
   }).join("");
 
@@ -139,7 +143,14 @@ function presence(rec, product) {
   const gaps = new Set(rec.gaps || []);
   return new Set(vs.slice(a, b + 1).filter(v => !gaps.has(v)));
 }
+const CELL = {L: ["listed", "listed in help and accepted"], R: ["ref", "accepted; listed via a help reference"],
+  H: ["hidden", "accepted but not listed in help"], X: ["notacc", "listed in help but REJECTED by the parser"],
+  "?": ["listed", "listed in help (command not source-checked)"], "-": ["", "not accepted"]};
 function rowCells(rec, product) {
+  if (rec && rec.cells) return V[product].map((v, i) => {
+    const [cls, what] = CELL[rec.cells[i]];
+    return `<td class="cell ${cls}" title="${esc(product + " " + v + ": " + what)}"><div></div></td>`;
+  }).join("");
   const pres = presence(rec, product);
   const hidden = rec && rec.hidden_in_source;
   const hiddenV = hidden ? (typeof hidden === "string" ? hidden : hidden.version) : null;
@@ -161,16 +172,22 @@ function badges(item, isFlag) {
   if (item.only === "opentofu") h += "<span class='badge tofu-only'>Tofu only</span>";
   for (const p of PRODUCTS) {
     const r = item.products[p];
-    if (r && r.hidden_in_source) h += `<span class='badge hidden'>hidden in ${p === "terraform" ? "TF" : "Tofu"}</span>`;
-    if (r && r.removed_in) h += `<span class='badge dep'>${p === "terraform" ? "TF" : "Tofu"}: gone from help in ${r.removed_in}</span>`;
-    if (r && r.deprecation_markers && r.deprecation_markers.length && !r.removed_in) h += `<span class='badge dep' title='${esc(r.desc)}'>${r.deprecation_markers.join(", ")}</span>`;
+    const P = p === "terraform" ? "TF" : "Tofu";
+    if (r && r.hidden_in_source) h += `<span class='badge hidden'>not listed in ${P}</span>`;
+    const lst = r && (r.cells !== undefined ? r.listed : r), acc = r && r.accepted;
+    if (acc && acc.removed_in) h += `<span class='badge dep'>${P}: rejected from ${acc.removed_in}</span>`;
+    else if (lst && lst.removed_in) h += `<span class='badge dep'>${P}: gone from help in ${lst.removed_in}</span>`;
+    if (r && r.cells && r.cells.includes("X")) h += `<span class='badge hidden'>${P}: listed but rejected</span>`;
+    if (r && r.deprecation_markers && r.deprecation_markers.length && !(lst && lst.removed_in)) h += `<span class='badge dep' title='${esc(r.desc)}'>${r.deprecation_markers.join(", ")}</span>`;
   }
   if (isFlag && item.family === "view") h += "<span class='badge view'>view family</span>";
   if (isFlag && CDKTN.has(`${item.command} ${item.flag}`)) h += "<span class='badge cdktn'>cdktn emits</span>";
   return h;
 }
 function changes(item) {
-  return PRODUCTS.some(p => { const r = item.products[p]; return !r || !r.first_seen || r.count !== V[p].length; });
+  return PRODUCTS.some(p => { const r = item.products[p];
+    if (r && r.cells !== undefined) return /[^LR]/.test(r.cells);
+    return !r || !r.first_seen || r.count !== V[p].length; });
 }
 
 function render() {

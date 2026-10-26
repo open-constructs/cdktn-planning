@@ -27,6 +27,12 @@ the parser is deliberately explicit and line-oriented:
         -a, -b                     aliases (comma-separated flag tokens)
     followed by two or more spaces and the description (or end of line).
     Deeper-indented lines after a flag line are description continuations.
+  * A bracketed all-caps tag after the name ("-x [EXPERIMENTAL]") is a
+    description prefix, not a placeholder: the flag is recorded as a switch
+    (help shows no value) and build-cli-matrix.py takes kind / takes_value
+    from the source check where one exists.
+  * The legacy-flag prose line "-state, state-out, and -backup are legacy
+    options ..." declares those three flags ("from": "legacy-prose").
   * Everything else inside a section is prose. Prose lines that mention a
     `-flag` token (e.g. "-state, state-out, and -backup are legacy options")
     are recorded as `prose_flag_mentions` and also logged as UNPARSED, so a
@@ -42,7 +48,7 @@ import re
 import subprocess
 import sys
 
-PARSER_VERSION = 1
+PARSER_VERSION = 2
 MAX_DEPTH = 3
 TIMEOUT_S = 30
 DESC_LIMIT = 240
@@ -84,6 +90,17 @@ FLAG_LINE_LOOSE_RE = re.compile(
 # terraform apply -destroy" (all apply flags apply)
 REFERS_TO_APPLY_RE = re.compile(r"alias for:?\s+(?:terraform|tofu) apply -destroy", re.I)
 MENTION_RE = re.compile(r"(?<![\w-])(-{1,2}[a-z][a-z0-9-]+)")
+# Terraform import / refresh / taint / untaint (and others) name their
+# legacy local-backend flags only in a prose line:
+#   "-state, state-out, and -backup are legacy options supported for the local"
+# (note the missing dash on state-out). Recorded as flags with
+# "from": "legacy-prose".
+LEGACY_PROSE_RE = re.compile(
+    r"^\s+(?P<list>-[a-z][a-z0-9-]*(?:,?\s+(?:and\s+)?-?[a-z][a-z0-9-]*)+)\s+are legacy options\b"
+)
+# A bracketed all-caps tag after the flag name is a description prefix, not
+# a value placeholder ("-state-provider-lock-file [EXPERIMENTAL]").
+TAG_PLACEHOLDER_RE = re.compile(r"^\[[A-Z][A-Z -]*\]$")
 
 
 def run_help(binary, args, cwd):
@@ -194,7 +211,11 @@ def parse_help(text):
             if m:
                 flag_indent = indent if flag_indent is None else flag_indent
                 names = [t.strip() for t in m.group("flags").split(",")]
-                kind, ph = parse_value(m.group("value"))
+                value, desc = m.group("value"), (m.group("desc") or "").strip()
+                if value and TAG_PLACEHOLDER_RE.match(value.strip()):
+                    desc = (value.strip() + " " + desc).strip()
+                    value = None
+                kind, ph = parse_value(value)
                 current = {
                     "name": names[0],
                     "aliases": names[1:],
@@ -202,7 +223,7 @@ def parse_help(text):
                     "takes_value": kind == "value",
                     "placeholder": ph,
                     "section": heading,
-                    "desc": (m.group("desc") or "").strip(),
+                    "desc": desc,
                 }
                 if loose:
                     current["loose"] = True
@@ -210,6 +231,19 @@ def parse_help(text):
                 continue
         if current is not None and flag_indent is not None and indent > flag_indent:
             current["desc"] = (current["desc"] + " " + stripped).strip()
+            continue
+        lm = LEGACY_PROSE_RE.match(line)
+        if lm and section != "prose":
+            names = ["-" + t.lstrip("-") for t in re.split(r",?\s+(?:and\s+)?", lm.group("list")) if t]
+            known = {f["name"] for f in out["flags"]}
+            for name in names:
+                if name in known:
+                    continue
+                out["flags"].append({
+                    "name": name, "aliases": [], "kind": "value", "takes_value": True,
+                    "placeholder": None, "section": heading, "desc": stripped, "from": "legacy-prose",
+                })
+            current = None
             continue
         mentions = MENTION_RE.findall(stripped)
         if mentions and section != "prose":
@@ -238,6 +272,8 @@ def flag_record(f):
                              "section", "deprecation_markers", "desc")}
     if f.get("loose"):
         rec["loose"] = True
+    if f.get("from"):
+        rec["from"] = f["from"]
     return rec
 
 

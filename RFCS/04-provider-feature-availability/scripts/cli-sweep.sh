@@ -12,9 +12,11 @@
 #      (state *, workspace *, providers *, metadata *, ...) and parses
 #      commands, flags, value kinds, aliases and deprecation markers,
 #   3. writes data/cli-surface-<product>-<version>.json (committed).
-# Afterwards it runs scripts/cli-source-check.py at the newest swept version
-# of each product (needs the reference clones, see below) and writes
-# data/cli-source-check-<product>-<version>.json.
+# Afterwards it runs scripts/cli-source-check.py at every swept version of
+# each product (needs the reference clones, see below) and writes
+# data/cli-source-check-<product>-<version>.json: the flags the parser
+# accepts, per command, which is what "accepted since" and any allowlist
+# must be based on (help only says what is listed).
 #
 # Why first + last patch per minor: new commands and flags ship in minor
 # releases, but both products have backported or patch-level CLI changes
@@ -145,22 +147,69 @@ else
   } | xargs -n 2 -P "${SWEEP_PARALLELISM:-4}" bash -c 'process_one "$0" "$1"'
 fi
 
-# Source cross-check at the newest swept version of each product
-for product in terraform opentofu; do
-  latest="$(ls "$DATA" | sed -n "s/^cli-surface-${product}-\([0-9.]*\)\.json$/\1/p" | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)"
-  [ -n "$latest" ] || continue
-  ref="$REF_TERRAFORM"; [ "$product" = opentofu ] && ref="$REF_OPENTOFU"
-  check="$DATA/cli-source-check-${product}-${latest}.json"
-  if [ -s "$check" ]; then
-    echo "SKIP source-check $product $latest (exists)"
-  elif [ -d "$ref" ]; then
-    python3 -I "$ROOT/scripts/cli-source-check.py" "$ref" "$product" "$latest" \
-      "$DATA/cli-surface-${product}-${latest}.json" > "$check.tmp" \
-      && mv "$check.tmp" "$check" && echo "OK source-check $product $latest" \
-      || { echo "FAIL source-check $product $latest"; rm -f "$check.tmp"; }
-  else
-    echo "SKIP source-check $product $latest (no reference clone at $ref)"
+# Source cross-check at EVERY swept version: what the parser accepts (the
+# basis for "accepted since" and for any allowlist), not only what help
+# lists. The needed blobs (commands.go + internal/command{,/arguments}/*.go
+# at every swept tag) are prefetched in one batch first: a blobless clone
+# otherwise fetches each blob in its own round trip (~1 s each).
+prefetch_blobs() {
+  local ref="$1" cmdfile="$2"; shift 2
+  local v
+  for v in "$@"; do
+    git -C "$ref" ls-tree -r "v$v" -- "$cmdfile" internal/command/ 2>/dev/null \
+      | awk -v cf="$cmdfile" '$4 ~ /\.go$/ && $4 !~ /_test\.go$/ && ($4 == cf || $4 ~ /^internal\/command\/[^\/]+$/ || $4 ~ /^internal\/command\/arguments\/[^\/]+$/) {print $3}'
+  done | sort -u > "$WORK/oids-wanted.txt"
+  git -C "$ref" cat-file --batch-all-objects --batch-check='%(objectname)' 2>/dev/null | sort -u > "$WORK/oids-have.txt"
+  comm -23 "$WORK/oids-wanted.txt" "$WORK/oids-have.txt" > "$WORK/oids-missing.txt"
+  if [ -s "$WORK/oids-missing.txt" ]; then
+    echo "PREFETCH $(wc -l < "$WORK/oids-missing.txt" | tr -d ' ') blobs into $ref"
+    git -C "$ref" -c fetch.negotiationAlgorithm=noop fetch origin --no-tags --no-write-fetch-head \
+      --recurse-submodules=no --filter=blob:none --stdin < "$WORK/oids-missing.txt" > /dev/null 2>&1 \
+      || echo "PREFETCH-FAIL $ref (blobs are then fetched one by one)"
   fi
+}
+
+for product in terraform opentofu; do
+  versions="$(ls "$DATA" | sed -n "s/^cli-surface-${product}-\([0-9.]*\)\.json$/\1/p" | sort -t. -k1,1n -k2,2n -k3,3n)"
+  [ -n "$versions" ] || continue
+  ref="$REF_TERRAFORM"; cmdfile=commands.go
+  [ "$product" = opentofu ] && { ref="$REF_OPENTOFU"; cmdfile=cmd/tofu/commands.go; }
+  if [ ! -d "$ref" ]; then
+    echo "SKIP source-check $product (no reference clone at $ref)"
+    continue
+  fi
+  todo=()
+  for v in $versions; do
+    [ -s "$DATA/cli-source-check-${product}-${v}.json" ] || todo+=("$v")
+  done
+  [ "${#todo[@]}" -gt 0 ] || { echo "SKIP source-check $product (all exist)"; continue; }
+  prefetch_blobs "$ref" "$cmdfile" "${todo[@]}"
+  for v in "${todo[@]}"; do
+    check="$DATA/cli-source-check-${product}-${v}.json"
+    python3 -I "$ROOT/scripts/cli-source-check.py" "$ref" "$product" "$v" \
+      "$DATA/cli-surface-${product}-${v}.json" > "$check.tmp" \
+      && mv "$check.tmp" "$check" && echo "OK source-check $product $v" \
+      || { echo "FAIL source-check $product $v"; rm -f "$check.tmp"; }
+  done
+done
+
+# Binary probe at every swept version: runs each candidate flag against the
+# real binary (scripts/cli-probe.py) as ground truth for the source check;
+# build-cli-matrix.py reports any disagreement with `!!`.
+for product in terraform opentofu; do
+  exe=terraform; [ "$product" = opentofu ] && exe=tofu
+  for v in $(ls "$DATA" | sed -n "s/^cli-source-check-${product}-\([0-9.]*\)\.json$/\1/p" | sort -t. -k1,1n -k2,2n -k3,3n); do
+    probe="$DATA/cli-probe-${product}-${v}.json"
+    [ -s "$probe" ] && continue
+    mkdir -p "$WORK/probe"
+    if ! bin="$(cd "$WORK/probe" && mise exec "${product}@${v}" -- sh -c "command -v $exe")" || [ ! -x "$bin" ]; then
+      echo "SKIP probe $product $v (mise exec failed; run the sweep for it first)"
+      continue
+    fi
+    python3 -I "$ROOT/scripts/cli-probe.py" "$bin" "$product" "$v" "$DATA" > "$probe.tmp" \
+      && mv "$probe.tmp" "$probe" && echo "OK probe $product $v" \
+      || { echo "FAIL probe $product $v"; rm -f "$probe.tmp"; }
+  done
 done
 
 echo "DONE: $(ls "$DATA" | grep -c '^cli-surface-') CLI surface dumps in $DATA"

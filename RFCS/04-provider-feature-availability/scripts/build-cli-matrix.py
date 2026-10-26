@@ -1,22 +1,30 @@
 #!/usr/bin/env python3
-"""Builds cli-matrix.json from data/cli-surface-*.json (+ cli-source-check-*.json).
+"""Builds cli-matrix.json from data/cli-surface-*.json (help, "listed"),
+data/cli-source-check-*.json (parser registrations, "accepted") and
+data/cli-probe-*.json (binary probe; must agree with the source check, any
+disagreement is printed with `!!` and kept in summary.probe).
 
-Per command and per (command, flag) and per global option, for each product:
-  present        swept versions where help lists it
-  first_seen     first swept version that lists it
-  introduced_after  the swept version before first_seen (null if first_seen
-                 is the oldest swept version) — the item shipped in
-                 (introduced_after, first_seen]
-  last_seen / removed_in  last swept version that lists it / the next swept
-                 version (null while still present at the newest version)
-  gaps           swept versions between first_seen and last_seen that do
-                 not list it
-  via            "listed" or "plan-reference" (apply/destroy help pages that
-                 delegate their plan options to `plan -help`; the plan page's
-                 "Plan Customization Options" then count as present)
-plus `only` ("terraform" / "opentofu" when the other product never lists it),
-and `hidden_in_source` from the source cross-check (flags/commands that the
-newest version accepts but its help does not list).
+Per (command, flag), for each product:
+  listed         span of swept versions whose -help lists the flag:
+                 first_seen ("listed since"), introduced_after (the swept
+                 version before first_seen; the listing appeared in
+                 (introduced_after, first_seen]), last_seen, removed_in, gaps,
+                 count, via ("listed", "legacy-prose", "plan-reference" /
+                 "apply-reference" for apply/destroy help pages that delegate
+                 to `plan -help` / `apply -help`)
+  accepted       the same span over the versions whose flag parser
+                 registers the flag ("accepted since"). This, not `listed`,
+                 is what product-only labels, "since" claims and any
+                 allowlist are based on.
+  cells          one status letter per swept version (see "semantics")
+  takes_value    from the source registration kind when one exists
+                 (takes_value_from: "source"), else from help
+  hidden_in_source  accepted but not listed at the newest swept version
+`only` is "terraform" / "opentofu" when the other
+product neither lists nor accepts the flag at any swept version
+(`only_listed`: by help listing alone). Commands carry the listed span plus
+`registered` (commands.go). `allowlist_preview` is the shape a generated
+cdktn allowlist would take (see PROPOSAL.md).
 
 `cdktn` section: every terraform/tofu flag the cdktn CLI emits today
 (cdk-terrain main, see CDKTN_EMITTED) with its availability per product.
@@ -68,18 +76,6 @@ CDKTN_EMITTED = [
     ("version", "-json", "provider-schema provider-schema.ts"),
 ]
 
-# Flags cdktn emits that some swept versions accept without listing them in
-# help, verified in source (git show <tag>:internal/command/providers_lock.go).
-CDKTN_SOURCE_VERIFIED = {
-    ("providers lock", "-no-color"): {
-        "terraform": "stripped by Meta.process() before flag parsing in every swept version "
-                     "(v1.5.7 .. v1.17.0); never listed in help",
-        "opentofu": "Meta.process() (1.6-1.11) / arguments.ParseView (1.12) / BindView (1.13); "
-                    "listed in help only from 1.13.0",
-    },
-}
-
-
 def vkey(v):
     return tuple(int(x) for x in v.split("."))
 
@@ -92,13 +88,19 @@ def load():
             continue
         with open(path) as f:
             surfaces[m.group(1)][m.group(2)] = json.load(f)
-    checks = {}
+    checks = {p: {} for p in PRODUCTS}
     for path in glob.glob(os.path.join(DATA, "cli-source-check-*.json")):
         m = re.match(r"cli-source-check-(terraform|opentofu)-(\d+\.\d+\.\d+)\.json$", os.path.basename(path))
         if m:
             with open(path) as f:
-                checks[m.group(1)] = json.load(f)
-    return surfaces, checks
+                checks[m.group(1)][m.group(2)] = json.load(f)
+    probes = {p: {} for p in PRODUCTS}
+    for path in glob.glob(os.path.join(DATA, "cli-probe-*.json")):
+        m = re.match(r"cli-probe-(terraform|opentofu)-(\d+\.\d+\.\d+)\.json$", os.path.basename(path))
+        if m:
+            with open(path) as f:
+                probes[m.group(1)][m.group(2)] = json.load(f)
+    return surfaces, checks, probes
 
 
 def span(present, versions, via=None):
@@ -119,9 +121,26 @@ def span(present, versions, via=None):
     return rec
 
 
+def constraint(rec, versions):
+    """Semver-ish range over swept versions for an `accepted` span."""
+    if not rec:
+        return None
+    if rec["gaps"]:
+        return "in " + ",".join(v for v in versions if versions.index(rec["first_seen"]) <= versions.index(v)
+                                <= versions.index(rec["last_seen"]) and v not in rec["gaps"])
+    lo = ">=" + rec["first_seen"] if rec["introduced_after"] else "*"
+    hi = "<" + rec["removed_in"] if rec["removed_in"] else None
+    return " ".join(x for x in (lo, hi) if x and x != "*") or "*"
+
+
 def main():
-    surfaces, checks = load()
+    surfaces, checks, probes = load()
     versions = {p: sorted(surfaces[p], key=vkey) for p in PRODUCTS}
+    for p in PRODUCTS:
+        missing = [v for v in versions[p] if v not in checks[p]]
+        if missing:
+            print(f"!! {p}: no source check for {missing}; 'accepted' data is incomplete "
+                  "(run scripts/cli-sweep.sh with the reference clones)")
 
     cmd_present = {}  # cmd -> product -> [versions]
     cmd_meta = {}
@@ -145,7 +164,8 @@ def main():
                 }
                 listed = {f["name"] for f in entry.get("flags", [])}
                 for f in entry.get("flags", []):
-                    flag_present.setdefault((cmd, f["name"]), {}).setdefault(p, {})[v] = "listed"
+                    via = "legacy-prose" if f.get("from") == "legacy-prose" else "listed"
+                    flag_present.setdefault((cmd, f["name"]), {}).setdefault(p, {})[v] = via
                     flag_meta.setdefault((cmd, f["name"]), {})[p] = f
                 refers = entry.get("help_refers_to")
                 if refers == "apply" and "apply" in s["commands"]:
@@ -161,31 +181,50 @@ def main():
                             flag_present.setdefault((cmd, f["name"]), {}).setdefault(p, {})[v] = "plan-reference"
                             flag_meta.setdefault((cmd, f["name"]), {}).setdefault(p, f)
 
-    hidden_flags = {p: {} for p in PRODUCTS}
-    hidden_cmds = {p: [] for p in PRODUCTS}
-    for p, chk in checks.items():
-        hidden_cmds[p] = chk["commands"]["in_source_not_in_help"]
-        for cmd, e in chk["flags"].items():
-            for name in e["in_source_not_in_help"]:
-                src = next(r for r in e["source"] if r["name"] == name)
-                hidden_flags[p][(cmd, name)] = {
-                    "version": chk["version"],
-                    "origin": src["origin"],
-                    "guards": src["guards"],
-                    "hidden_attr": src["hidden"],
-                }
+    # source-accepted sets, per version (cli-source-check.py)
+    flag_accepted = {}  # (cmd, flag) -> product -> {v: source record}
+    cmd_registered = {}  # cmd -> product -> [versions]
+    checked_cmds = {p: {} for p in PRODUCTS}  # product -> v -> set(cmds with a flag walk)
+    for p in PRODUCTS:
+        for v in versions[p]:
+            chk = checks[p].get(v)
+            if not chk:
+                continue
+            for cmd in chk["commands"]["source"]:
+                cmd_registered.setdefault(cmd, {}).setdefault(p, []).append(v)
+            checked_cmds[p][v] = set()
+            for cmd, e in chk["flags"].items():
+                if "error" in e:
+                    continue
+                checked_cmds[p][v].add(cmd)
+                for r in e["source"]:
+                    flag_accepted.setdefault((cmd, r["name"]), {}).setdefault(p, {})[v] = r
+
+    # binary probe (cli-probe.py) vs source: every probed (cmd, flag) must
+    # agree with the source-accepted set of the same version
+    probe_disagree = []
+    probe_count = {p: 0 for p in PRODUCTS}
+    for p in PRODUCTS:
+        for v, pr in probes[p].items():
+            for cmd, res in pr["commands"].items():
+                for name, verdict in res.items():
+                    probe_count[p] += 1
+                    src = v in flag_accepted.get((cmd, name), {}).get(p, {})
+                    if verdict not in ("accepted", "rejected") or (verdict == "accepted") != src:
+                        probe_disagree.append(f"{p} {v} {cmd} {name}: probe={verdict} source={'accepted' if src else 'rejected'}")
+    for x in probe_disagree:
+        print("!! probe/source disagreement: " + x)
 
     # "view" family: output/diagnostic flags registered by the products'
     # shared view-argument helpers (Terraform arguments.ParseView; OpenTofu
-    # arguments.BindView). OpenTofu 1.13 generates help from flag
+    # arguments.ParseView / BindView). OpenTofu 1.13 generates help from flag
     # definitions and lists these on (nearly) every command, which would
     # otherwise dominate the OpenTofu-only counts.
     view_family = {p: set() for p in PRODUCTS}
-    for p, chk in checks.items():
-        for e in chk["flags"].values():
-            for r in e["source"]:
-                if r["origin"].endswith((":BindView", ":ParseView")):
-                    view_family[p].add(r["name"])
+    for (cmd, name), prods in flag_accepted.items():
+        for p, per_v in prods.items():
+            if any(r["origin"].endswith((":BindView", ":ParseView")) for r in per_v.values()):
+                view_family[p].add(name)
     all_view = set().union(*view_family.values())
 
     def only_of(prod_map):
@@ -193,46 +232,93 @@ def main():
         return have[0] if len(have) == 1 else None
 
     commands = {}
-    for cmd in sorted(set(cmd_present) | {c for p in PRODUCTS for c in hidden_cmds[p]}):
+    for cmd in sorted(set(cmd_present) | set(cmd_registered)):
         prods = {}
         for p in PRODUCTS:
             pres = cmd_present.get(cmd, {}).get(p, [])
             rec = span(pres, versions[p])
             if rec:
                 rec.update({k: v for k, v in cmd_meta[cmd][p].items() if v})
-            if cmd in hidden_cmds[p]:
+            reg = cmd_registered.get(cmd, {}).get(p, [])
+            if reg:
                 rec = rec or {}
-                rec["hidden_in_source"] = checks[p]["version"]
+                rec["registered"] = span(reg, versions[p])
+                hidden_v = [v for v in reg if v not in pres]
+                if hidden_v:
+                    rec["hidden_in_source_versions"] = hidden_v
+                if versions[p][-1] in hidden_v:
+                    rec["hidden_in_source"] = versions[p][-1]
             prods[p] = rec
         commands[cmd] = {"products": prods, "only": only_of(prods)}
 
     flags = {}
-    keys = set(flag_present) | {k for p in PRODUCTS for k in hidden_flags[p]}
+    keys = set(flag_present) | set(flag_accepted)
+    hidden_newest = {p: 0 for p in PRODUCTS}
+    help_not_source = []
     for key in sorted(keys, key=lambda k: (k[0], k[1])):
         cmd, name = key
         prods = {}
         for p in PRODUCTS:
             pres = flag_present.get(key, {}).get(p, {})
+            acc = flag_accepted.get(key, {}).get(p, {})
             vias = set(pres.values())
-            rec = span(list(pres), versions[p],
-                       via=(next(iter(vias)) if len(vias) == 1 else ("mixed" if vias else None)))
+            listed = span(list(pres), versions[p],
+                          via=(next(iter(vias)) if len(vias) == 1 else ("mixed" if vias else None)))
+            accepted = span(list(acc), versions[p])
+            if not listed and not accepted:
+                prods[p] = None
+                continue
+            # per-version cell codes, aligned with versions[p]:
+            #   L listed (and accepted), R accepted via a help reference,
+            #   H accepted but not listed, X listed but NOT accepted by the
+            #   parser, - neither, ? listed, command not source-checked
+            cells = []
+            for v in versions[p]:
+                in_help, in_src = v in pres, v in acc
+                checked = cmd in checked_cmds[p].get(v, set())
+                if in_help and (in_src or not checked):
+                    cells.append(("R" if pres[v].endswith("reference") else "L") if checked else "?")
+                elif in_help:
+                    cells.append("X")
+                    help_not_source.append((p, v, cmd, name))
+                elif in_src:
+                    cells.append("H")
+                else:
+                    cells.append("-")
+            rec = {"listed": listed, "accepted": accepted, "cells": "".join(cells)}
             meta = flag_meta.get(key, {}).get(p)
-            if rec and meta:
+            src_latest = acc[max(acc, key=vkey)] if acc else None
+            if meta:
                 rec.update({
                     "kind": meta["kind"],
-                    "takes_value": meta["takes_value"],
                     "placeholder": meta["placeholder"],
                     "aliases": meta["aliases"],
                     "deprecation_markers": meta["deprecation_markers"],
                     "section": meta["section"],
                     "desc": meta["desc"],
                 })
-            if key in hidden_flags[p]:
-                rec = rec or {}
-                rec["hidden_in_source"] = hidden_flags[p][key]
+            if src_latest:
+                rec["takes_value"] = src_latest["takes_value"]
+                rec["takes_value_from"] = "source"
+                rec["source_kind"] = src_latest["kind"]
+                if meta and meta["takes_value"] != src_latest["takes_value"]:
+                    # help shows no placeholder (`init -plugin-dir`) or a tag
+                    rec["help_kind"] = meta["kind"]
+                    rec["kind"] = "value" if src_latest["takes_value"] else "switch"
+            elif meta:
+                rec["takes_value"] = meta["takes_value"]
+                rec["takes_value_from"] = "help"
+            newest = versions[p][-1]
+            if newest in acc and newest not in pres:
+                r = acc[newest]
+                rec["hidden_in_source"] = {"version": newest, "origin": r["origin"], "guards": r["guards"],
+                                           "hidden_attr": r["hidden"]}
+                hidden_newest[p] += 1
             prods[p] = rec
-        flags[f"{cmd} {name}"] = {"command": cmd, "flag": name, "products": prods, "only": only_of(prods),
-                                  "family": "view" if name in all_view else None}
+        flags[f"{cmd} {name}"] = {"command": cmd, "flag": name, "products": prods, "only": only_of(
+            {p: (r and r.get("accepted")) or (r and r.get("listed")) for p, r in prods.items()}),
+            "only_listed": only_of({p: r and r.get("listed") for p, r in prods.items()}),
+            "family": "view" if name in all_view else None}
 
     global_options = {}
     for name in sorted(glob_present):
@@ -251,48 +337,93 @@ def main():
         row = {"command": cmd, "flag": flag, "emitted_by": where, "products": {}}
         for p in PRODUCTS:
             r = f["products"][p] if f else None
+            acc = (r or {}).get("accepted") or {}
+            lst = (r or {}).get("listed") or {}
             row["products"][p] = {
-                "first_seen": r.get("first_seen") if r else None,
-                "via": r.get("via") if r else None,
-                "all_swept_versions": bool(r) and r.get("count") == len(versions[p]),
+                "first_seen": lst.get("first_seen"),
+                "accepted_first_seen": acc.get("first_seen"),
+                "via": lst.get("via"),
+                "all_swept_versions": bool(acc) and acc.get("count") == len(versions[p]),
+                "listed_all_swept_versions": bool(lst) and lst.get("count") == len(versions[p]),
             }
-            note = CDKTN_SOURCE_VERIFIED.get((cmd, flag), {}).get(p)
-            if note:
-                row["products"][p]["source_verified_all_versions"] = note
         cdktn.append(row)
 
-    def count_only(items, prod):
-        return sum(1 for x in items.values() if x["only"] == prod)
+    # allowlist preview: what a generated `terraform-cli-flags.generated.ts`
+    # would contain (source-accepted sets; see PROPOSAL.md)
+    allowlist = {}
+    for k, fl in flags.items():
+        entry = {}
+        for p in PRODUCTS:
+            r = fl["products"][p]
+            if r and r.get("accepted"):
+                entry[p] = constraint(r["accepted"], versions[p])
+        if not entry:
+            continue
+        anyr = next(fl["products"][p] for p in PRODUCTS if fl["products"][p] and fl["products"][p].get("accepted"))
+        entry["takesValue"] = anyr.get("takes_value")
+        if all(not (fl["products"][p] and fl["products"][p].get("listed")) for p in PRODUCTS):
+            entry["hidden"] = True
+        allowlist.setdefault(fl["command"], {})[fl["flag"]] = entry
+
+    def count_only(items, prod, field="only"):
+        return sum(1 for x in items.values() if x[field] == prod)
 
     listed_flags = {k: v for k, v in flags.items()
-                    if any(v["products"][p] and v["products"][p].get("count") for p in PRODUCTS)}
+                    if any(v["products"][p] and v["products"][p].get("listed") for p in PRODUCTS)}
     summary = {
         "versions": {p: len(versions[p]) for p in PRODUCTS},
+        "source_checked_versions": {p: len(checks[p]) for p in PRODUCTS},
         "commands_total": len(commands),
         "commands_only": {p: count_only(commands, p) for p in PRODUCTS},
-        "flags_total": len(listed_flags),
-        "flags_only": {p: count_only(listed_flags, p) for p in PRODUCTS},
+        "flags_total": len(flags),
+        "flags_listed_total": len(listed_flags),
+        "flags_only": {p: count_only(flags, p) for p in PRODUCTS},
+        "flags_only_listed": {p: count_only(listed_flags, p, "only_listed") for p in PRODUCTS},
         "flags_only_excluding_view_family": {
-            p: sum(1 for x in listed_flags.values() if x["only"] == p and not x["family"]) for p in PRODUCTS},
+            p: sum(1 for x in flags.values() if x["only"] == p and not x["family"]) for p in PRODUCTS},
         "view_family": {p: sorted(view_family[p]) for p in PRODUCTS},
-        "flags_hidden_in_source": {p: len(hidden_flags[p]) for p in PRODUCTS},
-        "commands_hidden_in_source": {p: len(hidden_cmds[p]) for p in PRODUCTS},
+        "flags_hidden_in_source": hidden_newest,
+        "flags_never_listed": {p: sum(1 for x in flags.values() if x["products"][p]
+                                      and x["products"][p].get("accepted") and not x["products"][p].get("listed"))
+                               for p in PRODUCTS},
+        "listed_but_not_accepted": sorted({f"{p} {c} {n}" for p, v, c, n in help_not_source}),
+        "commands_hidden_in_source": {p: sum(1 for c in commands.values()
+                                             if (c["products"][p] or {}).get("hidden_in_source")) for p in PRODUCTS},
         "global_options_only": {p: count_only(global_options, p) for p in PRODUCTS},
+        "probe": {"versions": {p: len(probes[p]) for p in PRODUCTS}, "runs": probe_count,
+                  "disagreements_with_source": probe_disagree},
         "unparsed_lines": {p: {v: surfaces[p][v]["counts"]["unparsed_lines"] for v in versions[p]} for p in PRODUCTS},
     }
 
     out = {
         "generated_by": "scripts/cli-sweep.sh + scripts/build-cli-matrix.py",
         "selection": "first and last stable patch of every minor line; Terraform >= 1.5.7, OpenTofu >= 1.6.0",
+        "semantics": {
+            "listed": "span of swept versions whose -help lists the flag (first_seen = 'listed since')",
+            "accepted": "span of swept versions whose flag parser registers the flag "
+                        "(cli-source-check.py; first_seen = 'accepted since'); use this for allowlists",
+            "cells": "per swept version: L listed+accepted, R accepted via help reference, H accepted but "
+                     "not listed, X listed but not accepted, ? listed (command not source-checked), - neither",
+            "only": "product-only by accepted-or-listed; only_listed: by help listing alone",
+        },
         "versions": versions,
         "summary": summary,
         "global_options": global_options,
         "commands": commands,
         "flags": flags,
-        "source_check": {p: {"version": c["version"], "commands": c["commands"],
-                             "flags": {k: {kk: vv for kk, vv in e.items() if kk != "source"}
-                                       for k, e in c["flags"].items()}}
-                         for p, c in checks.items()},
+        # newest version only; per-version detail is in data/cli-source-check-*.json
+        # and in each flag's `cells`
+        "source_check": {p: {"version": versions[p][-1],
+                             "commands": {k: checks[p][versions[p][-1]]["commands"][k] for k in
+                                          ("in_source_not_in_help", "in_help_not_in_source",
+                                           "experimental_only", "hidden_set")},
+                             "flags": {k: {kk: vv for kk, vv in e.items() if vv and kk in
+                                           ("in_source_not_in_help", "in_help_not_in_source", "unresolved_calls")}
+                                       for k, e in checks[p][versions[p][-1]]["flags"].items()
+                                       if e.get("in_source_not_in_help") or e.get("in_help_not_in_source")
+                                       or e.get("unresolved_calls")}}
+                         for p in PRODUCTS if versions[p] and versions[p][-1] in checks[p]},
+        "allowlist_preview": allowlist,
         "cdktn_emitted": cdktn,
     }
     with open(OUT, "w") as f:
@@ -301,24 +432,29 @@ def main():
 
     # console summary (used for PROPOSAL.md / README.md)
     print(f"wrote {OUT}")
-    print(json.dumps({k: v for k, v in summary.items() if k != "unparsed_lines"}, indent=1))
+    print(json.dumps({k: v for k, v in summary.items() if k not in ("unparsed_lines", "view_family")}, indent=1))
     for p in PRODUCTS:
         print(f"\n== {p}-only commands:")
         for k, c in commands.items():
             if c["only"] == p:
                 r = c["products"][p]
                 print(f"  {k:28} first_seen={r.get('first_seen')} removed_in={r.get('removed_in')} hidden={r.get('hidden_in_source')}")
-        print(f"== {p}-only flags (listed in help, excluding the view family):")
-        for k, fl in listed_flags.items():
+        print(f"== {p}-only flags (accepted or listed, excluding the view family):")
+        for k, fl in flags.items():
             if fl["only"] == p and not fl["family"]:
                 r = fl["products"][p]
-                print(f"  {k:44} first_seen={r.get('first_seen')} removed_in={r.get('removed_in')} via={r.get('via')}")
-    print("\n== cdktn-emitted flags not available everywhere:")
+                acc = r.get("accepted") or {}
+                print(f"  {k:44} accepted_since={acc.get('first_seen')} listed_since={(r.get('listed') or {}).get('first_seen')} "
+                      f"removed_in={acc.get('removed_in')} via={(r.get('listed') or {}).get('via')}")
+    print("\n== listed in help but not accepted by the parser:")
+    for x in summary["listed_but_not_accepted"]:
+        print("  " + x)
+    print("\n== cdktn-emitted flags not accepted everywhere:")
     for row in cdktn:
         for p in PRODUCTS:
             r = row["products"][p]
-            if not r["all_swept_versions"] and not r.get("source_verified_all_versions"):
-                print(f"  {p:10} {row['command']} {row['flag']}: first_seen={r['first_seen']}")
+            if not r["all_swept_versions"]:
+                print(f"  {p:10} {row['command']} {row['flag']}: accepted_first_seen={r['accepted_first_seen']}")
 
 
 if __name__ == "__main__":
